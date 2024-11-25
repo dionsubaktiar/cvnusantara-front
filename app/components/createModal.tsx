@@ -77,12 +77,16 @@ const CreateDataModal: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
 
       setMessage(`Data created successfully for: ${data.nopol}`);
       closeModal(); // Close modal after successful submission
-    } catch (error: any) {
+    } catch (error) {
       console.error(error);
-      setMessage(
-        "Error creating data: " +
-          (error.response?.data?.message || error.message)
-      );
+      if (axios.isAxiosError(error)) {
+        setMessage(
+          "Error creating data: " +
+            (error.response?.data?.message || error.message)
+        );
+      } else {
+        setMessage("An unexpected error occurred");
+      }
     }
   };
 
