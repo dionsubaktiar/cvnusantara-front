@@ -3,7 +3,7 @@ import { Fragment, useState } from "react";
 import axios from "axios";
 
 interface Data {
-  tanggal: Date | null;
+  tanggal: string | null; // Store date as string in YYYY-MM-DD format
   nopol: string;
   origin: string;
   destinasi: string;
@@ -27,26 +27,8 @@ const CreateDataModal: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
     harga: 0,
     status: "pending",
   });
+
   const [message, setMessage] = useState<string>("");
-
-  // // Fetch CSRF cookie on mount
-  // useEffect(() => {
-  //   const fetchCsrfToken = async () => {
-  //     try {
-  //       await axios.get(
-  //         "/backend/sanctum/csrf-cookie",
-  //         {
-  //           withCredentials: true,
-  //         }
-  //       );
-  //       console.log("Document cookies:", document.cookie);
-  //     } catch (error) {
-  //       console.error("Error fetching CSRF cookie:", error);
-  //     }
-  //   };
-
-  //   fetchCsrfToken();
-  // }, []);
 
   // Handle form input changes
   const handleChange = (
@@ -59,7 +41,7 @@ const CreateDataModal: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
         name === "uj" || name === "harga"
           ? Number(value)
           : name === "tanggal"
-          ? new Date(value)
+          ? value // Store date as string (YYYY-MM-DD)
           : value,
     }));
   };
@@ -67,10 +49,14 @@ const CreateDataModal: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     try {
+      // Prepare data with CSRF token
       await axios.get("/backend/sanctum/csrf-cookie", {
         withCredentials: true,
       });
+
+      // Post formatted data
       await axios.post("/backend/api/data", data, {
         withCredentials: true,
       });
@@ -104,6 +90,7 @@ const CreateDataModal: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
         >
           <div className="fixed inset-0 bg-black bg-opacity-25" />
         </Transition.Child>
+
         <div className="fixed inset-0 overflow-y-auto">
           <div className="flex min-h-full items-center justify-center p-4 text-center">
             <Transition.Child
@@ -122,22 +109,22 @@ const CreateDataModal: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
                 >
                   Create Data
                 </Dialog.Title>
+
                 <form
                   onSubmit={handleSubmit}
                   className="mt-4 space-y-4 text-black"
                 >
+                  {/* Tanggal */}
                   <input
                     type="date"
                     name="tanggal"
                     placeholder="Tanggal"
-                    value={
-                      data.tanggal
-                        ? data.tanggal.toISOString().split("T")[0]
-                        : ""
-                    }
+                    value={data.tanggal || ""}
                     onChange={handleChange}
                     className="border p-2 rounded w-full"
                   />
+
+                  {/* Nomor Polisi */}
                   <input
                     type="text"
                     name="nopol"
@@ -146,6 +133,8 @@ const CreateDataModal: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
                     onChange={handleChange}
                     className="border p-2 rounded w-full"
                   />
+
+                  {/* Origin */}
                   <input
                     type="text"
                     name="origin"
@@ -154,6 +143,8 @@ const CreateDataModal: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
                     onChange={handleChange}
                     className="border p-2 rounded w-full"
                   />
+
+                  {/* Destinasi */}
                   <input
                     type="text"
                     name="destinasi"
@@ -162,6 +153,8 @@ const CreateDataModal: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
                     onChange={handleChange}
                     className="border p-2 rounded w-full"
                   />
+
+                  {/* Uang Jaminan */}
                   <input
                     type="number"
                     name="uj"
@@ -170,6 +163,8 @@ const CreateDataModal: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
                     onChange={handleChange}
                     className="border p-2 rounded w-full"
                   />
+
+                  {/* Harga */}
                   <input
                     type="number"
                     name="harga"
@@ -178,12 +173,16 @@ const CreateDataModal: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
                     onChange={handleChange}
                     className="border p-2 rounded w-full"
                   />
+
+                  {/* Submit Button */}
                   <button
                     type="submit"
                     className="mt-4 bg-blue-500 text-white p-2 rounded"
                   >
                     Submit
                   </button>
+
+                  {/* Error/Success Message */}
                   {message && <p className="mt-2 text-red-500">{message}</p>}
                 </form>
               </Dialog.Panel>
