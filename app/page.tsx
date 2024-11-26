@@ -6,6 +6,15 @@ import CreateDataButton from "./components/createButton";
 import axios from "axios";
 
 const dataUrl = "https://cvnusantara.nusantaratranssentosa.co.id/api/data";
+const sumUrl = "https://cvnusantara.nusantaratranssentosa.co.id/api/sum";
+
+interface Sum {
+  marginSum: number;
+  untungrugi: string;
+  countSukses: number;
+  countPending: number;
+  countGagal: number;
+}
 
 interface Data {
   id: number;
@@ -19,12 +28,16 @@ interface Data {
 }
 export default function Home() {
   const [datas, setDatas] = useState<Data[]>([]);
+  const [sum, setSums] = useState<Sum[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const fetchUsers = async () => {
+  const fetchDatas = async () => {
     try {
       axios.get(dataUrl).then((response) => {
         setDatas(response.data);
+      });
+      axios.get(sumUrl).then((response) => {
+        setSums(response.data);
       });
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -34,8 +47,8 @@ export default function Home() {
   };
 
   useEffect(() => {
-    fetchUsers(); // Initial fetch
-    const intervalId = setInterval(fetchUsers, 2000); // Refresh every 5 seconds
+    fetchDatas(); // Initial fetch
+    const intervalId = setInterval(fetchDatas, 2000); // Refresh every 5 seconds
 
     return () => clearInterval(intervalId); // Cleanup on component unmount
   }, []);
@@ -48,6 +61,20 @@ export default function Home() {
   return (
     <div className="min-h-screen flex-col items-start justify-center py-2 px-3 gap-2">
       <CreateDataButton></CreateDataButton>
+      {sum.map((data) => (
+        <div
+          className="flex items-center justify-around border-2 text-sm rounded-lg p-3"
+          key={data.untungrugi}
+        >
+          <div>{data.untungrugi}</div>
+          <div>Rp. {data.marginSum}</div>
+          <div className="grid grid-cols-1">
+            <p>Lunas : {data.countSukses}</p>
+            <p>Pending : {data.countPending}</p>
+            <p>Cancel : {data.countGagal}</p>
+          </div>
+        </div>
+      ))}
       {datas.map((data) => (
         <CardData
           key={data.id}
