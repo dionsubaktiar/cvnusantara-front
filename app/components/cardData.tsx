@@ -24,7 +24,7 @@ const CardData: React.FC<Data> = ({
   const formattedDate = tanggal
     ? new Date(tanggal).toLocaleString("id-ID", {
         year: "numeric",
-        month: "numeric",
+        month: "short",
         day: "numeric",
       })
     : "N/A"; // Handle null or invalid dates
