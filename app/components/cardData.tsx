@@ -32,7 +32,7 @@ const CardData: React.FC<Data> = ({
 
   return (
     <div>
-      <div className="flex items-center justify-around border-2 text-sm rounded-lg gap-2 p-3">
+      <div className="flex items-center justify-around border-2 text-sm rounded-lg p-3">
         <div className="grid grid-cols-1">
           <div>{nopol}</div>
           <div>{formattedDate}</div>
@@ -43,7 +43,11 @@ const CardData: React.FC<Data> = ({
         <div className="grid grid-cols-1">
           <div>Rp. {uj.toLocaleString("id-ID")}</div>
           <div>Rp. {harga.toLocaleString("id-ID")}</div>
-          <div>{status}</div>
+          <div>
+            {status == "confirmed" && <p className="text-green-400">Lunas</p>}
+            {status == "pending" && <p className="text-gray">Pending</p>}
+            {status == "canceled" && <p className="text-red-500">Cancel</p>}
+          </div>
         </div>
         <Button color="primary" variant="light">
           Manage
