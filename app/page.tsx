@@ -26,21 +26,24 @@ interface Data {
   harga: number;
   status: string;
 }
+
 export default function Home() {
   const [datas, setDatas] = useState<Data[]>([]);
-  const [sum, setSums] = useState<Sum[]>([]);
+  const [sum, setSum] = useState<Sum | null>(null); // Changed to a single object
   const [loading, setLoading] = useState<boolean>(true);
 
   const fetchDatas = async () => {
     try {
-      axios.get(dataUrl).then((response) => {
-        setDatas(response.data);
-      });
-      axios.get(sumUrl).then((response) => {
-        setSums(response.data);
-      });
+      // Fetch data and sum
+      const [dataResponse, sumResponse] = await Promise.all([
+        axios.get(dataUrl),
+        axios.get(sumUrl),
+      ]);
+
+      setDatas(dataResponse.data);
+      setSum(sumResponse.data); // Update as a single object
     } catch (error) {
-      console.error("Error fetching users:", error);
+      console.error("Error fetching data:", error);
     } finally {
       setLoading(false);
     }
@@ -48,7 +51,7 @@ export default function Home() {
 
   useEffect(() => {
     fetchDatas(); // Initial fetch
-    const intervalId = setInterval(fetchDatas, 2000); // Refresh every 5 seconds
+    const intervalId = setInterval(fetchDatas, 2000); // Refresh every 2 seconds
 
     return () => clearInterval(intervalId); // Cleanup on component unmount
   }, []);
@@ -60,21 +63,21 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex-col items-start justify-center py-2 px-3 gap-2">
-      <CreateDataButton></CreateDataButton>
-      {sum.map((data) => (
+      <CreateDataButton />
+      {sum && ( // Render only if sum is not null
         <div
           className="flex items-center justify-around border-2 text-sm rounded-lg p-3"
-          key={data.untungrugi}
+          key={sum.untungrugi}
         >
-          <div>{data.untungrugi}</div>
-          <div>Rp. {data.marginSum}</div>
+          <div>{sum.untungrugi}</div>
+          <div>Rp. {sum.marginSum}</div>
           <div className="grid grid-cols-1">
-            <p>Lunas : {data.countSukses}</p>
-            <p>Pending : {data.countPending}</p>
-            <p>Cancel : {data.countGagal}</p>
+            <p>Lunas : {sum.countSukses}</p>
+            <p>Pending : {sum.countPending}</p>
+            <p>Cancel : {sum.countGagal}</p>
           </div>
         </div>
-      ))}
+      )}
       {datas.map((data) => (
         <CardData
           key={data.id}
@@ -85,7 +88,7 @@ export default function Home() {
           harga={data.harga}
           uj={data.uj}
           status={data.status}
-        ></CardData>
+        />
       ))}
     </div>
   );
