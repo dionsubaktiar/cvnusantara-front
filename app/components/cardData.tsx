@@ -30,7 +30,7 @@ const CardData: React.FC<Data> = ({
     : "N/A"; // Handle null or invalid dates
 
   return (
-    <div>
+    <div className="p-2">
       <div className="flex items-center justify-around border-2 text-sm rounded-lg p-3">
         <div className="grid grid-cols-1">
           <div>{nopol}</div>
