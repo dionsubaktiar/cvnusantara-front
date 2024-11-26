@@ -62,7 +62,7 @@ export default function Home() {
     );
 
   return (
-    <div className="min-h-screen flex-col items-start justify-center py-2 px-3 gap-2">
+    <div className="min-h-screen flex-col items-start justify-center py-2 gap-2">
       <CreateDataButton />
       {sum && ( // Render only if sum is not null
         <div
