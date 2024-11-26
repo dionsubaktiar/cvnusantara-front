@@ -62,14 +62,17 @@ export default function Home() {
     );
 
   return (
-    <div className="min-h-screen flex-col items-start justify-center py-2 px-3 gap-2">
+    <div className="min-h-screen flex-col items-start justify-center py-2 gap-2">
       <CreateDataButton />
       {sum && ( // Render only if sum is not null
         <div
           className="flex items-center justify-around border-2 text-sm rounded-lg p-3"
           key={sum.untungrugi}
         >
-          <div>{sum.untungrugi}</div>
+          <div>
+            {sum.untungrugi == "UNTUNG" && <p className="text-green">Untung</p>}
+            {sum.untungrugi == "RUGI" && <p className="text-red">Rugi</p>}
+          </div>
           <div>Rp. {sum.marginSum}</div>
           <div className="grid grid-cols-1">
             <p>Lunas : {sum.countSukses}</p>
