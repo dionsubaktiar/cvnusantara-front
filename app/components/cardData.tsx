@@ -36,8 +36,9 @@ const CardData: React.FC<Data> = ({
           <div>{nopol}</div>
           <div>{formattedDate}</div>
         </div>
-        <div>
-          {origin} - {destinasi}
+        <div className="grid grid-cols-1">
+          <p>{origin}</p>
+          <p>{destinasi}</p>
         </div>
         <div className="grid grid-cols-1">
           <div>Rp. {uj.toLocaleString("id-ID")}</div>
