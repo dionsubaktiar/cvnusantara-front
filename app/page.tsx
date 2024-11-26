@@ -66,12 +66,14 @@ export default function Home() {
       <CreateDataButton />
       {sum && ( // Render only if sum is not null
         <div
-          className="flex items-center justify-around border-2 text-sm rounded-lg p-3"
+          className="flex items-center justify-around border-2 text-sm rounded-lg p-2"
           key={sum.untungrugi}
         >
           <div>
-            {sum.untungrugi == "UNTUNG" && <p className="text-green">Untung</p>}
-            {sum.untungrugi == "RUGI" && <p className="text-red">Rugi</p>}
+            {sum.untungrugi == "UNTUNG" && (
+              <p className="text-green-500">Untung</p>
+            )}
+            {sum.untungrugi == "RUGI" && <p className="text-red-500">Rugi</p>}
           </div>
           <div>Rp. {sum.marginSum}</div>
           <div className="grid grid-cols-1">
