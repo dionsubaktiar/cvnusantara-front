@@ -79,7 +79,7 @@ export default function Home() {
             </div>
             <div>
               {sum.current
-                ? new Date(sum.current).toLocaleString("id-ID", {
+                ? new Date(sum.current + "-01").toLocaleString("id-ID", {
                     year: "numeric",
                     month: "long",
                   })
