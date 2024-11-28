@@ -14,6 +14,7 @@ interface Sum {
   countSukses: number;
   countPending: number;
   countGagal: number;
+  current: string;
 }
 
 interface Data {
@@ -66,14 +67,24 @@ export default function Home() {
       <CreateDataButton />
       {sum && ( // Render only if sum is not null
         <div
-          className="flex items-center justify-around border-2 text-sm rounded-lg p-2"
+          className="flex items-center justify-around border-2 text-sm rounded-lg"
           key={sum.untungrugi}
         >
-          <div>
-            {sum.untungrugi == "UNTUNG" && (
-              <p className="text-green-500">Untung</p>
-            )}
-            {sum.untungrugi == "RUGI" && <p className="text-red-500">Rugi</p>}
+          <div className="grid grid-cols-1">
+            <div>
+              {sum.untungrugi == "UNTUNG" && (
+                <p className="text-green-500">Untung</p>
+              )}
+              {sum.untungrugi == "RUGI" && <p className="text-red-500">Rugi</p>}
+            </div>
+            <div>
+              {sum.current
+                ? new Date(sum.current).toLocaleString("id-ID", {
+                    year: "numeric",
+                    month: "long",
+                  })
+                : "N/A"}
+            </div>
           </div>
           <div>Rp. {sum.marginSum}</div>
           <div className="grid grid-cols-1">
