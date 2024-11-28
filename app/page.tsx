@@ -86,7 +86,7 @@ export default function Home() {
                 : "N/A"}
             </div>
           </div>
-          <div>Rp. {sum.marginSum}</div>
+          <div>Rp. {sum.marginSum.toLocaleString("id-ID")}</div>
           <div className="grid grid-cols-1">
             <p>Lunas : {sum.countSukses}</p>
             <p>Pending : {sum.countPending}</p>
