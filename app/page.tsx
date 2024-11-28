@@ -14,7 +14,7 @@ interface Sum {
   countSukses: number;
   countPending: number;
   countGagal: number;
-  current: string;
+  monthYear: string;
 }
 
 interface Data {
@@ -78,8 +78,8 @@ export default function Home() {
               {sum.untungrugi == "RUGI" && <p className="text-red-500">Rugi</p>}
             </div>
             <div>
-              {sum.current
-                ? new Date(sum.current + "-01").toLocaleString("id-ID", {
+              {sum.monthYear
+                ? new Date(sum.monthYear + "-01").toLocaleString("id-ID", {
                     year: "numeric",
                     month: "long",
                   })
