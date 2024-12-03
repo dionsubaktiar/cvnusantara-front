@@ -129,9 +129,12 @@ export default function Home() {
           </div>
           <div>Rp. {sum.marginSum.toLocaleString("id-ID")}</div>
           <div className="grid grid-cols-1">
-            <p>Lunas : {sum.countSukses}</p>
-            <p>Pending : {sum.countPending}</p>
-            <p>Cancel : {sum.countGagal}</p>
+            {/* Conditionally render countSukses */}
+            {sum.countSukses > 0 && <p>Lunas: {sum.countSukses}</p>}
+            {/* Conditionally render countPending */}
+            {sum.countPending > 0 && <p>Pending: {sum.countPending}</p>}
+            {/* Conditionally render countGagal */}
+            {sum.countGagal > 0 && <p>Cancel: {sum.countGagal}</p>}
           </div>
         </div>
       )}
