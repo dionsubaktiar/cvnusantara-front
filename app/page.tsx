@@ -89,6 +89,8 @@ export default function Home() {
 
   useEffect(() => {
     fetchDatas(); // Initial fetch
+    // const intervalId = setInterval(fetchDatas, 2000); // Refresh every 2 seconds
+    // return () => clearInterval(intervalId); // Cleanup on component unmount
   }, []);
 
   if (loading) {
@@ -118,7 +120,7 @@ export default function Home() {
       {/* Render Sum */}
       {sum && (
         <div
-          className="flex items-center justify-around border-2 text-sm rounded-lg p-4 bg-gray-50"
+          className="flex items-center justify-around border-2 text-sm rounded-lg p-4"
           key={sum.untungrugi}
         >
           <div className="grid grid-cols-1">
@@ -162,7 +164,7 @@ export default function Home() {
 
       {/* Render Data for Active Month */}
       {activeMonth && dataByMonth[activeMonth] && (
-        <div className="w-full border-2 p-4 rounded-lg shadow-md bg-gray-100 mt-4">
+        <div className="w-full border-2 p-4 rounded-lg shadow-md mt-4">
           <h2 className="text-xl font-bold text-gray-700">{activeMonth}</h2>
           <p className="text-sm text-gray-500">
             Total records: {dataByMonth[activeMonth].count}
