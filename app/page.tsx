@@ -89,8 +89,6 @@ export default function Home() {
 
   useEffect(() => {
     fetchDatas(); // Initial fetch
-    const intervalId = setInterval(fetchDatas, 2000); // Refresh every 2 seconds
-    return () => clearInterval(intervalId); // Cleanup on component unmount
   }, []);
 
   if (loading) {
