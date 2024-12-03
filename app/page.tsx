@@ -126,15 +126,6 @@ export default function Home() {
                 <p className="text-red-500">Rugi</p>
               )}
             </div>
-            <div>
-              {/* Safely check for sum.monthYear before using it */}
-              {sum.monthYear
-                ? new Date(sum.monthYear + "-01").toLocaleString("id-ID", {
-                    year: "numeric",
-                    month: "long",
-                  })
-                : "N/A"}
-            </div>
           </div>
           <div>Rp. {sum.marginSum.toLocaleString("id-ID")}</div>
           <div className="grid grid-cols-1">
@@ -188,6 +179,15 @@ export default function Home() {
           </div>
         </div>
       )}
+      {/* <div>
+              
+              {sum.monthYear
+                ? new Date(sum.monthYear + "-01").toLocaleString("id-ID", {
+                    year: "numeric",
+                    month: "long",
+                  })
+                : "N/A"}
+            </div> */}
     </div>
   );
 }
