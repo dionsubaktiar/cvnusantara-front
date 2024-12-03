@@ -154,8 +154,7 @@ export default function Home() {
             }`}
             onClick={() => handleTabClick(month)}
           >
-            {new Date(sum?.monthYear + "-01").toLocaleString("id-ID", {
-              year: "numeric",
+            {new Date(month + "-01").toLocaleString("id-ID", {
               month: "long",
             })}
           </button>
