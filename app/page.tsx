@@ -120,7 +120,7 @@ export default function Home() {
       {/* Render Sum */}
       {sum && (
         <div
-          className="flex items-center justify-around border-2 text-sm rounded-lg p-4"
+          className="flex items-center justify-around border-2 text-sm rounded-lg p-4 gap-2"
           key={sum.untungrugi}
         >
           <div className="grid grid-cols-1">
