@@ -54,8 +54,8 @@ export default function Home() {
 
       // Check for valid responses
       if (
-        dataResponse.data?.status === "success" &&
-        sumResponse.data?.status === "success"
+        dataResponse.data?.status == "success" &&
+        sumResponse.data?.status == "success"
       ) {
         setDataByMonth(dataResponse.data.dataByMonth);
         setSum(sumResponse.data);
@@ -63,6 +63,10 @@ export default function Home() {
         const firstMonth = Object.keys(dataResponse.data.dataByMonth)[0];
         setActiveMonth(firstMonth);
       } else {
+        console.log("Invalid data from server:", {
+          dataResponse: dataResponse.data,
+          sumResponse: sumResponse.data,
+        });
         setError("Invalid data received from server.");
       }
     } catch (err) {
