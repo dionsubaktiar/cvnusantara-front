@@ -62,6 +62,10 @@ export default function Home() {
         // Set default active month to the first available month
         const firstMonth = Object.keys(dataResponse.data.dataByMonth)[0];
         setActiveMonth(firstMonth);
+        console.log("Data from server:", {
+          dataResponse: dataResponse.data,
+          sumResponse: sumResponse.data,
+        });
       } else {
         console.log("Invalid data from server:", {
           dataResponse: dataResponse.data,
@@ -123,6 +127,7 @@ export default function Home() {
               )}
             </div>
             <div>
+              {/* Safely check for sum.monthYear before using it */}
               {sum.monthYear
                 ? new Date(sum.monthYear + "-01").toLocaleString("id-ID", {
                     year: "numeric",
@@ -133,11 +138,8 @@ export default function Home() {
           </div>
           <div>Rp. {sum.marginSum.toLocaleString("id-ID")}</div>
           <div className="grid grid-cols-1">
-            {/* Conditionally render countSukses */}
             {sum.countSukses > 0 && <p>Lunas: {sum.countSukses}</p>}
-            {/* Conditionally render countPending */}
             {sum.countPending > 0 && <p>Pending: {sum.countPending}</p>}
-            {/* Conditionally render countGagal */}
             {sum.countGagal > 0 && <p>Cancel: {sum.countGagal}</p>}
           </div>
         </div>
