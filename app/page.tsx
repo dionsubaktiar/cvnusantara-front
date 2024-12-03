@@ -143,7 +143,7 @@ export default function Home() {
       )}
 
       {/* Tabs for each month */}
-      <div className="w-full flex gap-2 mt-6">
+      <div className="w-full flex gap-2 mt-4">
         {Object.keys(dataByMonth).map((month) => (
           <button
             key={month}
@@ -154,7 +154,7 @@ export default function Home() {
             }`}
             onClick={() => handleTabClick(month)}
           >
-            {new Date(month + "-01").toLocaleString("id-ID", {
+            {new Date(sum?.monthYear + "-01").toLocaleString("id-ID", {
               year: "numeric",
               month: "long",
             })}
@@ -165,11 +165,11 @@ export default function Home() {
       {/* Render Data for Active Month */}
       {activeMonth && dataByMonth[activeMonth] && (
         <div className="w-full border-2 p-4 rounded-lg shadow-md mt-4">
-          <h2 className="text-xl font-bold text-gray-700">{activeMonth}</h2>
-          <p className="text-sm text-gray-500">
+          <h2 className="text-xl font-bold">{activeMonth}</h2>
+          <p className="text-sm">
             Total records: {dataByMonth[activeMonth].count}
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mt-2">
             {dataByMonth[activeMonth].data.map((data) => (
               <CardData
                 key={data.id}
