@@ -6,15 +6,10 @@ import CreateDataButton from "./components/createButton";
 import axios from "axios";
 
 const dataUrl = "https://cvnusantara.nusantaratranssentosa.co.id/api/data";
-const sumUrl = "https://cvnusantara.nusantaratranssentosa.co.id/api/sum";
 
-interface Sum {
-  marginSum: number;
-  untungrugi: string;
-  countSukses: number;
-  countPending: number;
-  countGagal: number;
-  monthYear: string;
+interface MonthlyData {
+  count: number;
+  data: Data[];
 }
 
 interface Data {
@@ -29,82 +24,81 @@ interface Data {
 }
 
 export default function Home() {
-  const [datas, setDatas] = useState<Data[]>([]);
-  const [sum, setSum] = useState<Sum | null>(null); // Changed to a single object
+  const [dataByMonth, setDataByMonth] = useState<Record<string, MonthlyData>>(
+    {}
+  );
   const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchDatas = async () => {
     try {
-      // Fetch data and sum
-      const [dataResponse, sumResponse] = await Promise.all([
-        axios.get(dataUrl),
-        axios.get(sumUrl),
-      ]);
+      setLoading(true);
+      setError(null);
 
-      setDatas(dataResponse.data);
-      setSum(sumResponse.data); // Update as a single object
-    } catch (error) {
-      console.error("Error fetching data:", error);
+      const response = await axios.get(dataUrl);
+      if (response.data.status === "success") {
+        setDataByMonth(response.data.dataByMonth);
+      } else {
+        setError("Failed to fetch data. Invalid response format.");
+      }
+    } catch (err) {
+      setError("Failed to fetch data. Please try again.");
+      console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchDatas(); // Initial fetch
-    const intervalId = setInterval(fetchDatas, 2000); // Refresh every 2 seconds
+    fetchDatas();
+    const intervalId = setInterval(fetchDatas, 2000);
 
-    return () => clearInterval(intervalId); // Cleanup on component unmount
+    return () => clearInterval(intervalId);
   }, []);
 
-  if (loading)
+  if (loading) {
     return (
-      <svg className="animate-spin h-5 w-5 mr-3 ..." viewBox="0 0 24 24"></svg>
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-500"></div>
+      </div>
     );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <p className="text-red-500">{error}</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen flex-col items-start justify-center p-2 gap-2">
+    <div className="min-h-screen flex flex-col items-start justify-center p-4 gap-4">
       <CreateDataButton />
-      {sum && ( // Render only if sum is not null
+      {Object.entries(dataByMonth).map(([month, monthlyData]) => (
         <div
-          className="flex items-center justify-around border-2 text-sm rounded-lg"
-          key={sum.untungrugi}
+          key={month}
+          className="w-full border-2 p-4 rounded-lg shadow-md bg-gray-50"
         >
-          <div className="grid grid-cols-1">
-            <div>
-              {sum.untungrugi == "UNTUNG" && (
-                <p className="text-green-500">Untung</p>
-              )}
-              {sum.untungrugi == "RUGI" && <p className="text-red-500">Rugi</p>}
-            </div>
-            <div>
-              {sum.monthYear
-                ? new Date(sum.monthYear + "-01").toLocaleString("id-ID", {
-                    year: "numeric",
-                    month: "long",
-                  })
-                : "N/A"}
-            </div>
-          </div>
-          <div>Rp. {sum.marginSum.toLocaleString("id-ID")}</div>
-          <div className="grid grid-cols-1">
-            <p>Lunas : {sum.countSukses}</p>
-            <p>Pending : {sum.countPending}</p>
-            <p>Cancel : {sum.countGagal}</p>
+          <h2 className="text-xl font-bold text-gray-700">{month}</h2>
+          <p className="text-sm text-gray-500">
+            Total records: {monthlyData.count}
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+            {monthlyData.data.map((data) => (
+              <CardData
+                key={data.id}
+                tanggal={data.tanggal}
+                nopol={data.nopol}
+                origin={data.origin}
+                destinasi={data.destinasi}
+                harga={data.harga}
+                uj={data.uj}
+                status={data.status}
+              />
+            ))}
           </div>
         </div>
-      )}
-      {datas.map((data) => (
-        <CardData
-          key={data.id}
-          tanggal={data.tanggal}
-          nopol={data.nopol}
-          origin={data.origin}
-          destinasi={data.destinasi}
-          harga={data.harga}
-          uj={data.uj}
-          status={data.status}
-        />
       ))}
     </div>
   );
