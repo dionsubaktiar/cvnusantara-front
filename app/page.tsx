@@ -52,16 +52,22 @@ export default function Home() {
         axios.get(sumUrl),
       ]);
 
-      // Check for valid responses
       if (
-        dataResponse.data?.status == "success" &&
-        sumResponse.data?.status == "success"
+        dataResponse.data?.status === "success" &&
+        sumResponse.data?.status === "success"
       ) {
-        setDataByMonth(dataResponse.data.dataByMonth);
-        setSum(sumResponse.data);
-        // Set default active month to the first available month
-        const firstMonth = Object.keys(dataResponse.data.dataByMonth)[0];
+        const dataByMonth = dataResponse.data.dataByMonth;
+        const sumByMonth = sumResponse.data.dataByMonth;
+
+        setDataByMonth(dataByMonth);
+
+        // Use the first month to initialize `sum`
+        const firstMonth = Object.keys(dataByMonth)[0] || "";
         setActiveMonth(firstMonth);
+
+        // Safely set the summary for the first available month
+        setSum(sumByMonth[firstMonth]);
+
         console.log("Data from server:", {
           dataResponse: dataResponse.data,
           sumResponse: sumResponse.data,
@@ -179,15 +185,6 @@ export default function Home() {
           </div>
         </div>
       )}
-      {/* <div>
-              
-              {sum.monthYear
-                ? new Date(sum.monthYear + "-01").toLocaleString("id-ID", {
-                    year: "numeric",
-                    month: "long",
-                  })
-                : "N/A"}
-            </div> */}
     </div>
   );
 }
