@@ -214,9 +214,8 @@ export default function Home() {
                     ) // Ensure cookies are sent and received
                     .then(() => {
                       // Once CSRF cookie is set, we can make the PUT request
-                      return axios.put(
-                        `https://cvnusantara.nusantaratranssentosa.co.id/api/setlunas/${data.id}`,
-                        {},
+                      return axios.delete(
+                        `https://cvnusantara.nusantaratranssentosa.co.id/api/data/${data.id}`,
                         {
                           withCredentials: true,
                           headers: {

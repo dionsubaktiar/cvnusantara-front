@@ -83,7 +83,7 @@ const CardData: React.FC<Data> = ({
               Manage
             </Button>
           </DropdownTrigger>
-          <DropdownMenu>
+          <DropdownMenu className="dark:bg-black">
             <DropdownItem onClick={() => function1("action1")}>
               {dropLabel1}
             </DropdownItem>
