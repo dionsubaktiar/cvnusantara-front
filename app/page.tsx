@@ -37,6 +37,7 @@ interface DataByMonth {
 
 export default function Home() {
   const [dataByMonth, setDataByMonth] = useState<DataByMonth>({});
+  const [sumByMonth, setSumByMonth] = useState<{ [month: string]: Sum }>({});
   const [sum, setSum] = useState<Sum | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -54,20 +55,23 @@ export default function Home() {
         sumResponse.data?.status === "success"
       ) {
         const newDataByMonth = dataResponse.data.dataByMonth;
-        const newSum = sumResponse.data.dataByMonth;
+        const newSumByMonth = sumResponse.data.dataByMonth;
 
-        // Update state only if data has changed
+        // Update data if changed
         if (JSON.stringify(newDataByMonth) !== JSON.stringify(dataByMonth)) {
           setDataByMonth(newDataByMonth);
         }
 
-        const firstMonth = Object.keys(newDataByMonth)[0] || "";
-        if (activeMonth === "") {
-          setActiveMonth(firstMonth); // Initialize active month if not set
+        // Update sum data if changed
+        if (JSON.stringify(newSumByMonth) !== JSON.stringify(sumByMonth)) {
+          setSumByMonth(newSumByMonth);
         }
 
-        if (JSON.stringify(newSum[firstMonth]) !== JSON.stringify(sum)) {
-          setSum(newSum[firstMonth]);
+        // Set the initial active month and sum if not already set
+        const firstMonth = Object.keys(newDataByMonth)[0] || "";
+        if (!activeMonth) {
+          setActiveMonth(firstMonth);
+          setSum(newSumByMonth[firstMonth]);
         }
       } else {
         setError("Invalid data received from server.");
@@ -104,6 +108,9 @@ export default function Home() {
 
   const handleTabClick = (month: string) => {
     setActiveMonth(month);
+    if (sumByMonth[month]) {
+      setSum(sumByMonth[month]);
+    }
   };
 
   return (
@@ -147,10 +154,10 @@ export default function Home() {
             }`}
             onClick={() => handleTabClick(month)}
           >
-            {new Date(month + "-01").toLocaleString("id-ID", {
-              // year: "numeric",
-              month: "long",
-            })}
+            {new Date(sumByMonth[month]?.monthYear + "-01").toLocaleString(
+              "id-ID",
+              { year: "numeric", month: "long" }
+            )}
           </button>
         ))}
       </div>
