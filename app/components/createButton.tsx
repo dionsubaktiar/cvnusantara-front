@@ -16,7 +16,7 @@ const CreateDataButton = () => {
       {/* Button to open modal, floated on the right side */}
       <button
         onClick={openModal}
-        className="fixed bottom-6 right-6 px-4 py-4 bg-green-500 text-white rounded-full shadow-lg hover:bg-green-600 transition-all"
+        className="fixed bottom-6 right-6 px-4 py-4 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition-all"
       >
         <IoAdd></IoAdd>
       </button>

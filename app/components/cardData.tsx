@@ -1,5 +1,11 @@
 import React from "react";
-import { Button } from "@nextui-org/react";
+import {
+  Button,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from "@nextui-org/react";
 
 interface Data {
   tanggal: string | null; // Update type to string since Laravel/MySQL provides dates as strings
@@ -9,6 +15,12 @@ interface Data {
   uj: number;
   harga: number;
   status: string;
+  function1: (action: string) => void;
+  function2: (action: string) => void;
+  function3: (action: string) => void;
+  dropLabel1: string;
+  dropLabel2: string;
+  dropLabel3: string;
 }
 
 const CardData: React.FC<Data> = ({
@@ -19,6 +31,12 @@ const CardData: React.FC<Data> = ({
   uj,
   harga,
   status,
+  function1,
+  function2,
+  function3,
+  dropLabel1,
+  dropLabel2,
+  dropLabel3,
 }) => {
   // Convert the tanggal string to a Date object and format it
   const formattedDate = tanggal
@@ -49,9 +67,18 @@ const CardData: React.FC<Data> = ({
             {status == "canceled" && <p className="text-red-500">Cancel</p>}
           </div>
         </div>
-        <Button color="primary" variant="light">
-          Manage
-        </Button>
+        <Dropdown>
+          <DropdownTrigger>
+            <Button color="primary" variant="bordered">
+              Manage
+            </Button>
+          </DropdownTrigger>
+          <DropdownMenu>
+            <DropdownItem onClick={() => function1}>{dropLabel1}</DropdownItem>
+            <DropdownItem onClick={() => function2}>{dropLabel2}</DropdownItem>
+            <DropdownItem onClick={() => function3}>{dropLabel3}</DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
       </div>
     </div>
   );

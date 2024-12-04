@@ -180,6 +180,26 @@ export default function Home() {
                 harga={data.harga}
                 uj={data.uj}
                 status={data.status}
+                dropLabel1="Lunas"
+                function1={() => {
+                  axios
+                    .put(
+                      `https://cvnusantara.nusantaratranssentosa.co.id/api/setlunas/${data.id}`
+                    )
+                    .then((res) => console.log(res.data))
+                    .catch((err) => console.error(err));
+                }}
+                dropLabel2="Edit"
+                function2={() => {}}
+                dropLabel3="Hapus"
+                function3={() => {
+                  axios
+                    .delete(
+                      `https://cvnusantara.nusantaratranssentosa.co.id/api/${data.id}`
+                    )
+                    .then((res) => console.log(res.data))
+                    .catch((err) => console.error(err));
+                }}
               />
             ))}
           </div>
