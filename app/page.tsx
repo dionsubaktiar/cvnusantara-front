@@ -40,13 +40,10 @@ export default function Home() {
   const [sum, setSum] = useState<Sum | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeMonth, setActiveMonth] = useState<string>(""); // Track the active tab (month)
+  const [activeMonth, setActiveMonth] = useState<string>("");
 
   const fetchDatas = async () => {
     try {
-      setLoading(true);
-      setError(null);
-
       const [dataResponse, sumResponse] = await Promise.all([
         axios.get(dataUrl),
         axios.get(sumUrl),
@@ -56,27 +53,23 @@ export default function Home() {
         dataResponse.data?.status === "success" &&
         sumResponse.data?.status === "success"
       ) {
-        const dataByMonth = dataResponse.data.dataByMonth;
-        const sumByMonth = sumResponse.data.dataByMonth;
+        const newDataByMonth = dataResponse.data.dataByMonth;
+        const newSum = sumResponse.data.dataByMonth;
 
-        setDataByMonth(dataByMonth);
+        // Update state only if data has changed
+        if (JSON.stringify(newDataByMonth) !== JSON.stringify(dataByMonth)) {
+          setDataByMonth(newDataByMonth);
+        }
 
-        // Use the first month to initialize `sum`
-        const firstMonth = Object.keys(dataByMonth)[0] || "";
-        setActiveMonth(firstMonth);
+        const firstMonth = Object.keys(newDataByMonth)[0] || "";
+        if (activeMonth === "") {
+          setActiveMonth(firstMonth); // Initialize active month if not set
+        }
 
-        // Safely set the summary for the first available month
-        setSum(sumByMonth[firstMonth]);
-
-        console.log("Data from server:", {
-          dataResponse: dataResponse.data,
-          sumResponse: sumResponse.data,
-        });
+        if (JSON.stringify(newSum[firstMonth]) !== JSON.stringify(sum)) {
+          setSum(newSum[firstMonth]);
+        }
       } else {
-        console.log("Invalid data from server:", {
-          dataResponse: dataResponse.data,
-          sumResponse: sumResponse.data,
-        });
         setError("Invalid data received from server.");
       }
     } catch (err) {
@@ -89,9 +82,9 @@ export default function Home() {
 
   useEffect(() => {
     fetchDatas(); // Initial fetch
-    // const intervalId = setInterval(fetchDatas, 2000); // Refresh every 2 seconds
-    // return () => clearInterval(intervalId); // Cleanup on component unmount
-  }, []);
+    const intervalId = setInterval(fetchDatas, 5000); // Refresh every 5 seconds
+    return () => clearInterval(intervalId); // Cleanup on component unmount
+  });
 
   if (loading) {
     return (
@@ -154,7 +147,8 @@ export default function Home() {
             }`}
             onClick={() => handleTabClick(month)}
           >
-            {new Date(month + "-01").toLocaleString("id-ID", {
+            {new Date(dataByMonth[month] + "-01").toLocaleString("id-ID", {
+              year: "numeric",
               month: "long",
             })}
           </button>
