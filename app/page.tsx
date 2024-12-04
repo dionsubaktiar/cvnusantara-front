@@ -177,7 +177,8 @@ export default function Home() {
                 function1={() =>
                   axios
                     .put(
-                      `https://cvnusantara.nusantaratranssentosa.co.id/api/setlunas/${data.id}`
+                      `https://cvnusantara.nusantaratranssentosa.co.id/api/setlunas/${data.id}`,
+                      { withCredentials: true }
                     )
                     .then((res) => console.log(res.data))
                     .catch((err) => console.error(err))
@@ -190,7 +191,8 @@ export default function Home() {
                 function3={() =>
                   axios
                     .delete(
-                      `https://cvnusantara.nusantaratranssentosa.co.id/api/${data.id}`
+                      `https://cvnusantara.nusantaratranssentosa.co.id/api/${data.id}`,
+                      { withCredentials: true }
                     )
                     .then((res) => console.log(res.data))
                     .catch((err) => console.error(err))
