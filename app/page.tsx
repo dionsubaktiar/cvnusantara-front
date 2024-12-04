@@ -188,6 +188,9 @@ export default function Home() {
                     )
                     .then((res) => console.log(res.data))
                     .catch((err) => console.error(err));
+                  console.log(
+                    `https://cvnusantara.nusantaratranssentosa.co.id/api/setlunas/${data.id}`
+                  );
                 }}
                 dropLabel2="Edit"
                 function2={() => {}}
