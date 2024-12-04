@@ -29,6 +29,7 @@ const CreateDataModal: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
   });
 
   const [message, setMessage] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false); // Loading state
 
   // Handle form input changes
   const handleChange = (
@@ -49,6 +50,8 @@ const CreateDataModal: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    setLoading(true); // Set loading to true when submission starts
 
     try {
       // Prepare data with CSRF token
@@ -73,6 +76,8 @@ const CreateDataModal: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
       } else {
         setMessage("An unexpected error occurred");
       }
+    } finally {
+      setLoading(false); // Reset loading state after request completes
     }
   };
 
@@ -115,71 +120,108 @@ const CreateDataModal: React.FC<ModalProps> = ({ isOpen, closeModal }) => {
                   className="mt-4 space-y-4 text-black"
                 >
                   {/* Tanggal */}
-                  <input
-                    type="date"
-                    name="tanggal"
-                    placeholder="Tanggal"
-                    value={data.tanggal || ""}
-                    onChange={handleChange}
-                    className="border p-2 rounded w-full"
-                  />
+                  <div className="space-y-1">
+                    <label htmlFor="tanggal" className="font-medium text-sm">
+                      Tanggal
+                    </label>
+                    <input
+                      type="date"
+                      id="tanggal"
+                      name="tanggal"
+                      placeholder="Tanggal"
+                      value={data.tanggal || ""}
+                      onChange={handleChange}
+                      className="border p-2 rounded w-full"
+                    />
+                  </div>
 
                   {/* Nomor Polisi */}
-                  <input
-                    type="text"
-                    name="nopol"
-                    placeholder="Nomor Polisi"
-                    value={data.nopol}
-                    onChange={handleChange}
-                    className="border p-2 rounded w-full"
-                  />
+                  <div className="space-y-1">
+                    <label htmlFor="nopol" className="font-medium text-sm">
+                      Nomor Polisi
+                    </label>
+                    <input
+                      type="text"
+                      id="nopol"
+                      name="nopol"
+                      placeholder="Nomor Polisi"
+                      value={data.nopol}
+                      onChange={handleChange}
+                      className="border p-2 rounded w-full"
+                    />
+                  </div>
 
                   {/* Origin */}
-                  <input
-                    type="text"
-                    name="origin"
-                    placeholder="Origin"
-                    value={data.origin}
-                    onChange={handleChange}
-                    className="border p-2 rounded w-full"
-                  />
+                  <div className="space-y-1">
+                    <label htmlFor="origin" className="font-medium text-sm">
+                      Origin
+                    </label>
+                    <input
+                      type="text"
+                      id="origin"
+                      name="origin"
+                      placeholder="Origin"
+                      value={data.origin}
+                      onChange={handleChange}
+                      className="border p-2 rounded w-full"
+                    />
+                  </div>
 
                   {/* Destinasi */}
-                  <input
-                    type="text"
-                    name="destinasi"
-                    placeholder="Destinasi"
-                    value={data.destinasi}
-                    onChange={handleChange}
-                    className="border p-2 rounded w-full"
-                  />
+                  <div className="space-y-1">
+                    <label htmlFor="destinasi" className="font-medium text-sm">
+                      Destinasi
+                    </label>
+                    <input
+                      type="text"
+                      id="destinasi"
+                      name="destinasi"
+                      placeholder="Destinasi"
+                      value={data.destinasi}
+                      onChange={handleChange}
+                      className="border p-2 rounded w-full"
+                    />
+                  </div>
 
-                  {/* Uang Jaminan */}
-                  <input
-                    type="number"
-                    name="uj"
-                    placeholder="Uang Jaminan"
-                    value={data.uj}
-                    onChange={handleChange}
-                    className="border p-2 rounded w-full"
-                  />
+                  {/* Uang Jalan */}
+                  <div className="space-y-1">
+                    <label htmlFor="uj" className="font-medium text-sm">
+                      Uang Jalan
+                    </label>
+                    <input
+                      type="number"
+                      id="uj"
+                      name="uj"
+                      placeholder="Uang Jaminan"
+                      value={data.uj}
+                      onChange={handleChange}
+                      className="border p-2 rounded w-full"
+                    />
+                  </div>
 
                   {/* Harga */}
-                  <input
-                    type="number"
-                    name="harga"
-                    placeholder="Harga"
-                    value={data.harga}
-                    onChange={handleChange}
-                    className="border p-2 rounded w-full"
-                  />
+                  <div className="space-y-1">
+                    <label htmlFor="harga" className="font-medium text-sm">
+                      Harga
+                    </label>
+                    <input
+                      type="number"
+                      id="harga"
+                      name="harga"
+                      placeholder="Harga"
+                      value={data.harga}
+                      onChange={handleChange}
+                      className="border p-2 rounded w-full"
+                    />
+                  </div>
 
                   {/* Submit Button */}
                   <button
                     type="submit"
                     className="mt-4 bg-blue-500 text-white p-2 rounded"
+                    disabled={loading} // Disable the button while loading
                   >
-                    Submit
+                    {loading ? <span>Loading...</span> : "Submit"}
                   </button>
 
                   {/* Error/Success Message */}
