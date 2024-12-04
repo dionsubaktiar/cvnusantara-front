@@ -57,17 +57,10 @@ export default function Home() {
         const newDataByMonth = dataResponse.data.dataByMonth;
         const newSumByMonth = sumResponse.data.dataByMonth;
 
-        // Update data if changed
-        if (JSON.stringify(newDataByMonth) !== JSON.stringify(dataByMonth)) {
-          setDataByMonth(newDataByMonth);
-        }
+        setDataByMonth(newDataByMonth);
+        setSumByMonth(newSumByMonth);
 
-        // Update sum data if changed
-        if (JSON.stringify(newSumByMonth) !== JSON.stringify(sumByMonth)) {
-          setSumByMonth(newSumByMonth);
-        }
-
-        // Set the initial active month and sum if not already set
+        // Set active month and sum
         const firstMonth = Object.keys(newDataByMonth)[0] || "";
         if (!activeMonth) {
           setActiveMonth(firstMonth);
@@ -87,8 +80,8 @@ export default function Home() {
   useEffect(() => {
     fetchDatas(); // Initial fetch
     const intervalId = setInterval(fetchDatas, 5000); // Refresh every 5 seconds
-    return () => clearInterval(intervalId); // Cleanup on component unmount
-  });
+    return () => clearInterval(intervalId); // Cleanup on unmount
+  }, [activeMonth]); // Depend on `activeMonth` to avoid redundant calls
 
   if (loading) {
     return (
@@ -117,7 +110,7 @@ export default function Home() {
     <div className="min-h-screen flex flex-col items-start justify-center p-4 gap-4">
       <CreateDataButton />
 
-      {/* Render Sum */}
+      {/* Render Summary */}
       {sum && (
         <div
           className="flex items-center justify-around border-2 text-sm rounded-lg p-4 gap-2"
@@ -142,7 +135,7 @@ export default function Home() {
         </div>
       )}
 
-      {/* Tabs for each month */}
+      {/* Month Tabs */}
       <div className="w-full flex gap-2 mt-4">
         {Object.keys(dataByMonth).map((month) => (
           <button
@@ -162,7 +155,7 @@ export default function Home() {
         ))}
       </div>
 
-      {/* Render Data for Active Month */}
+      {/* Active Month Data */}
       {activeMonth && dataByMonth[activeMonth] && (
         <div className="w-full border-2 p-4 rounded-lg shadow-md mt-4">
           <h2 className="text-xl font-bold">{activeMonth}</h2>
@@ -181,28 +174,27 @@ export default function Home() {
                 uj={data.uj}
                 status={data.status}
                 dropLabel1="Lunas"
-                function1={() => {
+                function1={() =>
                   axios
                     .put(
                       `https://cvnusantara.nusantaratranssentosa.co.id/api/setlunas/${data.id}`
                     )
                     .then((res) => console.log(res.data))
-                    .catch((err) => console.error(err));
-                  console.log(
-                    `https://cvnusantara.nusantaratranssentosa.co.id/api/setlunas/${data.id}`
-                  );
-                }}
+                    .catch((err) => console.error(err))
+                }
                 dropLabel2="Edit"
-                function2={() => {}}
+                function2={() => {
+                  console.log(`Edit record ${data.id}`);
+                }}
                 dropLabel3="Hapus"
-                function3={() => {
+                function3={() =>
                   axios
                     .delete(
                       `https://cvnusantara.nusantaratranssentosa.co.id/api/${data.id}`
                     )
                     .then((res) => console.log(res.data))
-                    .catch((err) => console.error(err));
-                }}
+                    .catch((err) => console.error(err))
+                }
               />
             ))}
           </div>

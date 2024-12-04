@@ -8,7 +8,7 @@ import {
 } from "@nextui-org/react";
 
 interface Data {
-  tanggal: string | null; // Update type to string since Laravel/MySQL provides dates as strings
+  tanggal: string | null; // Laravel/MySQL dates as strings
   nopol: string;
   origin: string;
   destinasi: string;
@@ -38,35 +38,45 @@ const CardData: React.FC<Data> = ({
   dropLabel2,
   dropLabel3,
 }) => {
-  // Convert the tanggal string to a Date object and format it
+  // Format the date
   const formattedDate = tanggal
     ? new Date(tanggal).toLocaleString("id-ID", {
         year: "numeric",
         month: "short",
         day: "numeric",
       })
-    : "N/A"; // Handle null or invalid dates
+    : "N/A";
 
   return (
     <div className="p-2">
       <div className="flex items-center justify-around border-2 text-sm rounded-lg p-3">
+        {/* Vehicle and Date */}
         <div className="grid grid-cols-1">
           <div>{nopol}</div>
           <div>{formattedDate}</div>
         </div>
+
+        {/* Route Information */}
         <div className="grid grid-cols-1">
           <p>{origin}</p>
           <p>{destinasi}</p>
         </div>
+
+        {/* Pricing and Status */}
         <div className="grid grid-cols-1">
           <div>Rp. {uj.toLocaleString("id-ID")}</div>
           <div>Rp. {harga.toLocaleString("id-ID")}</div>
           <div>
-            {status == "confirmed" && <p className="text-green-400">Lunas</p>}
-            {status == "pending" && <p className="text-gray">Pending</p>}
-            {status == "canceled" && <p className="text-red-500">Cancel</p>}
+            {status === "confirmed" && <p className="text-green-400">Lunas</p>}
+            {status === "pending" && <p className="text-gray-500">Pending</p>}
+            {status === "canceled" && <p className="text-red-500">Cancel</p>}
+            {!["confirmed", "pending", "canceled"].includes(status) && (
+              <p className="text-gray-500">Unknown</p>
+            )}
           </div>
         </div>
+
+        {/* Dropdown Menu */}
         <Dropdown>
           <DropdownTrigger>
             <Button color="primary" variant="bordered">
@@ -74,9 +84,15 @@ const CardData: React.FC<Data> = ({
             </Button>
           </DropdownTrigger>
           <DropdownMenu>
-            <DropdownItem onClick={() => function1}>{dropLabel1}</DropdownItem>
-            <DropdownItem onClick={() => function2}>{dropLabel2}</DropdownItem>
-            <DropdownItem onClick={() => function3}>{dropLabel3}</DropdownItem>
+            <DropdownItem onClick={() => function1("action1")}>
+              {dropLabel1}
+            </DropdownItem>
+            <DropdownItem onClick={() => function2("action2")}>
+              {dropLabel2}
+            </DropdownItem>
+            <DropdownItem onClick={() => function3("action3")}>
+              {dropLabel3}
+            </DropdownItem>
           </DropdownMenu>
         </Dropdown>
       </div>
