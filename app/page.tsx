@@ -174,29 +174,65 @@ export default function Home() {
                 uj={data.uj}
                 status={data.status}
                 dropLabel1="Lunas"
-                function1={() =>
+                function1={() => {
                   axios
-                    .put(
-                      `https://cvnusantara.nusantaratranssentosa.co.id/api/setlunas/${data.id}`,
+                    .get(
+                      "https://cvnusantara.nusantaratranssentosa.co.id/sanctum/csrf-cookie",
                       { withCredentials: true }
-                    )
-                    .then((res) => console.log(res.data))
-                    .catch((err) => console.error(err))
-                }
+                    ) // Ensure cookies are sent and received
+                    .then(() => {
+                      // Once CSRF cookie is set, we can make the PUT request
+                      return axios.put(
+                        `https://cvnusantara.nusantaratranssentosa.co.id/api/setlunas/${data.id}`,
+                        {},
+                        {
+                          withCredentials: true,
+                          headers: {
+                            // Make sure to replace <your-token> with the actual token
+                            "Content-Type": "application/json",
+                          },
+                        }
+                      );
+                    })
+                    .then((res) => {
+                      console.log("Lunas set successfully:", res.data);
+                    })
+                    .catch((err) => {
+                      console.error("Error setting Lunas:", err);
+                    });
+                }}
                 dropLabel2="Edit"
                 function2={() => {
                   console.log(`Edit record ${data.id}`);
                 }}
                 dropLabel3="Hapus"
-                function3={() =>
+                function3={() => {
                   axios
-                    .delete(
-                      `https://cvnusantara.nusantaratranssentosa.co.id/api/${data.id}`,
+                    .get(
+                      "https://cvnusantara.nusantaratranssentosa.co.id/sanctum/csrf-cookie",
                       { withCredentials: true }
-                    )
-                    .then((res) => console.log(res.data))
-                    .catch((err) => console.error(err))
-                }
+                    ) // Ensure cookies are sent and received
+                    .then(() => {
+                      // Once CSRF cookie is set, we can make the PUT request
+                      return axios.put(
+                        `https://cvnusantara.nusantaratranssentosa.co.id/api/setlunas/${data.id}`,
+                        {},
+                        {
+                          withCredentials: true,
+                          headers: {
+                            // Make sure to replace <your-token> with the actual token
+                            "Content-Type": "application/json",
+                          },
+                        }
+                      );
+                    })
+                    .then((res) => {
+                      console.log("Lunas set successfully:", res.data);
+                    })
+                    .catch((err) => {
+                      console.error("Error setting Lunas:", err);
+                    });
+                }}
               />
             ))}
           </div>
