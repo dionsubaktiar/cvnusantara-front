@@ -148,7 +148,7 @@ export default function Home() {
             onClick={() => handleTabClick(month)}
           >
             {new Date(month + "-01").toLocaleString("id-ID", {
-              year: "numeric",
+              // year: "numeric",
               month: "long",
             })}
           </button>
