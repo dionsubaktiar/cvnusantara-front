@@ -1,6 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useState } from "react";
 import axios from "axios";
+import { Button } from "@nextui-org/react";
 
 interface ViewData {
   id: number;
@@ -176,12 +177,9 @@ const ViewModal: React.FC<ViewData> = ({ id, closeModal }) => {
                 </div>
 
                 <div className="mt-4 flex justify-end gap-2">
-                  <button
-                    onClick={closeModal}
-                    className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-all"
-                  >
+                  <Button onClick={closeModal} color="danger">
                     Close
-                  </button>
+                  </Button>
                 </div>
               </Dialog.Panel>
             </Transition.Child>
