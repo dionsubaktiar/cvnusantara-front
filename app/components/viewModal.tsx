@@ -171,7 +171,7 @@ const ViewModal: React.FC<ViewData> = ({ id, closeModal }) => {
                   {/* Status */}
                   <div className="space-y-1">
                     <p>
-                      <strong>Status:</strong>{" "}
+                      <strong>Status:</strong>
                       {data.status === "confirmed" && (
                         <p className="text-green-400">Lunas</p>
                       )}
