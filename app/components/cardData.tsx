@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
-  Button,
-} from "@nextui-org/react";
+import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/react";
 
 interface Data {
   tanggal: string | null; // Laravel/MySQL dates as strings
@@ -76,33 +70,41 @@ const CardData: React.FC<Data> = ({
           </div>
         </div>
 
-        {/* Dropdown Menu using NextUI */}
-        <Dropdown>
-          <DropdownTrigger>
-            <Button
-              variant="bordered"
-              color="primary"
-              className="flex items-center"
-            >
-              Actions
-            </Button>
-          </DropdownTrigger>
-          <DropdownMenu
-            aria-label="Static Actions"
-            color="primary"
-            variant="faded"
+        {/* Dropdown Menu using Headless UI */}
+        <Menu>
+          <MenuButton className="inline-flex items-center gap-2 rounded-md bg-gray-800 py-1.5 px-3 text-sm font-semibold text-white shadow-inner shadow-white/10 focus:outline-none">
+            Manage
+          </MenuButton>
+          <MenuItems
+            transition
+            className="absolute right-0 w-52 origin-top-right rounded-xl border border-white/5 bg-white/5 p-1 text-sm text-white transition duration-100 ease-out focus:outline-none"
           >
-            <DropdownItem key="action1" onClick={() => function1("action1")}>
-              {dropLabel1}
-            </DropdownItem>
-            <DropdownItem key="action2" onClick={() => function2("action2")}>
-              {dropLabel2}
-            </DropdownItem>
-            <DropdownItem key="action3" onClick={() => function3("action3")}>
-              {dropLabel3}
-            </DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
+            <MenuItem>
+              <button
+                className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 hover:bg-gray-700"
+                onClick={() => function1("action1")}
+              >
+                {dropLabel1}
+              </button>
+            </MenuItem>
+            <MenuItem>
+              <button
+                className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 hover:bg-gray-700"
+                onClick={() => function2("action2")}
+              >
+                {dropLabel2}
+              </button>
+            </MenuItem>
+            <MenuItem>
+              <button
+                className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 hover:bg-gray-700"
+                onClick={() => function3("action3")}
+              >
+                {dropLabel3}
+              </button>
+            </MenuItem>
+          </MenuItems>
+        </Menu>
       </div>
     </div>
   );
