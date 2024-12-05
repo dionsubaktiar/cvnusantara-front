@@ -41,7 +41,7 @@ const ViewModal: React.FC<ViewData> = ({ id, closeModal }) => {
 
   useEffect(() => {
     fetchData();
-  }, [id]);
+  });
 
   if (loading) {
     return (
