@@ -171,7 +171,16 @@ const ViewModal: React.FC<ViewData> = ({ id, closeModal }) => {
                   {/* Status */}
                   <div className="space-y-1">
                     <p>
-                      <strong>Status:</strong> {data.status}
+                      <strong>Status:</strong>{" "}
+                      {data.status === "confirmed" && (
+                        <p className="text-green-400">Lunas</p>
+                      )}
+                      {data.status === "pending" && (
+                        <p className="text-gray-500">Pending</p>
+                      )}
+                      {data.status === "canceled" && (
+                        <p className="text-red-500">Cancel</p>
+                      )}
                     </p>
                   </div>
                 </div>
