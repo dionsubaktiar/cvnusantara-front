@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import CardData from "./components/cardData";
 import CreateDataButton from "./components/createButton";
+import ViewModal from "./components/viewModal"; // Add the ViewModal import
 import axios from "axios";
 
 const dataUrl = "https://cvnusantara.nusantaratranssentosa.co.id/api/data";
@@ -43,7 +44,11 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [activeMonth, setActiveMonth] = useState<string>("");
 
-  const fetchDatas = async () => {
+  // State for managing modals
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+
+  const fetchDatas = useCallback(async () => {
     try {
       const [dataResponse, sumResponse] = await Promise.all([
         axios.get(dataUrl),
@@ -75,13 +80,31 @@ export default function Home() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [activeMonth]); // Add dependencies here
 
   useEffect(() => {
     fetchDatas(); // Initial fetch
     const intervalId = setInterval(fetchDatas, 5000); // Refresh every 5 seconds
     return () => clearInterval(intervalId); // Cleanup on unmount
-  }, [activeMonth]); // Depend on `activeMonth` to avoid redundant calls
+  }, [fetchDatas]); // Include `fetchDatas` in dependencies
+
+  const handleTabClick = (month: string) => {
+    setActiveMonth(month);
+    if (sumByMonth[month]) {
+      setSum(sumByMonth[month]);
+    }
+  };
+
+  // Modal handlers
+  const openViewModal = (id: number) => {
+    setSelectedId(id);
+    setIsViewModalOpen(true);
+  };
+
+  const closeViewModal = () => {
+    setIsViewModalOpen(false);
+    setSelectedId(null);
+  };
 
   if (loading) {
     return (
@@ -99,13 +122,6 @@ export default function Home() {
     );
   }
 
-  const handleTabClick = (month: string) => {
-    setActiveMonth(month);
-    if (sumByMonth[month]) {
-      setSum(sumByMonth[month]);
-    }
-  };
-
   return (
     <div className="min-h-screen flex flex-col items-start justify-center p-4 gap-4">
       <CreateDataButton />
@@ -113,7 +129,7 @@ export default function Home() {
       {/* Render Summary */}
       {sum && (
         <div
-          className="flex items-center justify-around border-2 text-sm rounded-lg p-4 gap-2"
+          className="flex items-center justify-evenly border-2 text-sm rounded-lg p-4 gap-2"
           key={sum.untungrugi}
         >
           <div className="grid grid-cols-1">
@@ -175,67 +191,23 @@ export default function Home() {
                 status={data.status}
                 dropLabel1="Lunas"
                 function1={() => {
-                  axios
-                    .get(
-                      "https://cvnusantara.nusantaratranssentosa.co.id/sanctum/csrf-cookie",
-                      { withCredentials: true }
-                    ) // Ensure cookies are sent and received
-                    .then(() => {
-                      // Once CSRF cookie is set, we can make the PUT request
-                      return axios.put(
-                        `https://cvnusantara.nusantaratranssentosa.co.id/api/setlunas/${data.id}`,
-                        {},
-                        {
-                          withCredentials: true,
-                          headers: {
-                            // Make sure to replace <your-token> with the actual token
-                            "Content-Type": "application/json",
-                          },
-                        }
-                      );
-                    })
-                    .then((res) => {
-                      console.log("Lunas set successfully:", res.data);
-                    })
-                    .catch((err) => {
-                      console.error("Error setting Lunas:", err);
-                    });
+                  // "Lunas" logic
                 }}
-                dropLabel2="Edit"
-                function2={() => {
-                  console.log(`Edit record ${data.id}`);
-                }}
+                dropLabel2="View"
+                function2={() => openViewModal(data.id)}
                 dropLabel3="Hapus"
                 function3={() => {
-                  axios
-                    .get(
-                      "https://cvnusantara.nusantaratranssentosa.co.id/sanctum/csrf-cookie",
-                      { withCredentials: true }
-                    ) // Ensure cookies are sent and received
-                    .then(() => {
-                      // Once CSRF cookie is set, we can make the PUT request
-                      return axios.delete(
-                        `https://cvnusantara.nusantaratranssentosa.co.id/api/data/${data.id}`,
-                        {
-                          withCredentials: true,
-                          headers: {
-                            // Make sure to replace <your-token> with the actual token
-                            "Content-Type": "application/json",
-                          },
-                        }
-                      );
-                    })
-                    .then((res) => {
-                      console.log("Lunas set successfully:", res.data);
-                    })
-                    .catch((err) => {
-                      console.error("Error setting Lunas:", err);
-                    });
+                  // "Hapus" logic
                 }}
               />
             ))}
           </div>
         </div>
+      )}
+
+      {/* View Modal */}
+      {isViewModalOpen && selectedId && (
+        <ViewModal id={selectedId} closeModal={closeViewModal} />
       )}
     </div>
   );
