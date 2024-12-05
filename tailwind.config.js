@@ -1,6 +1,9 @@
-/** @type {import('tailwindcss').Config} */
+// tailwind.config.js
+
 import { nextui } from "@nextui-org/react";
-module.exports = {
+
+// Assign the config to a variable
+const config = {
   darkMode: "class",
   content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
@@ -23,7 +26,6 @@ module.exports = {
           backgroundColor: "#241185",
           gradationBlue: "#018DFF",
           gradationRed: "#FF6A6F",
-          //   complementarybg: "#855511",
         },
       },
     },
@@ -58,3 +60,6 @@ module.exports = {
     }),
   ],
 };
+
+// Export the config object
+export default config;
