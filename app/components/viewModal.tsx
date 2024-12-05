@@ -160,17 +160,17 @@ const ViewModal: React.FC<ViewData> = ({ id, closeModal }) => {
                   <div className="space-y-1">
                     {data.status === "confirmed" && (
                       <p className="text-green-400">
-                        <strong className="text-black">Status:</strong>Lunas
+                        <strong className="text-black">Status:</strong> Lunas
                       </p>
                     )}
                     {data.status === "pending" && (
                       <p className="text-gray-500">
-                        <strong className="text-black">Status:</strong>Pending
+                        <strong className="text-black">Status:</strong> Pending
                       </p>
                     )}
                     {data.status === "canceled" && (
                       <p className="text-red-500">
-                        <strong className="text-black">Status:</strong>Cancel
+                        <strong className="text-black">Status:</strong> Cancel
                       </p>
                     )}
                   </div>
