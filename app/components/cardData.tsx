@@ -79,7 +79,11 @@ const CardData: React.FC<Data> = ({
         {/* Dropdown Menu using NextUI */}
         <Dropdown>
           <DropdownTrigger>
-            <Button variant="bordered" className="flex items-center">
+            <Button
+              variant="bordered"
+              color="primary"
+              className="flex items-center"
+            >
               Actions
             </Button>
           </DropdownTrigger>
