@@ -91,14 +91,27 @@ const CardData: React.FC<Data> = ({
             aria-label="Static Actions"
             color="primary"
             variant="faded"
+            className="bg-gray-800 text-white" // Set background and text color
           >
-            <DropdownItem key="action1" onClick={() => function1("action1")}>
+            <DropdownItem
+              key="action1"
+              onClick={() => function1("action1")}
+              className="hover:bg-blue-600 hover:text-white" // Change hover color
+            >
               {dropLabel1}
             </DropdownItem>
-            <DropdownItem key="action2" onClick={() => function2("action2")}>
+            <DropdownItem
+              key="action2"
+              onClick={() => function2("action2")}
+              className="hover:bg-blue-600 hover:text-white" // Change hover color
+            >
               {dropLabel2}
             </DropdownItem>
-            <DropdownItem key="action3" onClick={() => function3("action3")}>
+            <DropdownItem
+              key="action3"
+              onClick={() => function3("action3")}
+              className="hover:bg-blue-600 hover:text-white" // Change hover color
+            >
               {dropLabel3}
             </DropdownItem>
           </DropdownMenu>
