@@ -118,13 +118,6 @@ const ViewModal: React.FC<ViewData> = ({ id, closeModal }) => {
                 </Dialog.Title>
 
                 <div className="mt-4 space-y-4 text-black">
-                  {/* ID */}
-                  <div className="space-y-1">
-                    <p>
-                      <strong>ID:</strong> {data.id}
-                    </p>
-                  </div>
-
                   {/* Tanggal */}
                   <div className="space-y-1">
                     <p>
@@ -138,25 +131,18 @@ const ViewModal: React.FC<ViewData> = ({ id, closeModal }) => {
                       <strong>Nopol:</strong> {data.nopol}
                     </p>
                   </div>
-
-                  {/* Origin */}
-                  <div className="space-y-1">
-                    <p>
-                      <strong>Origin:</strong> {data.origin}
-                    </p>
-                  </div>
-
                   {/* Destinasi */}
                   <div className="space-y-1">
                     <p>
-                      <strong>Destinasi:</strong> {data.destinasi}
+                      <strong>Rute:</strong> {data.origin} - {data.destinasi}
                     </p>
                   </div>
 
                   {/* Uang Jalan */}
                   <div className="space-y-1">
                     <p>
-                      <strong>Uj:</strong> Rp. {data.uj.toLocaleString("id-ID")}
+                      <strong>Uang Jalan:</strong> Rp.{" "}
+                      {data.uj.toLocaleString("id-ID")}
                     </p>
                   </div>
 
