@@ -87,7 +87,11 @@ const CardData: React.FC<Data> = ({
               Actions
             </Button>
           </DropdownTrigger>
-          <DropdownMenu aria-label="Static Actions">
+          <DropdownMenu
+            aria-label="Static Actions"
+            color="primary"
+            variant="faded"
+          >
             <DropdownItem key="action1" onClick={() => function1("action1")}>
               {dropLabel1}
             </DropdownItem>
