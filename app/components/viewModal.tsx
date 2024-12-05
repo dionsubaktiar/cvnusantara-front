@@ -1,5 +1,6 @@
+import { Dialog, Transition } from "@headlessui/react";
+import { Fragment, useEffect, useState } from "react";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
 
 interface ViewData {
   id: number;
@@ -41,7 +42,15 @@ const ViewModal: React.FC<ViewData> = ({ id, closeModal }) => {
 
   useEffect(() => {
     fetchData();
-  });
+  }, [id]);
+
+  const formattedDate = data?.tanggal
+    ? new Date(data.tanggal).toLocaleString("id-ID", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    : "N/A";
 
   if (loading) {
     return (
@@ -73,54 +82,113 @@ const ViewModal: React.FC<ViewData> = ({ id, closeModal }) => {
     );
   }
 
-  const formattedDate = data.tanggal
-    ? new Date(data.tanggal).toLocaleString("id-ID", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      })
-    : "N/A";
-
   return (
-    <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center">
-      <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-lg">
-        <h2 className="text-2xl font-bold mb-4">Detail Data</h2>
-        <div className="space-y-2">
-          <p>
-            <strong>ID:</strong> {data.id}
-          </p>
-          <p>
-            <strong>Tanggal:</strong> {formattedDate}
-          </p>
-          <p>
-            <strong>Nopol:</strong> {data.nopol}
-          </p>
-          <p>
-            <strong>Origin:</strong> {data.origin}
-          </p>
-          <p>
-            <strong>Destinasi:</strong> {data.destinasi}
-          </p>
-          <p>
-            <strong>Uj:</strong> Rp. {data.uj.toLocaleString("id-ID")}
-          </p>
-          <p>
-            <strong>Harga:</strong> Rp. {data.harga.toLocaleString("id-ID")}
-          </p>
-          <p>
-            <strong>Status:</strong> {data.status}
-          </p>
+    <Transition appear show={true} as={Fragment}>
+      <Dialog as="div" className="relative z-10" onClose={closeModal}>
+        <Transition.Child
+          as={Fragment}
+          enter="ease-out duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div className="fixed inset-0 bg-black bg-opacity-25" />
+        </Transition.Child>
+
+        <div className="fixed inset-0 overflow-y-auto">
+          <div className="flex min-h-full items-center justify-center p-4 text-center">
+            <Transition.Child
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 scale-95"
+              enterTo="opacity-100 scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 scale-100"
+              leaveTo="opacity-0 scale-95"
+            >
+              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Title
+                  as="h3"
+                  className="text-lg font-medium leading-6 text-black"
+                >
+                  Detail Data
+                </Dialog.Title>
+
+                <div className="mt-4 space-y-4 text-black">
+                  {/* ID */}
+                  <div className="space-y-1">
+                    <p>
+                      <strong>ID:</strong> {data.id}
+                    </p>
+                  </div>
+
+                  {/* Tanggal */}
+                  <div className="space-y-1">
+                    <p>
+                      <strong>Tanggal:</strong> {formattedDate}
+                    </p>
+                  </div>
+
+                  {/* Nomor Polisi */}
+                  <div className="space-y-1">
+                    <p>
+                      <strong>Nopol:</strong> {data.nopol}
+                    </p>
+                  </div>
+
+                  {/* Origin */}
+                  <div className="space-y-1">
+                    <p>
+                      <strong>Origin:</strong> {data.origin}
+                    </p>
+                  </div>
+
+                  {/* Destinasi */}
+                  <div className="space-y-1">
+                    <p>
+                      <strong>Destinasi:</strong> {data.destinasi}
+                    </p>
+                  </div>
+
+                  {/* Uang Jalan */}
+                  <div className="space-y-1">
+                    <p>
+                      <strong>Uj:</strong> Rp. {data.uj.toLocaleString("id-ID")}
+                    </p>
+                  </div>
+
+                  {/* Harga */}
+                  <div className="space-y-1">
+                    <p>
+                      <strong>Harga:</strong> Rp.{" "}
+                      {data.harga.toLocaleString("id-ID")}
+                    </p>
+                  </div>
+
+                  {/* Status */}
+                  <div className="space-y-1">
+                    <p>
+                      <strong>Status:</strong> {data.status}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-4 flex justify-end gap-2">
+                  <button
+                    onClick={closeModal}
+                    className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-all"
+                  >
+                    Close
+                  </button>
+                </div>
+              </Dialog.Panel>
+            </Transition.Child>
+          </div>
         </div>
-        <div className="mt-4 flex justify-end gap-2">
-          <button
-            onClick={closeModal}
-            className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-all"
-          >
-            Close
-          </button>
-        </div>
-      </div>
-    </div>
+      </Dialog>
+    </Transition>
   );
 };
 

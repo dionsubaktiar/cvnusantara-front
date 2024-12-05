@@ -1,10 +1,10 @@
 import React from "react";
 import {
-  Button,
   Dropdown,
-  DropdownItem,
-  DropdownMenu,
   DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+  Button,
 } from "@nextui-org/react";
 
 interface Data {
@@ -76,30 +76,21 @@ const CardData: React.FC<Data> = ({
           </div>
         </div>
 
-        {/* Dropdown Menu */}
+        {/* Dropdown Menu using NextUI */}
         <Dropdown>
           <DropdownTrigger>
-            <Button color="primary" variant="bordered">
-              Manage
+            <Button variant="bordered" className="flex items-center">
+              Actions
             </Button>
           </DropdownTrigger>
-          <DropdownMenu>
-            <DropdownItem
-              className="dark:text-black"
-              onClick={() => function1("action1")}
-            >
+          <DropdownMenu aria-label="Static Actions">
+            <DropdownItem key="action1" onClick={() => function1("action1")}>
               {dropLabel1}
             </DropdownItem>
-            <DropdownItem
-              className="dark:text-black"
-              onClick={() => function2("action2")}
-            >
+            <DropdownItem key="action2" onClick={() => function2("action2")}>
               {dropLabel2}
             </DropdownItem>
-            <DropdownItem
-              className="dark:text-black"
-              onClick={() => function3("action3")}
-            >
+            <DropdownItem key="action3" onClick={() => function3("action3")}>
               {dropLabel3}
             </DropdownItem>
           </DropdownMenu>
