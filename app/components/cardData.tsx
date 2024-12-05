@@ -77,7 +77,7 @@ const CardData: React.FC<Data> = ({
         </div>
 
         {/* Dropdown Menu using NextUI */}
-        <Dropdown>
+        <Dropdown className="dark:bg-black dark:text-white bg-white text-black">
           <DropdownTrigger>
             <Button
               variant="bordered"
@@ -91,7 +91,7 @@ const CardData: React.FC<Data> = ({
             aria-label="Static Actions"
             color="primary"
             variant="faded"
-            className="bg-gray-800 text-white" // Set background and text color
+            className="dark:bg-black dark:text-white bg-white text-black" // Set background and text color
           >
             <DropdownItem
               key="action1"
