@@ -1,5 +1,5 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { Button } from "@nextui-org/react";
 
@@ -26,7 +26,9 @@ const ViewModal: React.FC<ViewData> = ({ id, closeModal }) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchData = async () => {
+  // Wrap fetchData in useCallback to memoize it
+  const fetchData = useCallback(async () => {
+    setLoading(true);
     try {
       const response = await axios.get<DataResponse>(
         `https://cvnusantara.nusantaratranssentosa.co.id/api/data/${id}`
@@ -39,11 +41,11 @@ const ViewModal: React.FC<ViewData> = ({ id, closeModal }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]); // Add id as a dependency
 
   useEffect(() => {
     fetchData();
-  }, [id]);
+  }, [fetchData]);
 
   const formattedDate = data?.tanggal
     ? new Date(data.tanggal).toLocaleString("id-ID", {
@@ -156,18 +158,21 @@ const ViewModal: React.FC<ViewData> = ({ id, closeModal }) => {
 
                   {/* Status */}
                   <div className="space-y-1">
-                    <p>
-                      <strong>Status:</strong>
-                      {data.status === "confirmed" && (
-                        <p className="text-green-400">Lunas</p>
-                      )}
-                      {data.status === "pending" && (
-                        <p className="text-gray-500">Pending</p>
-                      )}
-                      {data.status === "canceled" && (
-                        <p className="text-red-500">Cancel</p>
-                      )}
-                    </p>
+                    {data.status === "confirmed" && (
+                      <p className="text-green-400">
+                        <strong className="text-black">Status:</strong>Lunas
+                      </p>
+                    )}
+                    {data.status === "pending" && (
+                      <p className="text-gray-500">
+                        <strong className="text-black">Status:</strong>Pending
+                      </p>
+                    )}
+                    {data.status === "canceled" && (
+                      <p className="text-red-500">
+                        <strong className="text-black">Status:</strong>Cancel
+                      </p>
+                    )}
                   </div>
                 </div>
 

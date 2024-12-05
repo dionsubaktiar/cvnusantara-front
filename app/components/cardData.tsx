@@ -84,7 +84,7 @@ const CardData: React.FC<Data> = ({
               color="primary"
               className="flex items-center"
             >
-              Actions
+              Manage
             </Button>
           </DropdownTrigger>
           <DropdownMenu
