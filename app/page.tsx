@@ -68,7 +68,7 @@ export default function Home() {
         setSumByMonth(newSumByMonth);
 
         // Get current month name in local format
-        const currentMonthName = new Date().toLocaleString("id-ID", {
+        const currentMonthName = new Date().toLocaleString("en-US", {
           month: "long",
         });
 
