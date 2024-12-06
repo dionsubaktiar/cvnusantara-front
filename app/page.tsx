@@ -67,14 +67,16 @@ export default function Home() {
         setDataByMonth(newDataByMonth);
         setSumByMonth(newSumByMonth);
 
-        // Determine the current month in "YYYY-MM" format
-        const currentMonth = new Date().toISOString().slice(0, 7);
-        const availableMonths = Object.keys(newDataByMonth);
-        console.log(availableMonths, currentMonth);
+        // Get current month name in local format
+        const currentMonthName = new Date().toLocaleString("id-ID", {
+          month: "long",
+        });
 
-        // Set the active month to the current month if available, otherwise default to the first month
+        const availableMonths = Object.keys(newDataByMonth);
+        console.log(currentMonthName, availableMonths);
+        // Match current month name or fallback to the first month
         const defaultMonth =
-          availableMonths.find((month) => month === currentMonth) ||
+          availableMonths.find((month) => month === currentMonthName) ||
           availableMonths[0] ||
           "";
 
@@ -92,7 +94,6 @@ export default function Home() {
       setLoading(false);
     }
   }, [activeMonth]);
-  // Add dependencies here
 
   useEffect(() => {
     fetchDatas(); // Initial fetch
