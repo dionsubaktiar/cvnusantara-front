@@ -5,6 +5,7 @@ import CardData from "./components/cardData";
 import CreateDataButton from "./components/createButton";
 import ViewModal from "./components/viewModal"; // Add the ViewModal import
 import axios from "axios";
+import EditModal from "./components/editModal";
 
 const dataUrl = "https://cvnusantara.nusantaratranssentosa.co.id/api/data";
 const sumUrl = "https://cvnusantara.nusantaratranssentosa.co.id/api/sum";
@@ -46,6 +47,7 @@ export default function Home() {
 
   // State for managing modals
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedId, setSelectedId] = useState<number | null>(null);
 
   const fetchDatas = useCallback(async () => {
@@ -104,6 +106,16 @@ export default function Home() {
   const closeViewModal = () => {
     setIsViewModalOpen(false);
     setSelectedId(null);
+  };
+
+  const openEditModal = (id: number) => {
+    setSelectedId(id);
+    setIsEditModalOpen(true);
+  };
+
+  const closeEditModal = () => {
+    setSelectedId(null);
+    setIsEditModalOpen(false);
   };
 
   if (loading) {
@@ -191,13 +203,52 @@ export default function Home() {
                 status={data.status}
                 dropLabel1="Lunas"
                 function1={() => {
-                  // "Lunas" logic
+                  axios
+                    .get(
+                      "https://cvnusantara.nusantaratranssentosa.co.id/sanctum/csrf-cookie",
+                      {
+                        withCredentials: true,
+                      }
+                    )
+                    .then(() => {
+                      // Assuming `data` is defined and has an `id` property
+                      return axios.put(
+                        `https://cvnusantara.nusantaratranssentosa.co.id/api/setlunas/${data.id}`,
+                        { withCredentials: true }
+                      );
+                    })
+                    .then((response) => {
+                      console.log("Data updated successfully:", response.data);
+                    })
+                    .catch((error) => {
+                      console.error("Error occurred:", error);
+                    });
                 }}
                 dropLabel2="View"
                 function2={() => openViewModal(data.id)}
-                dropLabel3="Hapus"
+                dropLabel3="Edit"
                 function3={() => {
-                  // "Hapus" logic
+                  openEditModal(data.id);
+                }}
+                dropLabel4="Hapus"
+                function4={() => {
+                  axios
+                    .get(
+                      "https://cvnusantara.nusantaratranssentosa.co.id/sanctum/csrf-cookie",
+                      { withCredentials: true }
+                    )
+                    .then(() => {
+                      axios.delete(
+                        `https://cvnusantara.nusantartranssentosa.co.id/api/data/${data.id}`,
+                        { withCredentials: true }
+                      );
+                    })
+                    .then((response) => {
+                      console.log("Data updated successfully:", response);
+                    })
+                    .catch((error) => {
+                      console.error("Error occurred:", error);
+                    });
                 }}
               />
             ))}
@@ -208,6 +259,14 @@ export default function Home() {
       {/* View Modal */}
       {isViewModalOpen && selectedId && (
         <ViewModal id={selectedId} closeModal={closeViewModal} />
+      )}
+      {/* Edit Modal */}
+      {isEditModalOpen && selectedId && (
+        <EditModal
+          id={selectedId}
+          closeModal={closeEditModal}
+          onUpdate={fetchDatas}
+        />
       )}
     </div>
   );

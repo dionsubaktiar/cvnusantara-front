@@ -18,9 +18,11 @@ interface Data {
   function1: (action: string) => void;
   function2: (action: string) => void;
   function3: (action: string) => void;
+  function4: (action: string) => void;
   dropLabel1: string;
   dropLabel2: string;
   dropLabel3: string;
+  dropLabel4: string;
 }
 
 const CardData: React.FC<Data> = ({
@@ -34,9 +36,11 @@ const CardData: React.FC<Data> = ({
   function1,
   function2,
   function3,
+  function4,
   dropLabel1,
   dropLabel2,
   dropLabel3,
+  dropLabel4,
 }) => {
   // Format the date
   const formattedDate = tanggal
@@ -113,6 +117,13 @@ const CardData: React.FC<Data> = ({
               className="hover:bg-blue-600 hover:text-white" // Change hover color
             >
               {dropLabel3}
+            </DropdownItem>
+            <DropdownItem
+              key="action4"
+              onClick={() => function4("action4")}
+              className="hover:bg-blue-600 hover:text-white" // Change hover color
+            >
+              {dropLabel4}
             </DropdownItem>
           </DropdownMenu>
         </Dropdown>
