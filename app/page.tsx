@@ -70,6 +70,7 @@ export default function Home() {
         // Determine the current month in "YYYY-MM" format
         const currentMonth = new Date().toISOString().slice(0, 7);
         const availableMonths = Object.keys(newDataByMonth);
+        console.log(availableMonths, currentMonth);
 
         // Set the active month to the current month if available, otherwise default to the first month
         const defaultMonth =
