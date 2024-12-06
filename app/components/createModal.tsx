@@ -141,8 +141,7 @@ const CreateDataModal: React.FC<ModalProps> = ({
                       type="text"
                       id="nopol"
                       name="nopol"
-                      placeholder="Nomor Polisi
-                                            Nomor Polisi"
+                      placeholder="Nomor Polisi"
                       value={data.nopol}
                       onChange={handleChange}
                       className="border p-2 rounded w-full"

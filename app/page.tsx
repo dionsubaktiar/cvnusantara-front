@@ -237,12 +237,12 @@ export default function Home() {
                     )
                     .then(() => {
                       axios.delete(
-                        `https://cvnusantara.nusantartranssentosa.co.id/api/data/${data.id}`,
+                        `https://cvnusantara.nusantaratranssentosa.co.id/api/data/${data.id}`,
                         { withCredentials: true }
                       );
                     })
                     .then((response) => {
-                      console.log("Data updated successfully:", response);
+                      console.log("Data deleted successfully:", response);
                     })
                     .catch((error) => {
                       console.error("Error occurred:", error);
