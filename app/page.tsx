@@ -136,8 +136,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col items-start justify-center p-4 gap-4">
-      <CreateDataButton />
-
+      <CreateDataButton onCreate={fetchDatas} />
       {/* Render Summary */}
       {sum && (
         <div
@@ -162,7 +161,6 @@ export default function Home() {
           </div>
         </div>
       )}
-
       {/* Month Tabs */}
       <div className="w-full flex gap-2 mt-4">
         {Object.keys(dataByMonth).map((month) => (
@@ -182,7 +180,6 @@ export default function Home() {
           </button>
         ))}
       </div>
-
       {/* Active Month Data */}
       {activeMonth && dataByMonth[activeMonth] && (
         <div className="w-full border-2 p-4 rounded-lg shadow-md mt-4">
@@ -219,6 +216,7 @@ export default function Home() {
                     })
                     .then((response) => {
                       console.log("Data updated successfully:", response.data);
+                      fetchDatas();
                     })
                     .catch((error) => {
                       console.error("Error occurred:", error);
@@ -255,7 +253,6 @@ export default function Home() {
           </div>
         </div>
       )}
-
       {/* View Modal */}
       {isViewModalOpen && selectedId && (
         <ViewModal id={selectedId} closeModal={closeViewModal} />
