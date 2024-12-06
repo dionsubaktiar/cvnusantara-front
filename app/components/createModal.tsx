@@ -1,3 +1,4 @@
+// CreateDataModal.tsx
 import React, { useState } from "react";
 import axios from "axios";
 
@@ -12,15 +13,7 @@ const CreateDataModal: React.FC<CreateDataModalProps> = ({
   closeModal,
   onCreate,
 }) => {
-  const [formData, setFormData] = useState<{
-    tanggal: string;
-    nopol: string;
-    origin: string;
-    destinasi: string;
-    uj: number;
-    harga: number;
-    status: string;
-  }>({
+  const [formData, setFormData] = useState({
     tanggal: "",
     nopol: "",
     origin: "",
@@ -40,7 +33,7 @@ const CreateDataModal: React.FC<CreateDataModalProps> = ({
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await axios.get(
