@@ -243,6 +243,7 @@ export default function Home() {
                     })
                     .then((response) => {
                       console.log("Data deleted successfully:", response);
+                      fetchDatas();
                     })
                     .catch((error) => {
                       console.error("Error occurred:", error);
