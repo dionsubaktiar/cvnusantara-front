@@ -187,7 +187,7 @@ const CreateDataModal: React.FC<ModalProps> = ({
                   {/* UJ */}
                   <div className="space-y-1">
                     <label htmlFor="uj" className="font-medium text-sm">
-                      UJ
+                      Uang Jalan
                     </label>
                     <input
                       type="number"
@@ -216,24 +216,6 @@ const CreateDataModal: React.FC<ModalProps> = ({
                       className="border p-2 rounded w-full"
                       required
                     />
-                  </div>
-
-                  {/* Status */}
-                  <div className="space-y-1">
-                    <label htmlFor="status" className="font-medium text-sm">
-                      Status
-                    </label>
-                    <select
-                      id="status"
-                      name="status"
-                      value={data.status}
-                      onChange={handleChange}
-                      className="border p-2 rounded w-full"
-                    >
-                      <option value="pending">Pending</option>
-                      <option value="completed">Completed</option>
-                      <option value="canceled">Canceled</option>
-                    </select>
                   </div>
 
                   {/* Message Display */}
