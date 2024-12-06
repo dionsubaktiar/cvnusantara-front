@@ -73,7 +73,6 @@ export default function Home() {
         });
 
         const availableMonths = Object.keys(newDataByMonth);
-        console.log(currentMonthName, availableMonths);
         // Match current month name or fallback to the first month
         const defaultMonth =
           availableMonths.find((month) => month === currentMonthName) ||
