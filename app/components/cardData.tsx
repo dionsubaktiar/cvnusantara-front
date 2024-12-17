@@ -70,7 +70,7 @@ const CardData: React.FC<Data> = ({
 
         {/* Pricing and Status */}
         <div className="grid grid-cols-1">
-          <div>Rp. {margin}</div>
+          <div>Rp. {margin.toLocaleString("id-ID")}</div>
 
           <div>
             {status === "confirmed" && <p className="text-green-400">Lunas</p>}
