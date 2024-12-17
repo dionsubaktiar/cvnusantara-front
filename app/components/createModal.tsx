@@ -158,7 +158,7 @@ const CreateDataModal: React.FC<ModalProps> = ({
                   <div>
                     <label
                       htmlFor="tanggal"
-                      className="block text-sm font-medium"
+                      className="block text-sm font-medium text-black"
                     >
                       Tanggal
                     </label>
@@ -167,7 +167,7 @@ const CreateDataModal: React.FC<ModalProps> = ({
                       name="tanggal"
                       value={data.tanggal || ""}
                       onChange={handleChange}
-                      className="border rounded p-2 w-full"
+                      className="border rounded p-2 w-full text-black"
                     />
                   </div>
 
@@ -186,7 +186,7 @@ const CreateDataModal: React.FC<ModalProps> = ({
                     },
                   ].map((field) => (
                     <div key={field.name}>
-                      <label className="block text-sm font-medium">
+                      <label className="block text-sm font-medium text-black">
                         {field.label}
                       </label>
                       <input
@@ -195,31 +195,16 @@ const CreateDataModal: React.FC<ModalProps> = ({
                         value={data[field.name as keyof Data] as string}
                         placeholder={field.placeholder}
                         onChange={handleChange}
-                        className="border rounded p-2 w-full"
+                        className="border rounded p-2 w-full text-black"
                       />
                     </div>
                   ))}
 
-                  {/* UJ */}
-                  <div>
-                    <label className="block text-sm font-medium">
-                      Uang Jalan
-                    </label>
-                    <input
-                      type="text"
-                      name="uj"
-                      value={
-                        data.uj !== null ? currencyFormat.format(data.uj) : ""
-                      }
-                      onChange={handleChange}
-                      placeholder="Uang Jalan"
-                      className="border rounded p-2 w-full"
-                    />
-                  </div>
-
                   {/* Harga */}
                   <div>
-                    <label className="block text-sm font-medium">Harga</label>
+                    <label className="block text-sm font-medium text-black">
+                      Harga
+                    </label>
                     <input
                       type="text"
                       name="harga"
@@ -230,13 +215,35 @@ const CreateDataModal: React.FC<ModalProps> = ({
                       }
                       onChange={handleChange}
                       placeholder="Harga"
-                      className="border rounded p-2 w-full"
+                      className="border rounded p-2 w-full text-black"
+                    />
+                  </div>
+
+                  {/* UJ */}
+                  <div>
+                    <label className="block text-sm font-medium text-black">
+                      Uang Jalan
+                    </label>
+                    <input
+                      type="text"
+                      name="uj"
+                      value={
+                        data.uj !== null ? currencyFormat.format(data.uj) : ""
+                      }
+                      onChange={handleChange}
+                      placeholder="Uang Jalan"
+                      className="border rounded p-2 w-full text-black"
                     />
                   </div>
 
                   {/* Margin */}
-                  {margin !== null && (
+                  {margin !== null && margin >= 0 && (
                     <p className="text-sm text-green-600">
+                      Margin: {currencyFormat.format(margin)}
+                    </p>
+                  )}
+                  {margin !== null && margin <= 0 && (
+                    <p className="text-sm text-red-600">
                       Margin: {currencyFormat.format(margin)}
                     </p>
                   )}
