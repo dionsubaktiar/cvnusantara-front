@@ -3,19 +3,19 @@ import { Fragment, useState } from "react";
 import axios from "axios";
 
 interface Data {
-  tanggal: string | null; // Date in YYYY-MM-DD format
+  tanggal: string | null;
   nopol: string;
   origin: string;
   destinasi: string;
-  uj: number;
-  harga: number;
+  uj: number | null;
+  harga: number | null;
   status: string;
 }
 
 interface ModalProps {
   isOpen: boolean;
   closeModal: () => void;
-  onCreate: () => void; // Function to refresh data after creation
+  onCreate: () => void;
 }
 
 const CreateDataModal: React.FC<ModalProps> = ({
@@ -28,42 +28,82 @@ const CreateDataModal: React.FC<ModalProps> = ({
     nopol: "",
     origin: "",
     destinasi: "",
-    uj: 0,
-    harga: 0,
+    uj: null,
+    harga: null,
     status: "pending",
   });
 
+  const [margin, setMargin] = useState<number | null>(null);
   const [message, setMessage] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false); // Loading state
+  const [loading, setLoading] = useState<boolean>(false);
 
-  // Handle form input changes
+  // Currency formatter
+  const currencyFormat = new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 0,
+  });
+
+  // Handle input change
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setData((prevData) => ({
-      ...prevData,
-      [name]: name === "uj" || name === "harga" ? Number(value) : value,
-    }));
+
+    setData((prevData) => {
+      const newValue =
+        name === "uj" || name === "harga"
+          ? Number(value.replace(/\D/g, ""))
+          : value;
+
+      // Update data state
+      const updatedData = {
+        ...prevData,
+        [name]: newValue || null,
+      };
+
+      // Calculate margin dynamically
+      const updatedUJ = name === "uj" ? newValue : prevData.uj;
+      const updatedHarga = name === "harga" ? newValue : prevData.harga;
+
+      setMargin(() => {
+        const ujValue = Number(updatedUJ) || 0;
+        const hargaValue = Number(updatedHarga) || 0;
+
+        return ujValue && hargaValue ? hargaValue - ujValue : null;
+      });
+
+      return updatedData;
+    });
   };
 
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true); // Set loading to true when submission starts
+    setLoading(true);
 
     try {
-      // Prepare data with CSRF token
       await axios.get("/backend/sanctum/csrf-cookie", {
         withCredentials: true,
       });
-
-      // Post formatted data
       await axios.post("/backend/api/data", data, { withCredentials: true });
 
       setMessage(`Data created successfully for: ${data.nopol}`);
-      onCreate(); // Call the onCreate function to refresh data
-      closeModal(); // Close modal after successful submission
+
+      // Reset form
+      setData({
+        tanggal: null,
+        nopol: "",
+        origin: "",
+        destinasi: "",
+        uj: null,
+        harga: null,
+        status: "pending",
+      });
+      setMargin(null);
+
+      onCreate();
+      closeModal();
     } catch (error) {
       console.error(error);
       if (axios.isAxiosError(error)) {
@@ -75,7 +115,7 @@ const CreateDataModal: React.FC<ModalProps> = ({
         setMessage("An unexpected error occurred");
       }
     } finally {
-      setLoading(false); // Reset loading state after request completes
+      setLoading(false);
     }
   };
 
@@ -113,125 +153,105 @@ const CreateDataModal: React.FC<ModalProps> = ({
                   Create Data
                 </Dialog.Title>
 
-                <form
-                  onSubmit={handleSubmit}
-                  className="mt-4 space-y-4 text-black"
-                >
+                <form onSubmit={handleSubmit} className="mt-4 space-y-4">
                   {/* Tanggal */}
-                  <div className="space-y-1">
-                    <label htmlFor="tanggal" className="font-medium text-sm">
+                  <div>
+                    <label
+                      htmlFor="tanggal"
+                      className="block text-sm font-medium"
+                    >
                       Tanggal
                     </label>
                     <input
                       type="date"
-                      id="tanggal"
                       name="tanggal"
                       value={data.tanggal || ""}
                       onChange={handleChange}
-                      className="border p-2 rounded w-full"
+                      className="border rounded p-2 w-full"
                     />
                   </div>
 
-                  {/* Nomor Polisi */}
-                  <div className="space-y-1">
-                    <label htmlFor="nopol" className="font-medium text-sm">
-                      Nomor Polisi
-                    </label>
-                    <input
-                      type="text"
-                      id="nopol"
-                      name="nopol"
-                      placeholder="Nomor Polisi"
-                      value={data.nopol}
-                      onChange={handleChange}
-                      className="border p-2 rounded w-full"
-                      required
-                    />
-                  </div>
-
-                  {/* Origin */}
-                  <div className="space-y-1">
-                    <label htmlFor="origin" className="font-medium text-sm">
-                      Origin
-                    </label>
-                    <input
-                      type="text"
-                      id="origin"
-                      name="origin"
-                      placeholder="Origin"
-                      value={data.origin}
-                      onChange={handleChange}
-                      className="border p-2 rounded w-full"
-                      required
-                    />
-                  </div>
-
-                  {/* Destinasi */}
-                  <div className="space-y-1">
-                    <label htmlFor="destinasi" className="font-medium text-sm">
-                      Destinasi
-                    </label>
-                    <input
-                      type="text"
-                      id="destinasi"
-                      name="destinasi"
-                      placeholder="Destinasi"
-                      value={data.destinasi}
-                      onChange={handleChange}
-                      className="border p-2 rounded w-full"
-                      required
-                    />
-                  </div>
+                  {/* Other Inputs */}
+                  {[
+                    {
+                      name: "nopol",
+                      label: "Nomor Polisi",
+                      placeholder: "Nomor Polisi",
+                    },
+                    { name: "origin", label: "Origin", placeholder: "Origin" },
+                    {
+                      name: "destinasi",
+                      label: "Destinasi",
+                      placeholder: "Destinasi",
+                    },
+                  ].map((field) => (
+                    <div key={field.name}>
+                      <label className="block text-sm font-medium">
+                        {field.label}
+                      </label>
+                      <input
+                        type="text"
+                        name={field.name}
+                        value={data[field.name as keyof Data] as string}
+                        placeholder={field.placeholder}
+                        onChange={handleChange}
+                        className="border rounded p-2 w-full"
+                      />
+                    </div>
+                  ))}
 
                   {/* UJ */}
-                  <div className="space-y-1">
-                    <label htmlFor="uj" className="font-medium text-sm">
+                  <div>
+                    <label className="block text-sm font-medium">
                       Uang Jalan
                     </label>
                     <input
-                      type="number"
-                      id="uj"
+                      type="text"
                       name="uj"
-                      placeholder="UJ"
-                      value={data.uj}
+                      value={
+                        data.uj !== null ? currencyFormat.format(data.uj) : ""
+                      }
                       onChange={handleChange}
-                      className="border p-2 rounded w-full"
-                      required
+                      placeholder="Uang Jalan"
+                      className="border rounded p-2 w-full"
                     />
                   </div>
 
                   {/* Harga */}
-                  <div className="space-y-1">
-                    <label htmlFor="harga" className="font-medium text-sm">
-                      Harga
-                    </label>
+                  <div>
+                    <label className="block text-sm font-medium">Harga</label>
                     <input
-                      type="number"
-                      id="harga"
+                      type="text"
                       name="harga"
-                      placeholder="Harga"
-                      value={data.harga}
+                      value={
+                        data.harga !== null
+                          ? currencyFormat.format(data.harga)
+                          : ""
+                      }
                       onChange={handleChange}
-                      className="border p-2 rounded w-full"
-                      required
+                      placeholder="Harga"
+                      className="border rounded p-2 w-full"
                     />
                   </div>
 
-                  {/* Message Display */}
-                  {message && <p className="text-red-500">{message}</p>}
+                  {/* Margin */}
+                  {margin !== null && (
+                    <p className="text-sm text-green-600">
+                      Margin: {currencyFormat.format(margin)}
+                    </p>
+                  )}
 
-                  {/* Submit Button */}
-                  <div className="mt-4">
-                    <button
-                      type="submit"
-                      className={`w-full rounded bg-blue-500 p-2 text-white ${
-                        loading ? "opacity-50 cursor-not-allowed" : ""
-                      }`}
-                      disabled={loading}
-                    >
-                      {loading ? "Creating..." : "Create Data"}
-                    </button>
-                  </div>
+                  {/* Submit */}
+                  <button
+                    type="submit"
+                    className={`w-full mt-2 p-2 rounded bg-blue-500 text-white ${
+                      loading ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
+                    disabled={loading}
+                  >
+                    {loading ? "Creating..." : "Create Data"}
+                  </button>
+                  {message && <p className="mt-2 text-red-500">{message}</p>}
                 </form>
               </Dialog.Panel>
             </Transition.Child>
