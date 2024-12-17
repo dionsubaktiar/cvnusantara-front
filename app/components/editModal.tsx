@@ -1,13 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useEffect, useState, useCallback } from "react";
+import { Fragment, useEffect, useState } from "react";
 import axios from "axios";
 import { Button } from "@nextui-org/react";
-
-interface EditDataProps {
-  id: number;
-  closeModal: () => void;
-  onUpdate: () => void; // Callback to refresh data after update
-}
 
 interface DataResponse {
   id: number;
@@ -15,67 +9,121 @@ interface DataResponse {
   nopol: string;
   origin: string;
   destinasi: string;
-  uj: number;
-  harga: number;
+  uj: number | null;
+  harga: number | null;
   status: string;
   created_at: string | null;
   updated_at: string;
 }
 
-const EditModal: React.FC<EditDataProps> = ({ id, closeModal, onUpdate }) => {
+interface EditDataProps {
+  id: number;
+  closeModal: () => void;
+  onUpdate: () => void; // Callback to refresh data after update
+}
+
+const EditDataModal: React.FC<EditDataProps> = ({
+  id,
+  closeModal,
+  onUpdate,
+}) => {
   const [data, setData] = useState<DataResponse | null>(null);
+  const [formData, setFormData] = useState<DataResponse>({
+    id: 0,
+    tanggal: null,
+    nopol: "",
+    origin: "",
+    destinasi: "",
+    uj: null,
+    harga: null,
+    status: "pending",
+    created_at: null,
+    updated_at: "",
+  });
+
+  const [margin, setMargin] = useState<number | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [formData, setFormData] = useState<DataResponse | null>(null);
 
-  const fetchData = useCallback(async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get<DataResponse>(
-        `https://cvnusantara.nusantaratranssentosa.co.id/api/data/${id}`
-      );
-      setData(response.data);
-      setFormData(response.data); // Initialize form data with fetched data
-      setError(null);
-    } catch (err) {
-      console.error(err);
-      setError("Failed to fetch data. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+  // Currency formatter
+  const currencyFormat = new Intl.NumberFormat("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 0,
+  });
+
+  // Fetch the data for editing
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get<DataResponse>(
+          `/backend/api/data/${id}`
+        );
+        setData(response.data);
+        setFormData(response.data);
+        setError(null);
+      } catch (err) {
+        console.error(err);
+        setError("Failed to fetch data. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
   }, [id]);
 
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
-
+  // Handle input changes
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData!,
-      [name]: value,
-    }));
+    setFormData((prevData) => {
+      const newValue =
+        name === "uj" || name === "harga"
+          ? Number(value.replace(/\D/g, ""))
+          : value;
+
+      const updatedData = {
+        ...prevData!,
+        [name]: newValue || null,
+      };
+
+      // Calculate margin dynamically
+      const updatedUJ = name === "uj" ? newValue : prevData?.uj;
+      const updatedHarga = name === "harga" ? newValue : prevData?.harga;
+
+      setMargin(() => {
+        const ujValue = Number(updatedUJ) || 0;
+        const hargaValue = Number(updatedHarga) || 0;
+
+        return ujValue && hargaValue ? hargaValue - ujValue : null;
+      });
+
+      return updatedData;
+    });
   };
 
+  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+
     try {
-      await axios.get(
-        "https://cvnusantara.nusantaratranssentosa.co.id/sanctum/csrf-cookie",
-        { withCredentials: true }
-      );
-      await axios.put(
-        `https://cvnusantara.nusantaratranssentosa.co.id/api/data/${id}`,
-        formData,
-        { withCredentials: true }
-      );
-      onUpdate(); // Call the update callback to refresh data
-      closeModal(); // Close the modal after successful update
+      await axios.get("/backend/sanctum/csrf-cookie", {
+        withCredentials: true,
+      });
+      await axios.put(`/backend/api/data/${id}`, formData, {
+        withCredentials: true,
+      });
+
+      onUpdate(); // Refresh the data after the update
+      closeModal(); // Close the modal
     } catch (err) {
       console.error(err);
       setError("Failed to update data. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -92,7 +140,7 @@ const EditModal: React.FC<EditDataProps> = ({ id, closeModal, onUpdate }) => {
       <div className="p-4">
         <p className="text-red-500">{error}</p>
         <button
-          onClick={fetchData}
+          onClick={() => setError(null)}
           className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-all"
         >
           Retry
@@ -203,9 +251,13 @@ const EditModal: React.FC<EditDataProps> = ({ id, closeModal, onUpdate }) => {
                     <label>
                       <strong>Uang Jalan:</strong>
                       <input
-                        type="number"
+                        type="text"
                         name="uj"
-                        value={formData?.uj || ""}
+                        value={
+                          formData?.uj !== null
+                            ? currencyFormat.format(formData.uj)
+                            : ""
+                        }
                         onChange={handleChange}
                         className="mt-1 block w-full border border-gray-300 rounded-md p-2"
                       />
@@ -217,9 +269,13 @@ const EditModal: React.FC<EditDataProps> = ({ id, closeModal, onUpdate }) => {
                     <label>
                       <strong>Harga:</strong>
                       <input
-                        type="number"
+                        type="text"
                         name="harga"
-                        value={formData?.harga || ""}
+                        value={
+                          formData?.harga !== null
+                            ? currencyFormat.format(formData.harga)
+                            : ""
+                        }
                         onChange={handleChange}
                         className="mt-1 block w-full border border-gray-300 rounded-md p-2"
                       />
@@ -243,6 +299,18 @@ const EditModal: React.FC<EditDataProps> = ({ id, closeModal, onUpdate }) => {
                     </label>
                   </div>
 
+                  {/* Margin */}
+                  {margin !== null && margin >= 0 && (
+                    <p className="text-sm text-green-600">
+                      Margin: {currencyFormat.format(margin)}
+                    </p>
+                  )}
+                  {margin !== null && margin < 0 && (
+                    <p className="text-sm text-red-600">
+                      Margin: {currencyFormat.format(margin)}
+                    </p>
+                  )}
+
                   <div className="mt-4 flex justify-end gap-2">
                     <Button type="submit" color="success">
                       Save
@@ -261,4 +329,4 @@ const EditModal: React.FC<EditDataProps> = ({ id, closeModal, onUpdate }) => {
   );
 };
 
-export default EditModal;
+export default EditDataModal;

@@ -59,7 +59,8 @@ const ViewModal: React.FC<ViewData> = ({ id, closeModal }) => {
   // Calculate margin dynamically
   const margin = useMemo(() => {
     if (data?.harga !== undefined && data?.uj !== undefined) {
-      return (data.harga - data.uj).toLocaleString("id-ID");
+      const calculatedMargin = data.harga - data.uj;
+      return Number(calculatedMargin).toLocaleString("id-ID");
     }
     return "N/A";
   }, [data]);
@@ -168,7 +169,7 @@ const ViewModal: React.FC<ViewData> = ({ id, closeModal }) => {
                   {/* Margin */}
                   <div className="space-y-1">
                     <p>
-                      <strong>Margin:</strong> Rp. {margin.toLocaleString()}
+                      <strong>Margin:</strong> Rp. {margin}
                     </p>
                   </div>
 
