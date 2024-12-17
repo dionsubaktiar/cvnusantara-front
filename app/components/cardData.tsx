@@ -51,6 +51,8 @@ const CardData: React.FC<Data> = ({
       })
     : "N/A";
 
+  const margin = harga - uj;
+
   return (
     <div className="p-2">
       <div className="flex items-center justify-around border-2 text-sm rounded-lg p-3">
@@ -68,8 +70,8 @@ const CardData: React.FC<Data> = ({
 
         {/* Pricing and Status */}
         <div className="grid grid-cols-1">
-          <div>Rp. {uj.toLocaleString("id-ID")}</div>
-          <div>Rp. {harga.toLocaleString("id-ID")}</div>
+          <div>Rp. {margin}</div>
+
           <div>
             {status === "confirmed" && <p className="text-green-400">Lunas</p>}
             {status === "pending" && <p className="text-gray-500">Pending</p>}

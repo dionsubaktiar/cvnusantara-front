@@ -1,5 +1,5 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useEffect, useState, useCallback } from "react";
+import { Fragment, useEffect, useState, useCallback, useMemo } from "react";
 import axios from "axios";
 import { Button } from "@nextui-org/react";
 
@@ -47,6 +47,7 @@ const ViewModal: React.FC<ViewData> = ({ id, closeModal }) => {
     fetchData();
   }, [fetchData]);
 
+  // Calculate formatted date
   const formattedDate = data?.tanggal
     ? new Date(data.tanggal).toLocaleString("id-ID", {
         year: "numeric",
@@ -54,6 +55,14 @@ const ViewModal: React.FC<ViewData> = ({ id, closeModal }) => {
         day: "numeric",
       })
     : "N/A";
+
+  // Calculate margin dynamically
+  const margin = useMemo(() => {
+    if (data?.harga !== undefined && data?.uj !== undefined) {
+      return (data.harga - data.uj).toLocaleString("id-ID");
+    }
+    return "N/A";
+  }, [data]);
 
   if (loading) {
     return (
@@ -140,6 +149,14 @@ const ViewModal: React.FC<ViewData> = ({ id, closeModal }) => {
                     </p>
                   </div>
 
+                  {/* Harga */}
+                  <div className="space-y-1">
+                    <p>
+                      <strong>Harga:</strong> Rp.{" "}
+                      {data.harga.toLocaleString("id-ID")}
+                    </p>
+                  </div>
+
                   {/* Uang Jalan */}
                   <div className="space-y-1">
                     <p>
@@ -148,11 +165,10 @@ const ViewModal: React.FC<ViewData> = ({ id, closeModal }) => {
                     </p>
                   </div>
 
-                  {/* Harga */}
+                  {/* Margin */}
                   <div className="space-y-1">
                     <p>
-                      <strong>Harga:</strong> Rp.{" "}
-                      {data.harga.toLocaleString("id-ID")}
+                      <strong>Margin:</strong> Rp. {margin.toLocaleString()}
                     </p>
                   </div>
 
