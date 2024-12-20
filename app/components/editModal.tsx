@@ -239,10 +239,9 @@ const EditDataModal: React.FC<EditDataProps> = ({
                     </label>
                   </div>
 
-                  {/* Rute */}
                   <div className="space-y-1">
                     <label>
-                      <strong>Rute:</strong>
+                      <strong>Origin:</strong>
                       <input
                         type="text"
                         name="origin"
@@ -251,30 +250,19 @@ const EditDataModal: React.FC<EditDataProps> = ({
                         placeholder="Origin"
                         className="mt-1 block w-full border border-gray-300 rounded-md p-2"
                       />
+                    </label>
+                  </div>
+
+                  {/* Rute */}
+                  <div className="space-y-1">
+                    <label>
+                      <strong>Destinasi:</strong>
                       <input
                         type="text"
                         name="destinasi"
                         value={formData?.destinasi || ""}
                         onChange={handleChange}
                         placeholder="Destinasi"
-                        className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-                      />
-                    </label>
-                  </div>
-
-                  {/* Uang Jalan */}
-                  <div className="space-y-1">
-                    <label>
-                      <strong>Uang Jalan:</strong>
-                      <input
-                        type="text"
-                        name="uj"
-                        value={
-                          formData?.uj !== null
-                            ? currencyFormat.format(formData.uj)
-                            : ""
-                        }
-                        onChange={handleChange}
                         className="mt-1 block w-full border border-gray-300 rounded-md p-2"
                       />
                     </label>
@@ -290,6 +278,24 @@ const EditDataModal: React.FC<EditDataProps> = ({
                         value={
                           formData?.harga !== null
                             ? currencyFormat.format(formData.harga)
+                            : ""
+                        }
+                        onChange={handleChange}
+                        className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                      />
+                    </label>
+                  </div>
+
+                  {/* Uang Jalan */}
+                  <div className="space-y-1">
+                    <label>
+                      <strong>Uang Jalan:</strong>
+                      <input
+                        type="text"
+                        name="uj"
+                        value={
+                          formData?.uj !== null
+                            ? currencyFormat.format(formData.uj)
                             : ""
                         }
                         onChange={handleChange}
