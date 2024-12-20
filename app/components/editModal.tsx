@@ -231,7 +231,7 @@ const EditDataModal: React.FC<EditDataProps> = ({
                       <strong>Driver:</strong>
                       <input
                         type="text"
-                        name="nopol"
+                        name="driver"
                         value={formData?.driver || ""}
                         onChange={handleChange}
                         className="mt-1 block w-full border border-gray-300 rounded-md p-2"
