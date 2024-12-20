@@ -181,13 +181,13 @@ const CreateDataModal: React.FC<ModalProps> = ({
                       label: "Nomor Polisi",
                       placeholder: "Nomor Polisi",
                     },
+                    { name: "driver", label: "Driver", placeholder: "Driver" },
                     { name: "origin", label: "Origin", placeholder: "Origin" },
                     {
                       name: "destinasi",
                       label: "Destinasi",
                       placeholder: "Destinasi",
                     },
-                    { name: "driver", label: "Driver", placeholder: "Driver" },
                   ].map((field) => (
                     <div key={field.name}>
                       <label className="block text-sm font-medium text-black">
