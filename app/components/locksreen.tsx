@@ -32,7 +32,7 @@ const LockScreen = ({ onUnlock }: LockScreenProps) => {
         <h2 className="text-lg font-bold mb-4">Enter PIN to Unlock</h2>
         <input
           type="password"
-          className="border p-2 mb-4 rounded w-full"
+          className="border p-2 mb-4 rounded w-full text-black"
           placeholder="Enter PIN"
           value={pin}
           onChange={(e) => setPin(e.target.value)}
