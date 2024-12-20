@@ -10,9 +10,16 @@ const LockScreen = ({ onUnlock }: LockScreenProps) => {
 
   const handleUnlock = async () => {
     try {
+      await axios.get(
+        "https://cvnusantara.nusantaratranssentosa.co.id/sanctum/csrf-cookie",
+        {
+          withCredentials: true,
+        }
+      );
       const response = await axios.post(
         "https://cvnusantara.nusantaratranssentosa.co.id/api/pin-verify",
-        { pin }
+        { pin },
+        { withCredentials: true }
       );
 
       if (response.data.success) {
