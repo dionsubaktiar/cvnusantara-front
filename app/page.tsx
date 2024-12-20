@@ -3,10 +3,10 @@
 import { useEffect, useState, useCallback } from "react";
 import CardData from "./components/cardData";
 import CreateDataButton from "./components/createButton";
-import ViewModal from "./components/viewModal"; // Add the ViewModal import
+import ViewModal from "./components/viewModal";
 import axios from "axios";
 import EditModal from "./components/editModal";
-// import LockScreen from "./components/locksreen";
+import LockScreen from "./components/locksreen";
 
 const dataUrl = "https://cvnusantara.nusantaratranssentosa.co.id/api/data";
 const sumUrl = "https://cvnusantara.nusantaratranssentosa.co.id/api/sum";
@@ -45,7 +45,7 @@ export default function Home() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [activeMonth, setActiveMonth] = useState<string>("");
-  // const [isLocked, setIsLocked] = useState<boolean>(true);
+  const [isLocked, setIsLocked] = useState<boolean>(true);
 
   // State for managing modals
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
@@ -98,7 +98,7 @@ export default function Home() {
 
   useEffect(() => {
     fetchDatas(); // Initial fetch
-    const intervalId = setInterval(fetchDatas, 5000); // Refresh every 5 seconds
+    const intervalId = setInterval(fetchDatas, 5000);
     return () => clearInterval(intervalId); // Cleanup on unmount
   }, [fetchDatas]); // Include `fetchDatas` in dependencies
 
@@ -109,10 +109,10 @@ export default function Home() {
     }
   };
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("authToken");
-  //   setIsLocked(!token); // Lock if token is missing
-  // }, []);
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    setIsLocked(!token);
+  }, []);
 
   // Modal handlers
   const openViewModal = (id: number) => {
@@ -135,9 +135,9 @@ export default function Home() {
     setIsEditModalOpen(false);
   };
 
-  // if (isLocked) {
-  //   return <LockScreen onUnlock={() => setIsLocked(false)} />;
-  // }
+  if (isLocked) {
+    return <LockScreen onUnlock={() => setIsLocked(false)} />;
+  }
 
   if (loading) {
     return (
