@@ -6,6 +6,7 @@ import CreateDataButton from "./components/createButton";
 import ViewModal from "./components/viewModal"; // Add the ViewModal import
 import axios from "axios";
 import EditModal from "./components/editModal";
+import LockScreen from "./components/locksreen";
 
 const dataUrl = "https://cvnusantara.nusantaratranssentosa.co.id/api/data";
 const sumUrl = "https://cvnusantara.nusantaratranssentosa.co.id/api/sum";
@@ -44,6 +45,7 @@ export default function Home() {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [activeMonth, setActiveMonth] = useState<string>("");
+  const [isLocked, setIsLocked] = useState<boolean>(true);
 
   // State for managing modals
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
@@ -107,6 +109,11 @@ export default function Home() {
     }
   };
 
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    setIsLocked(!token); // Lock if token is missing
+  }, []);
+
   // Modal handlers
   const openViewModal = (id: number) => {
     setSelectedId(id);
@@ -127,6 +134,10 @@ export default function Home() {
     setSelectedId(null);
     setIsEditModalOpen(false);
   };
+
+  if (isLocked) {
+    return <LockScreen onUnlock={() => setIsLocked(false)} />;
+  }
 
   if (loading) {
     return (
