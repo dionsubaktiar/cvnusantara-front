@@ -5,6 +5,7 @@ import axios from "axios";
 interface Data {
   tanggal: string | null;
   nopol: string;
+  driver: string;
   origin: string;
   destinasi: string;
   uj: number | null;
@@ -26,6 +27,7 @@ const CreateDataModal: React.FC<ModalProps> = ({
   const [data, setData] = useState<Data>({
     tanggal: null,
     nopol: "",
+    driver: "",
     origin: "",
     destinasi: "",
     uj: null,
@@ -94,6 +96,7 @@ const CreateDataModal: React.FC<ModalProps> = ({
       setData({
         tanggal: null,
         nopol: "",
+        driver: "",
         origin: "",
         destinasi: "",
         uj: null,
@@ -184,6 +187,7 @@ const CreateDataModal: React.FC<ModalProps> = ({
                       label: "Destinasi",
                       placeholder: "Destinasi",
                     },
+                    { name: "driver", label: "Driver", placeholder: "Driver" },
                   ].map((field) => (
                     <div key={field.name}>
                       <label className="block text-sm font-medium text-black">

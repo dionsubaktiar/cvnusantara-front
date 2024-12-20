@@ -10,6 +10,7 @@ import {
 interface Data {
   tanggal: string | null; // Laravel/MySQL dates as strings
   nopol: string;
+  driver: string;
   origin: string;
   destinasi: string;
   uj: number;
@@ -28,6 +29,7 @@ interface Data {
 const CardData: React.FC<Data> = ({
   tanggal,
   nopol,
+  driver,
   origin,
   destinasi,
   uj,
@@ -59,6 +61,7 @@ const CardData: React.FC<Data> = ({
         {/* Vehicle and Date */}
         <div className="grid grid-cols-1">
           <div>{nopol}</div>
+          <div>{driver}</div>
           <div>{formattedDate}</div>
         </div>
 

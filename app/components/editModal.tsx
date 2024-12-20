@@ -7,6 +7,7 @@ interface DataResponse {
   id: number;
   tanggal: string | null;
   nopol: string;
+  driver: string;
   origin: string;
   destinasi: string;
   uj: number | null;
@@ -32,6 +33,7 @@ const EditDataModal: React.FC<EditDataProps> = ({
     id: 0,
     tanggal: null,
     nopol: "",
+    driver: "",
     origin: "",
     destinasi: "",
     uj: null,
@@ -217,6 +219,20 @@ const EditDataModal: React.FC<EditDataProps> = ({
                         type="text"
                         name="nopol"
                         value={formData?.nopol || ""}
+                        onChange={handleChange}
+                        className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                      />
+                    </label>
+                  </div>
+
+                  {/* Driver */}
+                  <div className="space-y-1">
+                    <label>
+                      <strong>Driver:</strong>
+                      <input
+                        type="text"
+                        name="nopol"
+                        value={formData?.driver || ""}
                         onChange={handleChange}
                         className="mt-1 block w-full border border-gray-300 rounded-md p-2"
                       />

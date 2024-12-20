@@ -24,6 +24,7 @@ interface Data {
   id: number;
   tanggal: string | null;
   nopol: string;
+  driver: string;
   origin: string;
   destinasi: string;
   uj: number;
@@ -214,6 +215,7 @@ export default function Home() {
                 key={data.id}
                 tanggal={data.tanggal}
                 nopol={data.nopol}
+                driver={data.driver}
                 origin={data.origin}
                 destinasi={data.destinasi}
                 harga={data.harga}

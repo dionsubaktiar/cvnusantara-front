@@ -12,6 +12,7 @@ interface DataResponse {
   id: number;
   tanggal: string | null;
   nopol: string;
+  driver: string;
   origin: string;
   destinasi: string;
   uj: number;
@@ -141,6 +142,12 @@ const ViewModal: React.FC<ViewData> = ({ id, closeModal }) => {
                   <div className="space-y-1">
                     <p>
                       <strong>Nopol:</strong> {data.nopol}
+                    </p>
+                  </div>
+
+                  <div className="space-y-1">
+                    <p>
+                      <strong>Driver:</strong> {data.driver}
                     </p>
                   </div>
                   {/* Destinasi */}
