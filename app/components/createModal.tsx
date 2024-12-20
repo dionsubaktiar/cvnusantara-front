@@ -91,6 +91,7 @@ const CreateDataModal: React.FC<ModalProps> = ({
       await axios.post("/backend/api/data", data, { withCredentials: true });
 
       setMessage(`Data created successfully for: ${data.nopol}`);
+      console.log(data);
 
       // Reset form
       setData({
