@@ -65,18 +65,17 @@ export default function Home() {
         sumResponse.data?.status === "success"
       ) {
         const newDataByMonth = dataResponse.data.dataByMonth;
-        const newSumByMonth = sumResponse.data.dataByMonth;
+        const newSumByMonth = sumResponse.data.dataByMonthYear;
 
         setDataByMonth(newDataByMonth);
         setSumByMonth(newSumByMonth);
 
-        // Get current month name in local format
+        // Get the current month dynamically or fallback to the first available
         const currentMonthName = new Date().toLocaleString("en-US", {
           month: "long",
         });
 
         const availableMonths = Object.keys(newDataByMonth);
-        // Match current month name or fallback to the first month
         const defaultMonth =
           availableMonths.find((month) => month === currentMonthName) ||
           availableMonths[0] ||
@@ -183,6 +182,7 @@ export default function Home() {
           </div>
         </div>
       )}
+
       {/* Month Tabs */}
       <div className="w-full flex gap-2 mt-4">
         {Object.keys(dataByMonth).map((month) => (
@@ -202,7 +202,7 @@ export default function Home() {
           </button>
         ))}
       </div>
-      {/* Active Month Data */}
+
       {activeMonth && dataByMonth[activeMonth] && (
         <div className="w-full border-2 p-4 rounded-lg shadow-md mt-4">
           <h2 className="text-xl font-bold">{activeMonth}</h2>
@@ -226,31 +226,21 @@ export default function Home() {
                   axios
                     .get(
                       "https://cvnusantara.nusantaratranssentosa.co.id/sanctum/csrf-cookie",
-                      {
-                        withCredentials: true,
-                      }
+                      { withCredentials: true }
                     )
                     .then(() => {
-                      // Assuming `data` is defined and has an `id` property
                       return axios.put(
                         `https://cvnusantara.nusantaratranssentosa.co.id/api/setlunas/${data.id}`,
                         { withCredentials: true }
                       );
                     })
-                    .then((response) => {
-                      console.log("Data updated successfully:", response.data);
-                      fetchDatas();
-                    })
-                    .catch((error) => {
-                      console.error("Error occurred:", error);
-                    });
+                    .then(() => fetchDatas())
+                    .catch((error) => console.error("Error:", error));
                 }}
                 dropLabel2="View"
                 function2={() => openViewModal(data.id)}
                 dropLabel3="Edit"
-                function3={() => {
-                  openEditModal(data.id);
-                }}
+                function3={() => openEditModal(data.id)}
                 dropLabel4="Hapus"
                 function4={() => {
                   axios
@@ -259,24 +249,20 @@ export default function Home() {
                       { withCredentials: true }
                     )
                     .then(() => {
-                      axios.delete(
+                      return axios.delete(
                         `https://cvnusantara.nusantaratranssentosa.co.id/api/data/${data.id}`,
                         { withCredentials: true }
                       );
                     })
-                    .then((response) => {
-                      console.log("Data deleted successfully:", response);
-                      fetchDatas();
-                    })
-                    .catch((error) => {
-                      console.error("Error occurred:", error);
-                    });
+                    .then(() => fetchDatas())
+                    .catch((error) => console.error("Error:", error));
                 }}
               />
             ))}
           </div>
         </div>
       )}
+
       {/* View Modal */}
       {isViewModalOpen && selectedId && (
         <ViewModal id={selectedId} closeModal={closeViewModal} />
