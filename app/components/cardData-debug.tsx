@@ -94,7 +94,7 @@ const CardDataDebug: React.FC<Data> = ({
             )}
           </div>
           <div>
-            {status_sj === "Belum Selesai" && (
+            {status_sj === "Belum selesai" && (
               <p className="text-red-500">Belum selesai</p>
             )}
             {status_sj === "Terkirim" && (
@@ -104,7 +104,7 @@ const CardDataDebug: React.FC<Data> = ({
               <p className="text-green-400">Diterima</p>
             )}
             {!["Terkirim", "Belum Selesai", "Diterima"].includes(status) && (
-              <p className="text-green-500">Diterima/Terkirim</p>
+              <p className="text-green-500">Selesai</p>
             )}
           </div>
           <div>{formattedDateSJ}</div>
