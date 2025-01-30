@@ -195,7 +195,7 @@ export default function Home() {
             {sum.countGagal > 0 && <p>Cancel: {sum.countGagal}</p>}
           </div>
           <div className="flex-col">
-            <div>{role}</div>
+            <div className="text-center">{role}</div>
             <LogoutButton />
           </div>
         </div>
