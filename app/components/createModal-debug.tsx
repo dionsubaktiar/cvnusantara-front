@@ -86,15 +86,11 @@ const CreateDataModalDebug: React.FC<ModalProps> = ({
 
     try {
       await axios.get(
-        "https://backend-cv.nusantaratranssentosa.co.id/sanctum/csrf-cookie",
-        {
-          withCredentials: true,
-        }
+        "https://backend-cv.nusantaratranssentosa.co.id/sanctum/csrf-cookie"
       );
       await axios.post(
         "https://backend-cv.nusantaratranssentosa.co.id/api/data",
-        data,
-        { withCredentials: true }
+        data
       );
 
       setMessage(`Data created successfully for: ${data.nopol}`);

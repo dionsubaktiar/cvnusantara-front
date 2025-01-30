@@ -251,13 +251,11 @@ export default function Home() {
                   function1={() => {
                     axios
                       .get(
-                        "https://cvnusantara.nusantaratranssentosa.co.id/sanctum/csrf-cookie",
-                        { withCredentials: true }
+                        "https://cvnusantara.nusantaratranssentosa.co.id/sanctum/csrf-cookie"
                       )
                       .then(() => {
                         return axios.put(
-                          `https://cvnusantara.nusantaratranssentosa.co.id/api/setlunas/${data.id}`,
-                          { withCredentials: true }
+                          `https://cvnusantara.nusantaratranssentosa.co.id/api/setlunas/${data.id}`
                         );
                       })
                       .then(() => fetchDatas())
@@ -271,13 +269,11 @@ export default function Home() {
                   function4={() => {
                     axios
                       .get(
-                        "https://cvnusantara.nusantaratranssentosa.co.id/sanctum/csrf-cookie",
-                        { withCredentials: true }
+                        "https://cvnusantara.nusantaratranssentosa.co.id/sanctum/csrf-cookie"
                       )
                       .then(() => {
                         return axios.delete(
-                          `https://cvnusantara.nusantaratranssentosa.co.id/api/data/${data.id}`,
-                          { withCredentials: true }
+                          `https://cvnusantara.nusantaratranssentosa.co.id/api/data/${data.id}`
                         );
                       })
                       .then(() => fetchDatas())
