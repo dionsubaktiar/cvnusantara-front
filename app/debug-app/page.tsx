@@ -11,6 +11,7 @@ import CardDataDebug from "../components/cardData-debug";
 import ViewModalDebug from "../components/viewModal-debug";
 import CreateDataDebug from "../components/createButton-debug";
 import LogoutButton from "../components/logoutButton";
+import AdminData from "../components/adminCard";
 
 const dataUrl = "https://backend-cv.nusantaratranssentosa.co.id/api/data";
 const sumUrl = "https://backend-cv.nusantaratranssentosa.co.id/api/sum";
@@ -166,12 +167,12 @@ export default function Home() {
       </div>
     );
   }
+  const role = localStorage.getItem("role");
 
   return (
     <div className="min-h-screen flex flex-col items-start justify-center p-4 gap-4">
-      <CreateDataDebug onCreate={fetchDatas} />
-      {/* Render Summary */}
-      {sum && (
+      {role === "Super" && <CreateDataDebug onCreate={fetchDatas} />}
+      {sum && role === "Super" ? (
         <div
           className="flex items-center justify-evenly border-2 text-sm rounded-lg p-4 gap-2"
           key={sum.untungrugi}
@@ -192,9 +193,15 @@ export default function Home() {
             {sum.countPending > 0 && <p>Pending: {sum.countPending}</p>}
             {sum.countGagal > 0 && <p>Cancel: {sum.countGagal}</p>}
           </div>
-          <div>
-            <LogoutButton></LogoutButton>
+          <div className="flex-col">
+            <div>{role}</div>
+            <LogoutButton />
           </div>
+        </div>
+      ) : (
+        <div className="flex-col justify-end p-4">
+          <div>{role}</div>
+          <LogoutButton />
         </div>
       )}
 
@@ -225,57 +232,74 @@ export default function Home() {
             Total records: {dataByMonth[activeMonth].count}
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mt-2">
-            {dataByMonth[activeMonth].data.map((data) => (
-              <CardDataDebug
-                key={data.id}
-                tanggal={data.tanggal}
-                nopol={data.nopol}
-                driver={data.driver}
-                origin={data.origin}
-                destinasi={data.destinasi}
-                harga={data.harga}
-                uj={data.uj}
-                status={data.status}
-                status_sj={data.status_sj}
-                tanggal_update_sj={data.tanggal_update_sj}
-                dropLabel1="Lunas"
-                function1={() => {
-                  axios
-                    .get(
-                      "https://cvnusantara.nusantaratranssentosa.co.id/sanctum/csrf-cookie",
-                      { withCredentials: true }
-                    )
-                    .then(() => {
-                      return axios.put(
-                        `https://cvnusantara.nusantaratranssentosa.co.id/api/setlunas/${data.id}`,
+            {dataByMonth[activeMonth].data.map((data) =>
+              role === "Super" ? (
+                <CardDataDebug
+                  key={data.id}
+                  tanggal={data.tanggal}
+                  nopol={data.nopol}
+                  driver={data.driver}
+                  origin={data.origin}
+                  destinasi={data.destinasi}
+                  harga={data.harga}
+                  uj={data.uj}
+                  status={data.status}
+                  status_sj={data.status_sj}
+                  tanggal_update_sj={data.tanggal_update_sj}
+                  dropLabel1="Lunas"
+                  function1={() => {
+                    axios
+                      .get(
+                        "https://cvnusantara.nusantaratranssentosa.co.id/sanctum/csrf-cookie",
                         { withCredentials: true }
-                      );
-                    })
-                    .then(() => fetchDatas())
-                    .catch((error) => console.error("Error:", error));
-                }}
-                dropLabel2="View"
-                function2={() => openViewModal(data.id)}
-                dropLabel3="Edit"
-                function3={() => openEditModal(data.id)}
-                dropLabel4="Hapus"
-                function4={() => {
-                  axios
-                    .get(
-                      "https://cvnusantara.nusantaratranssentosa.co.id/sanctum/csrf-cookie",
-                      { withCredentials: true }
-                    )
-                    .then(() => {
-                      return axios.delete(
-                        `https://cvnusantara.nusantaratranssentosa.co.id/api/data/${data.id}`,
+                      )
+                      .then(() => {
+                        return axios.put(
+                          `https://cvnusantara.nusantaratranssentosa.co.id/api/setlunas/${data.id}`,
+                          { withCredentials: true }
+                        );
+                      })
+                      .then(() => fetchDatas())
+                      .catch((error) => console.error("Error:", error));
+                  }}
+                  dropLabel2="View"
+                  function2={() => openViewModal(data.id)}
+                  dropLabel3="Edit"
+                  function3={() => openEditModal(data.id)}
+                  dropLabel4="Hapus"
+                  function4={() => {
+                    axios
+                      .get(
+                        "https://cvnusantara.nusantaratranssentosa.co.id/sanctum/csrf-cookie",
                         { withCredentials: true }
-                      );
-                    })
-                    .then(() => fetchDatas())
-                    .catch((error) => console.error("Error:", error));
-                }}
-              />
-            ))}
+                      )
+                      .then(() => {
+                        return axios.delete(
+                          `https://cvnusantara.nusantaratranssentosa.co.id/api/data/${data.id}`,
+                          { withCredentials: true }
+                        );
+                      })
+                      .then(() => fetchDatas())
+                      .catch((error) => console.error("Error:", error));
+                  }}
+                />
+              ) : (
+                <AdminData
+                  key={data.id}
+                  tanggal={data.tanggal}
+                  nopol={data.nopol}
+                  driver={data.driver}
+                  origin={data.origin}
+                  destinasi={data.destinasi}
+                  status_sj={data.status_sj}
+                  tanggal_update_sj={data.tanggal_update_sj}
+                  dropLabel1="View"
+                  function1={() => openViewModal(data.id)}
+                  dropLabel2="Edit"
+                  function2={() => openEditModal(data.id)}
+                ></AdminData>
+              )
+            )}
           </div>
         </div>
       )}
