@@ -200,8 +200,8 @@ export default function Home() {
           </div>
         </div>
       ) : (
-        <div className="flex-col justify-end p-4">
-          <div>{role}</div>
+        <div className="flex-col justify-center p-4">
+          <div className="text-center">{role}</div>
           <LogoutButton />
         </div>
       )}
