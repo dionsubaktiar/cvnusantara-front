@@ -103,7 +103,7 @@ const CardDataDebug: React.FC<Data> = ({
             {status_sj === "Diterima" && (
               <p className="text-green-400">Diterima</p>
             )}
-            {!["Terkirim", "Belum Selesai", "Diterima"].includes(status) && (
+            {!["Terkirim", "Belum selesai", "Diterima"].includes(status) && (
               <p className="text-green-500">Selesai</p>
             )}
           </div>
