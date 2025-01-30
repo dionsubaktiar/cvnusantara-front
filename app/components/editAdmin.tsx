@@ -30,6 +30,9 @@ const EditAdmin: React.FC<EditDataProps> = ({ id, closeModal, onUpdate }) => {
     const fetchData = async () => {
       setLoading(true);
       try {
+        await axios.get(
+          "https://backend-cv.nusantaratranssentosa.co.id/sanctum/csrf-cookie"
+        );
         const response = await axios.get<DataResponse>(
           `https://backend-cv.nusantaratranssentosa.co.id/api/data/${id}`
         );
@@ -58,8 +61,8 @@ const EditAdmin: React.FC<EditDataProps> = ({ id, closeModal, onUpdate }) => {
     try {
       await axios.put(
         `https://backend-cv.nusantaratranssentosa.co.id/api/data/${id}`,
-        { status_sj: formData?.status_sj },
-        { withCredentials: true }
+        { status_sj: formData?.status_sj }
+        // { withCredentials: true }
       );
       onUpdate();
       closeModal();

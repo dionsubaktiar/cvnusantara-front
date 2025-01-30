@@ -113,17 +113,11 @@ const EditDataModalDebug: React.FC<EditDataProps> = ({
 
     try {
       await axios.get(
-        "https://backend-cv.nusantaratranssentosa.co.id/sanctum/csrf-cookie",
-        {
-          withCredentials: true,
-        }
+        "https://backend-cv.nusantaratranssentosa.co.id/sanctum/csrf-cookie"
       );
       await axios.put(
         `https://backend-cv.nusantaratranssentosa.co.id/api/data/${id}`,
-        formData,
-        {
-          withCredentials: true,
-        }
+        formData
       );
 
       onUpdate(); // Refresh the data after the update
