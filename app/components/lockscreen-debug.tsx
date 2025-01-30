@@ -22,7 +22,7 @@ const LockScreenDebug = ({ onUnlock }: LockScreenProps) => {
       if (response.data.success) {
         localStorage.setItem("authToken", response.data.verification_token);
         localStorage.setItem("role", response.data.role);
-        window.location.reload();
+        // window.location.reload();
         onUnlock();
       } else {
         alert("Invalid PIN. Please try again.");
