@@ -6,14 +6,14 @@ const LogoutButton = () => {
   const handleLogout = async () => {
     try {
       await axios.get(
-        "https://backend-cv.nusantaratranssentosa.co.id/sanctum/csrf-cookie",
-        {
-          withCredentials: true,
-        }
+        "https://backend-cv.nusantaratranssentosa.co.id/sanctum/csrf-cookie"
+        // {
+        //   withCredentials: true,
+        // }
       );
       const response = await axios.post(
-        "https://backend-cv.nusantaratranssentosa.co.id/api/lockscreen",
-        { withCredentials: true }
+        "https://backend-cv.nusantaratranssentosa.co.id/api/lockscreen"
+        // { withCredentials: true }
       );
 
       if (response.data.success == true) {

@@ -10,6 +10,7 @@ import LockScreenDebug from "../components/lockscreen-debug";
 import CardDataDebug from "../components/cardData-debug";
 import ViewModalDebug from "../components/viewModal-debug";
 import CreateDataDebug from "../components/createButton-debug";
+import LogoutButton from "../components/logoutButton";
 
 const dataUrl = "https://backend-cv.nusantaratranssentosa.co.id/api/data";
 const sumUrl = "https://backend-cv.nusantaratranssentosa.co.id/api/sum";
@@ -185,6 +186,9 @@ export default function Home() {
             {sum.countSukses > 0 && <p>Lunas: {sum.countSukses}</p>}
             {sum.countPending > 0 && <p>Pending: {sum.countPending}</p>}
             {sum.countGagal > 0 && <p>Cancel: {sum.countGagal}</p>}
+          </div>
+          <div>
+            <LogoutButton></LogoutButton>
           </div>
         </div>
       )}
