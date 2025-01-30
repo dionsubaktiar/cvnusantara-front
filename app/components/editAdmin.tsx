@@ -78,8 +78,8 @@ const EditAdmin: React.FC<EditDataProps> = ({ id, closeModal, onUpdate }) => {
     <Transition appear show={true} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={closeModal}>
         <div className="fixed inset-0 overflow-y-auto">
-          <div className="flex min-h-full items-center justify-center p-4 text-center">
-            <Dialog.Panel className="w-full max-w-md bg-white p-6 rounded-2xl shadow-xl">
+          <div className="flex min-h-full items-center justify-center p-4 text-left">
+            <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
               <Dialog.Title className="text-lg font-medium text-black">
                 Edit Data
               </Dialog.Title>
