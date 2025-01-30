@@ -80,75 +80,75 @@ const EditAdmin: React.FC<EditDataProps> = ({ id, closeModal, onUpdate }) => {
         <div className="fixed inset-0 overflow-y-auto">
           <div className="flex min-h-full items-center justify-center p-4 text-center">
             <Dialog.Panel className="w-full max-w-md bg-white p-6 rounded-2xl shadow-xl">
-              <Dialog.Title className="text-lg font-medium">
+              <Dialog.Title className="text-lg font-medium text-black">
                 Edit Data
               </Dialog.Title>
               <form onSubmit={handleSubmit} className="mt-4 space-y-4">
                 <div>
-                  <label>
+                  <label className="text-black">
                     <strong>Tanggal:</strong>
                   </label>
                   <input
                     type="date"
                     value={formData?.tanggal || ""}
                     disabled
-                    className="w-full border p-2 rounded-md"
+                    className="w-full text-black border p-2 rounded-md"
                   />
                 </div>
                 <div>
-                  <label>
+                  <label className="text-black">
                     <strong>Nopol:</strong>
                   </label>
                   <input
                     type="text"
                     value={formData?.nopol || ""}
                     disabled
-                    className="w-full border p-2 rounded-md"
+                    className="w-full text-black border p-2 rounded-md"
                   />
                 </div>
                 <div>
-                  <label>
+                  <label className="text-black">
                     <strong>Driver:</strong>
                   </label>
                   <input
                     type="text"
                     value={formData?.driver || ""}
                     disabled
-                    className="w-full border p-2 rounded-md"
+                    className="w-full text-black border p-2 rounded-md"
                   />
                 </div>
                 <div>
-                  <label>
+                  <label className="text-black">
                     <strong>Origin:</strong>
                   </label>
                   <input
                     type="text"
                     value={formData?.origin || ""}
                     disabled
-                    className="w-full border p-2 rounded-md"
+                    className="w-full text-black border p-2 rounded-md"
                   />
                 </div>
                 <div>
-                  <label>
+                  <label className="text-black">
                     <strong>Destinasi:</strong>
                   </label>
                   <input
                     type="text"
                     value={formData?.destinasi || ""}
                     disabled
-                    className="w-full border p-2 rounded-md"
+                    className="w-full text-black border p-2 rounded-md"
                   />
                 </div>
                 {/* Dropdown Status SJ */}
                 <div>
-                  <label>
+                  <label className="text-black">
                     <strong>Status Surat Jalan:</strong>
                   </label>
                   <select
                     name="status_sj"
                     value={formData?.status_sj || ""}
                     onChange={handleChange}
-                    className="w-full border p-2 rounded-md"
+                    className="w-full text-black border p-2 rounded-md"
                   >
                     <option value="Belum selesai">Belum selesai</option>
                     <option value="Diterima">Diterima</option>
