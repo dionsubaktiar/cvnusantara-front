@@ -13,8 +13,6 @@ interface DataResponse {
   uj: number | null;
   harga: number | null;
   status: string;
-  status_sj: string;
-  tanggal_update_sj: string | null;
   created_at: string | null;
   updated_at: string;
 }
@@ -41,8 +39,6 @@ const EditDataModalDebug: React.FC<EditDataProps> = ({
     uj: null,
     harga: null,
     status: "pending",
-    status_sj: "",
-    tanggal_update_sj: null,
     created_at: null,
     updated_at: "",
   });

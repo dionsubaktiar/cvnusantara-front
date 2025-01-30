@@ -12,6 +12,7 @@ import ViewModalDebug from "../components/viewModal-debug";
 import CreateDataDebug from "../components/createButton-debug";
 import LogoutButton from "../components/logoutButton";
 import AdminData from "../components/adminCard";
+import EditAdmin from "../components/editAdmin";
 
 const dataUrl = "https://backend-cv.nusantaratranssentosa.co.id/api/data";
 const sumUrl = "https://backend-cv.nusantaratranssentosa.co.id/api/sum";
@@ -309,8 +310,16 @@ export default function Home() {
         <ViewModalDebug id={selectedId} closeModal={closeViewModal} />
       )}
       {/* Edit Modal */}
-      {isEditModalOpen && selectedId && (
+      {isEditModalOpen && selectedId && role === "Super" && (
         <EditModalDebug
+          id={selectedId}
+          closeModal={closeEditModal}
+          onUpdate={fetchDatas}
+        />
+      )}
+
+      {isEditModalOpen && selectedId && role === "Admin" && (
+        <EditAdmin
           id={selectedId}
           closeModal={closeEditModal}
           onUpdate={fetchDatas}

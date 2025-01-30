@@ -18,6 +18,8 @@ interface DataResponse {
   uj: number;
   harga: number;
   status: string;
+  status_sj: string;
+  tanggal_update_sj: string | null;
   created_at: string | null;
   updated_at: string;
 }
@@ -56,6 +58,16 @@ const ViewModalDebug: React.FC<ViewData> = ({ id, closeModal }) => {
         day: "numeric",
       })
     : "N/A";
+
+  const tanggal_sj = data?.tanggal_update_sj
+    ? new Date(data.tanggal_update_sj).toLocaleString("id-ID", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    : "N/A";
+
+  const role = localStorage.getItem("role");
 
   // Calculate margin dynamically
   const margin = useMemo(() => {
@@ -157,46 +169,88 @@ const ViewModalDebug: React.FC<ViewData> = ({ id, closeModal }) => {
                     </p>
                   </div>
 
-                  {/* Harga */}
-                  <div className="space-y-1">
-                    <p>
-                      <strong>Harga:</strong> Rp.{" "}
-                      {data.harga.toLocaleString("id-ID")}
-                    </p>
-                  </div>
+                  {role === "Super" && (
+                    <div>
+                      <div className="space-y-1">
+                        <p>
+                          <strong>Harga:</strong> Rp.{" "}
+                          {data.harga.toLocaleString("id-ID")}
+                        </p>
+                      </div>
 
-                  {/* Uang Jalan */}
-                  <div className="space-y-1">
-                    <p>
-                      <strong>Uang Jalan:</strong> Rp.{" "}
-                      {data.uj.toLocaleString("id-ID")}
-                    </p>
-                  </div>
+                      <div className="space-y-1">
+                        <p>
+                          <strong>Uang Jalan:</strong> Rp.{" "}
+                          {data.uj.toLocaleString("id-ID")}
+                        </p>
+                      </div>
+                      <div className="space-y-1">
+                        <p>
+                          <strong>Margin:</strong> Rp. {margin}
+                        </p>
+                      </div>
+                      <div className="space-y-1">
+                        {data.status === "confirmed" && (
+                          <p className="text-green-400">
+                            <strong className="text-black">Status:</strong>{" "}
+                            Lunas
+                          </p>
+                        )}
+                        {data.status === "pending" && (
+                          <p className="text-gray-500">
+                            <strong className="text-black">Status:</strong>{" "}
+                            Pending
+                          </p>
+                        )}
+                        {data.status === "canceled" && (
+                          <p className="text-red-500">
+                            <strong className="text-black">Status:</strong>{" "}
+                            Cancel
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  )}
 
-                  {/* Margin */}
                   <div className="space-y-1">
-                    <p>
-                      <strong>Margin:</strong> Rp. {margin}
-                    </p>
-                  </div>
-
-                  {/* Status */}
-                  <div className="space-y-1">
-                    {data.status === "confirmed" && (
-                      <p className="text-green-400">
-                        <strong className="text-black">Status:</strong> Lunas
-                      </p>
-                    )}
-                    {data.status === "pending" && (
-                      <p className="text-gray-500">
-                        <strong className="text-black">Status:</strong> Pending
-                      </p>
-                    )}
-                    {data.status === "canceled" && (
+                    {data.status_sj === "Belum selesai" && (
                       <p className="text-red-500">
-                        <strong className="text-black">Status:</strong> Cancel
+                        <strong className="text-black">
+                          Status Surat Jalan:
+                        </strong>{" "}
+                        Belum selesai
                       </p>
                     )}
+                    {data.status_sj === "Terkirim" && (
+                      <p className="text-green-500">
+                        <strong className="text-black">
+                          Status Surat Jalan:
+                        </strong>{" "}
+                        Terkirim
+                      </p>
+                    )}
+                    {data.status_sj === "Diterima" && (
+                      <p className="text-green-500">
+                        <strong className="text-black">
+                          Status Surat Jalan:
+                        </strong>{" "}
+                        Diterima
+                      </p>
+                    )}
+                    {data.status_sj === "Diterima/Terkirim" && (
+                      <p className="text-green-500">
+                        <strong className="text-black">
+                          Status Surat Jalan:
+                        </strong>{" "}
+                        Selesai
+                      </p>
+                    )}
+                  </div>
+                  <div className="space-y-1">
+                    <p>
+                      <strong>Tanggal Update Surat Jalan: </strong>
+                      {tanggal_sj}
+                    </p>
                   </div>
                 </div>
 
