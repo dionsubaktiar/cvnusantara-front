@@ -84,8 +84,8 @@ const EditAdmin: React.FC<EditDataProps> = ({ id, closeModal, onUpdate }) => {
                 Edit Data
               </Dialog.Title>
               <form onSubmit={handleSubmit} className="mt-4 space-y-4">
-                <div>
-                  <label className="text-black">
+                <div className="space-y-1">
+                  <label className="text-black text-left">
                     <strong>Tanggal:</strong>
                   </label>
                   <input
@@ -95,7 +95,7 @@ const EditAdmin: React.FC<EditDataProps> = ({ id, closeModal, onUpdate }) => {
                     className="w-full text-black border p-2 rounded-md"
                   />
                 </div>
-                <div>
+                <div className="space-y-1">
                   <label className="text-black">
                     <strong>Nopol:</strong>
                   </label>
@@ -106,7 +106,7 @@ const EditAdmin: React.FC<EditDataProps> = ({ id, closeModal, onUpdate }) => {
                     className="w-full text-black border p-2 rounded-md"
                   />
                 </div>
-                <div>
+                <div className="space-y-1">
                   <label className="text-black">
                     <strong>Driver:</strong>
                   </label>
@@ -117,7 +117,7 @@ const EditAdmin: React.FC<EditDataProps> = ({ id, closeModal, onUpdate }) => {
                     className="w-full text-black border p-2 rounded-md"
                   />
                 </div>
-                <div>
+                <div className="space-y-1">
                   <label className="text-black">
                     <strong>Origin:</strong>
                   </label>
@@ -128,7 +128,7 @@ const EditAdmin: React.FC<EditDataProps> = ({ id, closeModal, onUpdate }) => {
                     className="w-full text-black border p-2 rounded-md"
                   />
                 </div>
-                <div>
+                <div className="space-y-1">
                   <label className="text-black">
                     <strong>Destinasi:</strong>
                   </label>
@@ -140,7 +140,7 @@ const EditAdmin: React.FC<EditDataProps> = ({ id, closeModal, onUpdate }) => {
                   />
                 </div>
                 {/* Dropdown Status SJ */}
-                <div>
+                <div className="space-y-1">
                   <label className="text-black">
                     <strong>Status Surat Jalan:</strong>
                   </label>
