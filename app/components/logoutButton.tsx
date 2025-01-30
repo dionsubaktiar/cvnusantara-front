@@ -16,6 +16,10 @@ const LogoutButton = () => {
         // { withCredentials: true }
       );
 
+      await axios.get(
+        "https://backend-cv.nusantaratranssentosa.co.id/api/data"
+      );
+
       if (response.data.success == true) {
         localStorage.clear();
       } else {
