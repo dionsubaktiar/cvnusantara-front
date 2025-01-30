@@ -118,7 +118,10 @@ export default function Home() {
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     const role = localStorage.getItem("role");
-    if (token == null && role == null) {
+
+    if (token && role && token !== "null" && role !== "null") {
+      setIsLocked(false);
+    } else {
       setIsLocked(true);
     }
   }, []);
