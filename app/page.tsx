@@ -1,15 +1,21 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import CardData from "./components/cardData";
-import CreateDataButton from "./components/createButton";
-import ViewModal from "./components/viewModal";
+// import CardData from "../components/cardData";
+// import CreateDataButton from "../components/createButton";
+// import ViewModal from "../components/viewModal";
 import axios from "axios";
-import EditModal from "./components/editModal";
-import LockScreen from "./components/locksreen";
+import EditModalDebug from "./components/editModal-debug";
+import LockScreenDebug from "./components/lockscreen-debug";
+import CardDataDebug from "./components/cardData-debug";
+import ViewModalDebug from "./components/viewModal-debug";
+import CreateDataDebug from "./components/createButton-debug";
+import LogoutButton from "./components/logoutButton";
+import AdminData from "./components/adminCard";
+import EditAdmin from "./components/editAdmin";
 
-const dataUrl = "https://cvnusantara.nusantaratranssentosa.co.id/api/data";
-const sumUrl = "https://cvnusantara.nusantaratranssentosa.co.id/api/sum";
+const dataUrl = "https://backend-cv.nusantaratranssentosa.co.id/api/data";
+const sumUrl = "https://backend-cv.nusantaratranssentosa.co.id/api/sum";
 
 interface Sum {
   marginSum: number;
@@ -30,6 +36,8 @@ interface Data {
   uj: number;
   harga: number;
   status: string;
+  status_sj: string;
+  tanggal_update_sj: string | null;
 }
 
 interface DataByMonth {
@@ -111,7 +119,13 @@ export default function Home() {
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
-    setIsLocked(!token);
+    const role = localStorage.getItem("role");
+
+    if (token && role && token !== "null" && role !== "null") {
+      setIsLocked(false);
+    } else {
+      setIsLocked(true);
+    }
   }, []);
 
   // Modal handlers
@@ -136,7 +150,7 @@ export default function Home() {
   };
 
   if (isLocked) {
-    return <LockScreen onUnlock={() => setIsLocked(false)} />;
+    return <LockScreenDebug onUnlock={() => setIsLocked(false)} />;
   }
 
   if (loading) {
@@ -154,12 +168,12 @@ export default function Home() {
       </div>
     );
   }
+  const role = localStorage.getItem("role");
 
   return (
     <div className="min-h-screen flex flex-col items-start justify-center p-4 gap-4">
-      <CreateDataButton onCreate={fetchDatas} />
-      {/* Render Summary */}
-      {sum && (
+      {role === "Super" && <CreateDataDebug onCreate={fetchDatas} />}
+      {sum && role === "Super" ? (
         <div
           className="flex items-center justify-evenly border-2 text-sm rounded-lg p-4 gap-2"
           key={sum.untungrugi}
@@ -180,6 +194,15 @@ export default function Home() {
             {sum.countPending > 0 && <p>Pending: {sum.countPending}</p>}
             {sum.countGagal > 0 && <p>Cancel: {sum.countGagal}</p>}
           </div>
+          <div className="flex-col">
+            <div className="text-center">{role}</div>
+            <LogoutButton />
+          </div>
+        </div>
+      ) : (
+        <div className="flex-col justify-center p-4">
+          <div className="text-center">{role}</div>
+          <LogoutButton />
         </div>
       )}
 
@@ -210,66 +233,89 @@ export default function Home() {
             Total records: {dataByMonth[activeMonth].count}
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 mt-2">
-            {dataByMonth[activeMonth].data.map((data) => (
-              <CardData
-                key={data.id}
-                tanggal={data.tanggal}
-                nopol={data.nopol}
-                driver={data.driver}
-                origin={data.origin}
-                destinasi={data.destinasi}
-                harga={data.harga}
-                uj={data.uj}
-                status={data.status}
-                dropLabel1="Lunas"
-                function1={() => {
-                  axios
-                    .get(
-                      "https://cvnusantara.nusantaratranssentosa.co.id/sanctum/csrf-cookie",
-                      { withCredentials: true }
-                    )
-                    .then(() => {
-                      return axios.put(
-                        `https://cvnusantara.nusantaratranssentosa.co.id/api/setlunas/${data.id}`,
-                        { withCredentials: true }
-                      );
-                    })
-                    .then(() => fetchDatas())
-                    .catch((error) => console.error("Error:", error));
-                }}
-                dropLabel2="View"
-                function2={() => openViewModal(data.id)}
-                dropLabel3="Edit"
-                function3={() => openEditModal(data.id)}
-                dropLabel4="Hapus"
-                function4={() => {
-                  axios
-                    .get(
-                      "https://cvnusantara.nusantaratranssentosa.co.id/sanctum/csrf-cookie",
-                      { withCredentials: true }
-                    )
-                    .then(() => {
-                      return axios.delete(
-                        `https://cvnusantara.nusantaratranssentosa.co.id/api/data/${data.id}`,
-                        { withCredentials: true }
-                      );
-                    })
-                    .then(() => fetchDatas())
-                    .catch((error) => console.error("Error:", error));
-                }}
-              />
-            ))}
+            {dataByMonth[activeMonth].data.map((data) =>
+              role === "Super" ? (
+                <CardDataDebug
+                  key={data.id}
+                  tanggal={data.tanggal}
+                  nopol={data.nopol}
+                  driver={data.driver}
+                  origin={data.origin}
+                  destinasi={data.destinasi}
+                  harga={data.harga}
+                  uj={data.uj}
+                  status={data.status}
+                  status_sj={data.status_sj}
+                  tanggal_update_sj={data.tanggal_update_sj}
+                  dropLabel1="Lunas"
+                  function1={() => {
+                    axios
+                      .get(
+                        "https://cvnusantara.nusantaratranssentosa.co.id/sanctum/csrf-cookie"
+                      )
+                      .then(() => {
+                        return axios.put(
+                          `https://cvnusantara.nusantaratranssentosa.co.id/api/setlunas/${data.id}`
+                        );
+                      })
+                      .then(() => fetchDatas())
+                      .catch((error) => console.error("Error:", error));
+                  }}
+                  dropLabel2="View"
+                  function2={() => openViewModal(data.id)}
+                  dropLabel3="Edit"
+                  function3={() => openEditModal(data.id)}
+                  dropLabel4="Hapus"
+                  function4={() => {
+                    axios
+                      .get(
+                        "https://cvnusantara.nusantaratranssentosa.co.id/sanctum/csrf-cookie"
+                      )
+                      .then(() => {
+                        return axios.delete(
+                          `https://cvnusantara.nusantaratranssentosa.co.id/api/data/${data.id}`
+                        );
+                      })
+                      .then(() => fetchDatas())
+                      .catch((error) => console.error("Error:", error));
+                  }}
+                />
+              ) : (
+                <AdminData
+                  key={data.id}
+                  tanggal={data.tanggal}
+                  nopol={data.nopol}
+                  driver={data.driver}
+                  origin={data.origin}
+                  destinasi={data.destinasi}
+                  status_sj={data.status_sj}
+                  tanggal_update_sj={data.tanggal_update_sj}
+                  dropLabel1="View"
+                  function1={() => openViewModal(data.id)}
+                  dropLabel2="Edit"
+                  function2={() => openEditModal(data.id)}
+                ></AdminData>
+              )
+            )}
           </div>
         </div>
       )}
 
       {/* View Modal */}
       {isViewModalOpen && selectedId && (
-        <ViewModal id={selectedId} closeModal={closeViewModal} />
+        <ViewModalDebug id={selectedId} closeModal={closeViewModal} />
       )}
       {/* Edit Modal */}
-      {isEditModalOpen && selectedId && (
-        <EditModal
+      {isEditModalOpen && selectedId && role === "Super" && (
+        <EditModalDebug
+          id={selectedId}
+          closeModal={closeEditModal}
+          onUpdate={fetchDatas}
+        />
+      )}
+
+      {isEditModalOpen && selectedId && role === "Admin" && (
+        <EditAdmin
           id={selectedId}
           closeModal={closeEditModal}
           onUpdate={fetchDatas}
