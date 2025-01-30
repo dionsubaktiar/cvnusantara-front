@@ -118,7 +118,9 @@ export default function Home() {
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     const role = localStorage.getItem("role");
-    setIsLocked(!token || !role);
+    if (token == null && role == null) {
+      setIsLocked(true);
+    }
   }, []);
 
   // Modal handlers
