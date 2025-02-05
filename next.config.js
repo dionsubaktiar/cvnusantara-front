@@ -1,11 +1,12 @@
 const nextConfig = {
-  rewrites: () => {
-    return [
+  images: {
+    remotePatterns: [
       {
-        source: "/backend/:path*",
-        destination: "https://cvnusantara.nusantaratranssentosa.co.id/:path*",
+        protocol: "https",
+        hostname: "backend-cv.nusantaratranssentosa.co.id",
+        pathname: "/storage/**",
       },
-    ];
+    ],
   },
 };
 

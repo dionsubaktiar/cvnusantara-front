@@ -2,6 +2,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useEffect, useState, useCallback, useMemo } from "react";
 import axios from "axios";
 import { Button } from "@nextui-org/react";
+import Image from "next/image";
 
 interface ViewData {
   id: number;
@@ -20,6 +21,7 @@ interface DataResponse {
   status: string;
   status_sj: string;
   tanggal_update_sj: string | null;
+  foto: string | null;
   created_at: string | null;
   updated_at: string;
 }
@@ -252,6 +254,26 @@ const ViewModalDebug: React.FC<ViewData> = ({ id, closeModal }) => {
                       {tanggal_sj}
                     </p>
                   </div>
+                  {data.foto ? (
+                    <div className="space-y-1">
+                      <Image
+                        src={`https://backend-cv.nusantaratranssentosa.co.id/storage/${data.foto}`}
+                        alt="Uploaded Preview"
+                        width={300}
+                        height={200}
+                        className="rounded-md object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <div className="space-y-1">
+                      <p className="text-red-500">
+                        <strong className="text-black">
+                          Foto Surat Jalan:
+                        </strong>{" "}
+                        Belum ada
+                      </p>
+                    </div>
+                  )}
                 </div>
 
                 <div className="mt-4 flex justify-end gap-2">
