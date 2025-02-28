@@ -18,7 +18,7 @@ const PrintRecapPage = () => {
   const [data, setData] = useState<Data[] | null>(null);
 
   useEffect(() => {
-    const storedData = sessionStorage.getItem("recapData");
+    const storedData = localStorage.getItem("recapData");
     if (storedData) {
       setData(JSON.parse(storedData));
     } else {
@@ -68,7 +68,15 @@ const PrintRecapPage = () => {
                 <td className="border border-gray-300 p-2">{item.driver}</td>
                 <td className="border border-gray-300 p-2">{item.origin}</td>
                 <td className="border border-gray-300 p-2">{item.destinasi}</td>
-                <td className="border border-gray-300 p-2">{item.status}</td>
+                {item.status === "confirmed" && (
+                  <td className="border border-gray-300 p-2">Lunas</td>
+                )}
+                {item.status === "pending" && (
+                  <p className="border border-gray-300 p-2">Pending</p>
+                )}
+                {item.status === "canceled" && (
+                  <p className="border border-gray-300 p-2">Cancel</p>
+                )}
                 <td className="border border-gray-300 p-2">{item.status_sj}</td>
               </tr>
             ))}

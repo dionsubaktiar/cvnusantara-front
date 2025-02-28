@@ -33,7 +33,7 @@ const RecapPage = () => {
           formData
         );
         if (response.data.length > 0) {
-          sessionStorage.setItem("recapData", JSON.stringify(response.data));
+          localStorage.setItem("recapData", JSON.stringify(response.data));
           router.push("/print-recap"); // Redirect after getting results
         } else {
           setError("Tidak ada data ditemukan.");
