@@ -244,7 +244,7 @@ export default function Home() {
         ))}
       </div>
       <div className="flex justify-end mb-4 mr-2 gap-2">
-        {role === "super" && (
+        {role === "Super" && (
           <CreateDataDebug onCreate={fetchDatas}></CreateDataDebug>
         )}
         <Link href="/recap">
