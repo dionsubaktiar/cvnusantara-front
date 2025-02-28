@@ -18,7 +18,7 @@ const CreateDataDebug: React.FC<CreateDataButtonProps> = ({ onCreate }) => {
       {/* Button to open modal, floated on the right side */}
       <button
         onClick={openModal}
-        className="bg-blue-500 text-white rounded-xl shadow-lg hover:bg-blue-600 transition-all p-2 flex justify-center items-center text-md"
+        className="bg-blue-500 text-white rounded-lg shadow-lg hover:bg-blue-600 transition-all px-4 py-2 text-sm flex justify-center items-center"
       >
         Buat data
       </button>
