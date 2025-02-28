@@ -20,6 +20,7 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from "@nextui-org/react";
+import Link from "next/link";
 
 const dataUrl = "https://backend-cv.nusantaratranssentosa.co.id/api/data";
 const sumUrl = "https://backend-cv.nusantaratranssentosa.co.id/api/sum";
@@ -189,7 +190,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col items-start justify-center p-4 gap-4">
-      {role === "Super" && <CreateDataDebug onCreate={fetchDatas} />}
+      {/* {role === "Super" && <CreateDataDebug onCreate={fetchDatas} />} */}
       {sum && role === "Super" ? (
         <div
           className="flex items-center justify-evenly border-2 text-sm rounded-lg p-4 gap-2 w-full"
@@ -241,6 +242,16 @@ export default function Home() {
             )}
           </button>
         ))}
+      </div>
+      <div className="flex justify-end mb-4 mr-2 gap-2">
+        {role === "super" && (
+          <CreateDataDebug onCreate={fetchDatas}></CreateDataDebug>
+        )}
+        <Link href="/recap">
+          <button className="bg-blue-500 text-white rounded-lg shadow-lg hover:bg-blue-600 transition-all px-4 py-2 text-sm flex justify-center items-center">
+            Buat Recap
+          </button>
+        </Link>
       </div>
 
       {activeMonth && dataByMonth[activeMonth] && (
