@@ -22,7 +22,7 @@ const PrintRecapPage = () => {
     if (storedData) {
       setData(JSON.parse(storedData));
     } else {
-      router.replace("/"); // Go back if no data found
+      router.replace("/recap");
     }
   }, [router]);
 
@@ -37,7 +37,7 @@ const PrintRecapPage = () => {
   useEffect(() => {
     const handleAfterPrint = () => {
       localStorage.removeItem("recapData");
-      router.replace("/"); // Return to search page
+      router.replace("/recap");
     };
     window.addEventListener("afterprint", handleAfterPrint);
 

@@ -19,10 +19,10 @@ const RecapPage = () => {
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
-      if (!formData.nopol.trim()) {
-        setError("Nopol wajib diisi!");
-        return;
-      }
+      // if (!formData.nopol.trim()) {
+      //   setError("Nopol wajib diisi!");
+      //   return;
+      // }
 
       setLoading(true);
       setError("");
@@ -67,7 +67,6 @@ const RecapPage = () => {
             onChange={handleChange}
             placeholder="Nopol"
             className="border p-2 w-full rounded-lg text-black"
-            required
           />
           <input
             type="text"
