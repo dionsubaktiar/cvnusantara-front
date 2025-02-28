@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 
 interface Data {
   id: number;
+  tanggal: string;
   nopol: string;
   driver: string;
   origin: string;
@@ -54,6 +55,7 @@ const PrintRecapPage = () => {
           <thead>
             <tr className="bg-gray-200 text-black">
               <th className="border border-gray-300 p-2">Nopol</th>
+              <th className="border border-gray-300 p-2">Tanggal</th>
               <th className="border border-gray-300 p-2">Driver</th>
               <th className="border border-gray-300 p-2">Origin</th>
               <th className="border border-gray-300 p-2">Destinasi</th>
@@ -65,6 +67,13 @@ const PrintRecapPage = () => {
             {data.map((item) => (
               <tr key={item.id} className="text-center text-black">
                 <td className="border border-gray-300 p-2">{item.nopol}</td>
+                <td className="border border-gray-300 p-2">
+                  {new Date(item.tanggal).toLocaleString("id-ID", {
+                    day: "numeric",
+                    month: "short",
+                    year: "numeric",
+                  })}
+                </td>
                 <td className="border border-gray-300 p-2">{item.driver}</td>
                 <td className="border border-gray-300 p-2">{item.origin}</td>
                 <td className="border border-gray-300 p-2">{item.destinasi}</td>
