@@ -22,16 +22,16 @@ body {
 
 @media print {
   body * {
-    visibility: hidden;
+    display: none;
   }
   #print-section,
   #print-section * {
-    visibility: visible;
+    display: block;
   }
   #print-section {
     position: absolute;
-    left: 0;
     top: 0;
+    left: 0;
     width: 100%;
   }
 }
