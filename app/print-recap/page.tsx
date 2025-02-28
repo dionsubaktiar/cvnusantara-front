@@ -18,7 +18,7 @@ const PrintRecapPage = () => {
   const [data, setData] = useState<Data[] | null>(null);
 
   useEffect(() => {
-    const storedData = localStorage.getItem("recapData");
+    const storedData = sessionStorage.getItem("recapData");
     if (storedData) {
       setData(JSON.parse(storedData));
     } else {
