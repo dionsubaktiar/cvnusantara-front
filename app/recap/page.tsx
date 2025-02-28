@@ -1,21 +1,22 @@
 "use client";
 
 import axios from "axios";
-import { useState, useRef, useCallback, useMemo } from "react";
+import { useRouter } from "next/navigation";
+import { useState, useCallback } from "react";
 
-interface Data {
-  id: number;
-  tanggal: string | null;
-  nopol: string;
-  driver: string;
-  origin: string;
-  destinasi: string;
-  uj: number;
-  harga: number;
-  status: string;
-  status_sj: string;
-  tanggal_update_sj: string | null;
-}
+// interface Data {
+//   id: number;
+//   tanggal: string | null;
+//   nopol: string;
+//   driver: string;
+//   origin: string;
+//   destinasi: string;
+//   uj: number;
+//   harga: number;
+//   status: string;
+//   status_sj: string;
+//   tanggal_update_sj: string | null;
+// }
 
 const RecapPage = () => {
   const [formData, setFormData] = useState({
@@ -23,10 +24,11 @@ const RecapPage = () => {
     driver: "",
     origin: "",
   });
-  const [hasilPencarian, setHasilPencarian] = useState<Data[] | null>(null);
+  // const [hasilPencarian, setHasilPencarian] = useState<Data[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const printRef = useRef<HTMLDivElement>(null);
+
+  const router = useRouter();
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
@@ -44,7 +46,12 @@ const RecapPage = () => {
           "https://backend-cv.nusantaratranssentosa.co.id/api/recap",
           formData
         );
-        setHasilPencarian(response.data);
+        if (response.data.length > 0) {
+          localStorage.setItem("recapData", JSON.stringify(response.data));
+          router.push("/print-recap"); // Redirect after getting results
+        } else {
+          setError("Tidak ada data ditemukan.");
+        }
       } catch (err) {
         setError("Gagal mengambil data. Coba lagi.");
         console.error(err);
@@ -52,88 +59,87 @@ const RecapPage = () => {
         setLoading(false);
       }
     },
-    [formData]
+    [formData, router]
   );
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handlePrint = useCallback(() => {
-    if (printRef.current) {
-      const printContents = printRef.current.innerHTML;
-      const originalContents = document.body.innerHTML;
+  // const handlePrint = useCallback(() => {
+  //   if (printRef.current) {
+  //     const printContents = printRef.current.innerHTML;
+  //     const originalContents = document.body.innerHTML;
 
-      document.body.innerHTML = printContents; // Replace entire page with print content
-      window.print();
-      document.body.innerHTML = originalContents; // Restore original content
-      window.location.reload(); // Reload page to restore React state
-    }
-  }, []);
+  //     document.body.innerHTML = printContents; // Replace entire page with print content
+  //     window.print();
+  //     document.body.innerHTML = originalContents; // Restore original content
+  //     window.location.reload(); // Reload page to restore React state
+  //   }
+  // }, []);
 
-  const hasilTable = useMemo(() => {
-    if (!hasilPencarian || hasilPencarian.length === 0) {
-      return (
-        <p className="text-center text-gray-500 mt-4">
-          Tidak ada data ditemukan.
-        </p>
-      );
-    }
-    return (
-      <div
-        ref={printRef}
-        id="print-section"
-        className="border p-4 mt-4 bg-gray-50 rounded-lg"
-      >
-        <h2 className="text-lg font-semibold text-center mb-2 text-black">
-          Hasil Pencarian
-        </h2>
-        <table className="w-full border-collapse border border-gray-300">
-          <thead>
-            <tr className="bg-gray-200">
-              <th className="border border-gray-300 p-2 text-black">Nopol</th>
-              <th className="border border-gray-300 p-2 text-black">Driver</th>
-              <th className="border border-gray-300 p-2 text-black">Origin</th>
-              <th className="border border-gray-300 p-2 text-black">
-                Destinasi
-              </th>
-              <th className="border border-gray-300 p-2 text-black">Status</th>
-              <th className="border border-gray-300 p-2 text-black">
-                Status SJ
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {hasilPencarian.map((item) => (
-              <tr key={item.id} className="text-center text-black">
-                <td className="border border-gray-300 p-2">{item.nopol}</td>
-                <td className="border border-gray-300 p-2">{item.driver}</td>
-                <td className="border border-gray-300 p-2">{item.origin}</td>
-                <td className="border border-gray-300 p-2">{item.destinasi}</td>
-                {item.status === "confirmed" && (
-                  <td className="border border-gray-300 p-2">Lunas</td>
-                )}
-                {item.status === "pending" && (
-                  <td className="border border-gray-300 p-2">Pending</td>
-                )}
-                {item.status === "canceled" && (
-                  <td className="border border-gray-300 p-2">Cancel</td>
-                )}
-                <td className="border border-gray-300 p-2">{item.status_sj}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <button
-          onClick={handlePrint}
-          className="bg-green-500 text-white p-2 w-full mt-4 rounded-lg hover:bg-green-600 transition"
-        >
-          Print as PDF
-        </button>
-      </div>
-    );
-  }, [hasilPencarian, handlePrint]);
+  // const hasilTable = useMemo(() => {
+  //   if (!hasilPencarian || hasilPencarian.length === 0) {
+  //     return (
+  //       <p className="text-center text-gray-500 mt-4">
+  //         Tidak ada data ditemukan.
+  //       </p>
+  //     );
+  //   }
+  //   return (
+  //     <div
+  //       ref={printRef}
+  //       id="print-section"
+  //       className="border p-4 mt-4 bg-gray-50 rounded-lg"
+  //     >
+  //       <h2 className="text-lg font-semibold text-center mb-2 text-black">
+  //         Hasil Pencarian
+  //       </h2>
+  //       <table className="w-full border-collapse border border-gray-300">
+  //         <thead>
+  //           <tr className="bg-gray-200">
+  //             <th className="border border-gray-300 p-2 text-black">Nopol</th>
+  //             <th className="border border-gray-300 p-2 text-black">Driver</th>
+  //             <th className="border border-gray-300 p-2 text-black">Origin</th>
+  //             <th className="border border-gray-300 p-2 text-black">
+  //               Destinasi
+  //             </th>
+  //             <th className="border border-gray-300 p-2 text-black">Status</th>
+  //             <th className="border border-gray-300 p-2 text-black">
+  //               Status SJ
+  //             </th>
+  //           </tr>
+  //         </thead>
+  //         <tbody>
+  //           {hasilPencarian.map((item) => (
+  //             <tr key={item.id} className="text-center text-black">
+  //               <td className="border border-gray-300 p-2">{item.nopol}</td>
+  //               <td className="border border-gray-300 p-2">{item.driver}</td>
+  //               <td className="border border-gray-300 p-2">{item.origin}</td>
+  //               <td className="border border-gray-300 p-2">{item.destinasi}</td>
+  //               {item.status === "confirmed" && (
+  //                 <td className="border border-gray-300 p-2">Lunas</td>
+  //               )}
+  //               {item.status === "pending" && (
+  //                 <td className="border border-gray-300 p-2">Pending</td>
+  //               )}
+  //               {item.status === "canceled" && (
+  //                 <td className="border border-gray-300 p-2">Cancel</td>
+  //               )}
+  //               <td className="border border-gray-300 p-2">{item.status_sj}</td>
+  //             </tr>
+  //           ))}
+  //         </tbody>
+  //       </table>
+  //       <button
+  //         onClick={handlePrint}
+  //         className="bg-green-500 text-white p-2 w-full mt-4 rounded-lg hover:bg-green-600 transition"
+  //       >
+  //         Print as PDF
+  //       </button>
+  //     </div>
+  //   );
+  // }, [hasilPencarian, handlePrint]);
 
   return (
     <div className="min-h-screen flex justify-center items-center">
@@ -178,7 +184,7 @@ const RecapPage = () => {
 
         {error && <p className="text-red-500 mt-2 text-center">{error}</p>}
 
-        {hasilTable}
+        {/* {hasilTable} */}
       </div>
     </div>
   );
