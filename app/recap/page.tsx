@@ -61,7 +61,15 @@ const RecapPage = () => {
   };
 
   const handlePrint = useCallback(() => {
-    window.print();
+    if (printRef.current) {
+      const printContents = printRef.current.innerHTML;
+      const originalContents = document.body.innerHTML;
+
+      document.body.innerHTML = printContents; // Replace entire page with print content
+      window.print();
+      document.body.innerHTML = originalContents; // Restore original content
+      window.location.reload(); // Reload page to restore React state
+    }
   }, []);
 
   const hasilTable = useMemo(() => {
@@ -73,7 +81,11 @@ const RecapPage = () => {
       );
     }
     return (
-      <div ref={printRef} className="border p-4 mt-4 bg-gray-50 rounded-lg">
+      <div
+        ref={printRef}
+        id="print-section"
+        className="border p-4 mt-4 bg-gray-50 rounded-lg"
+      >
         <h2 className="text-lg font-semibold text-center mb-2 text-black">
           Hasil Pencarian
         </h2>
@@ -99,7 +111,15 @@ const RecapPage = () => {
                 <td className="border border-gray-300 p-2">{item.driver}</td>
                 <td className="border border-gray-300 p-2">{item.origin}</td>
                 <td className="border border-gray-300 p-2">{item.destinasi}</td>
-                <td className="border border-gray-300 p-2">{item.status}</td>
+                {item.status === "confirmed" && (
+                  <td className="border border-gray-300 p-2">Lunas</td>
+                )}
+                {item.status === "pending" && (
+                  <td className="border border-gray-300 p-2">Pending</td>
+                )}
+                {item.status === "canceled" && (
+                  <td className="border border-gray-300 p-2">Cancel</td>
+                )}
                 <td className="border border-gray-300 p-2">{item.status_sj}</td>
               </tr>
             ))}
