@@ -44,7 +44,7 @@ const RecapPage = () => {
           "https://backend-cv.nusantaratranssentosa.co.id/api/recap",
           formData
         );
-        setHasilPencarian(response.data.data);
+        setHasilPencarian(response.data);
       } catch (err) {
         setError("Gagal mengambil data. Coba lagi.");
         console.error(err);
