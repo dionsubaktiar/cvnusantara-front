@@ -74,23 +74,27 @@ const RecapPage = () => {
     }
     return (
       <div ref={printRef} className="border p-4 mt-4 bg-gray-50 rounded-lg">
-        <h2 className="text-lg font-semibold text-center mb-2">
+        <h2 className="text-lg font-semibold text-center mb-2 text-black">
           Hasil Pencarian
         </h2>
         <table className="w-full border-collapse border border-gray-300">
           <thead>
             <tr className="bg-gray-200">
-              <th className="border border-gray-300 p-2">Nopol</th>
-              <th className="border border-gray-300 p-2">Driver</th>
-              <th className="border border-gray-300 p-2">Origin</th>
-              <th className="border border-gray-300 p-2">Destinasi</th>
-              <th className="border border-gray-300 p-2">Status</th>
-              <th className="border border-gray-300 p-2">Status SJ</th>
+              <th className="border border-gray-300 p-2 text-black">Nopol</th>
+              <th className="border border-gray-300 p-2 text-black">Driver</th>
+              <th className="border border-gray-300 p-2 text-black">Origin</th>
+              <th className="border border-gray-300 p-2 text-black">
+                Destinasi
+              </th>
+              <th className="border border-gray-300 p-2 text-black">Status</th>
+              <th className="border border-gray-300 p-2 text-black">
+                Status SJ
+              </th>
             </tr>
           </thead>
           <tbody>
             {hasilPencarian.map((item) => (
-              <tr key={item.id} className="text-center">
+              <tr key={item.id} className="text-center text-black">
                 <td className="border border-gray-300 p-2">{item.nopol}</td>
                 <td className="border border-gray-300 p-2">{item.driver}</td>
                 <td className="border border-gray-300 p-2">{item.origin}</td>
