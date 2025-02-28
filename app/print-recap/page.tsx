@@ -52,7 +52,7 @@ const PrintRecapPage = () => {
       {data ? (
         <table className="border-collapse border border-gray-300 w-full">
           <thead>
-            <tr className="bg-gray-200">
+            <tr className="bg-gray-200 text-black">
               <th className="border border-gray-300 p-2">Nopol</th>
               <th className="border border-gray-300 p-2">Driver</th>
               <th className="border border-gray-300 p-2">Origin</th>
@@ -63,7 +63,7 @@ const PrintRecapPage = () => {
           </thead>
           <tbody>
             {data.map((item) => (
-              <tr key={item.id} className="text-center">
+              <tr key={item.id} className="text-center text-black">
                 <td className="border border-gray-300 p-2">{item.nopol}</td>
                 <td className="border border-gray-300 p-2">{item.driver}</td>
                 <td className="border border-gray-300 p-2">{item.origin}</td>
