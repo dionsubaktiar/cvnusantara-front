@@ -14,27 +14,43 @@ interface Data {
   status_sj: string;
 }
 
+interface FormData {
+  nopol: string;
+  driver: string;
+  origin: string;
+}
+
 const PrintRecapPage = () => {
   const router = useRouter();
   const [data, setData] = useState<Data[] | null>(null);
+  const [formData, setFormData] = useState<FormData | null>(null);
+  const [isPrinting, setIsPrinting] = useState(false);
 
   useEffect(() => {
     const storedData = localStorage.getItem("recapData");
+    const storedFormData = localStorage.getItem("formData");
+
     if (storedData) {
       setData(JSON.parse(storedData));
     } else {
       router.replace("/recap");
     }
+
+    if (storedFormData) {
+      setFormData(JSON.parse(storedFormData));
+    }
   }, [router]);
 
   const handlePrint = () => {
-    sessionStorage.setItem("printing", "true"); // Set flag bahwa sedang print
+    setIsPrinting(true);
+    sessionStorage.setItem("printing", "true");
     window.print();
   };
 
   useEffect(() => {
     const handleAfterPrint = () => {
-      sessionStorage.removeItem("printing"); // Hapus flag setelah print selesai
+      setIsPrinting(false);
+      sessionStorage.removeItem("printing");
     };
 
     window.addEventListener("afterprint", handleAfterPrint);
@@ -46,7 +62,7 @@ const PrintRecapPage = () => {
   useEffect(() => {
     const handleUnload = () => {
       if (!sessionStorage.getItem("printing")) {
-        localStorage.removeItem("recapData"); // Hapus data hanya jika tidak sedang mencetak
+        localStorage.removeItem("recapData");
       }
     };
 
@@ -57,9 +73,11 @@ const PrintRecapPage = () => {
   }, []);
 
   return (
-    <div className="p-6 bg-white min-h-screen flex flex-col items-center">
-      <h1 className="text-lg font-bold mb-4">Print Recap</h1>
-      {data && (
+    <div className="p-6 bg-white min-h-screen flex flex-col items-center text-black">
+      <h1 className="text-lg font-bold mb-4">
+        {formData ? formData.nopol : "Print Recap"}
+      </h1>
+      {data && !isPrinting && (
         <button
           onClick={handlePrint}
           className="mb-4 px-4 py-2 bg-blue-600 text-white rounded"

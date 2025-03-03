@@ -34,6 +34,7 @@ const RecapPage = () => {
         );
         if (response.data.length > 0) {
           localStorage.setItem("recapData", JSON.stringify(response.data));
+          localStorage.setItem("form", JSON.stringify(formData));
           router.push("/print-recap"); // Redirect after getting results
         } else {
           setError("Tidak ada data ditemukan.");
