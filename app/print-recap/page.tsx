@@ -28,7 +28,7 @@ const PrintRecapPage = () => {
 
   useEffect(() => {
     const storedData = localStorage.getItem("recapData");
-    const storedFormData = localStorage.getItem("formData");
+    const storedFormData = localStorage.getItem("form");
 
     if (storedData) {
       setData(JSON.parse(storedData));
