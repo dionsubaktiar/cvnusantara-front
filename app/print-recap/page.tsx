@@ -31,7 +31,7 @@ const PrintRecapPage = () => {
     if (data) {
       setTimeout(() => {
         window.print();
-      }, 500);
+      }, 10000);
     }
   }, [data]);
 
