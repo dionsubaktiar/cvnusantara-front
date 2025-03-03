@@ -17,7 +17,6 @@ interface Data {
 const PrintRecapPage = () => {
   const router = useRouter();
   const [data, setData] = useState<Data[] | null>(null);
-  const [isPrinting, setIsPrinting] = useState(false);
 
   useEffect(() => {
     const storedData = localStorage.getItem("recapData");
@@ -29,28 +28,38 @@ const PrintRecapPage = () => {
   }, [router]);
 
   const handlePrint = () => {
-    setIsPrinting(true);
-    setTimeout(() => {
-      window.print();
-    }, 1000); // Tambahkan jeda agar halaman stabil sebelum print
+    sessionStorage.setItem("printing", "true"); // Set flag bahwa sedang print
+    window.print();
   };
 
   useEffect(() => {
     const handleAfterPrint = () => {
-      localStorage.removeItem("recapData");
-      router.replace("/recap");
+      sessionStorage.removeItem("printing"); // Hapus flag setelah print selesai
     };
-    window.addEventListener("afterprint", handleAfterPrint);
 
+    window.addEventListener("afterprint", handleAfterPrint);
     return () => {
       window.removeEventListener("afterprint", handleAfterPrint);
     };
-  }, [router]);
+  }, []);
+
+  useEffect(() => {
+    const handleUnload = () => {
+      if (!sessionStorage.getItem("printing")) {
+        localStorage.removeItem("recapData"); // Hapus data hanya jika tidak sedang mencetak
+      }
+    };
+
+    window.addEventListener("beforeunload", handleUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleUnload);
+    };
+  }, []);
 
   return (
     <div className="p-6 bg-white min-h-screen flex flex-col items-center">
       <h1 className="text-lg font-bold mb-4">Print Recap</h1>
-      {!isPrinting && data && (
+      {data && (
         <button
           onClick={handlePrint}
           className="mb-4 px-4 py-2 bg-blue-600 text-white rounded"
