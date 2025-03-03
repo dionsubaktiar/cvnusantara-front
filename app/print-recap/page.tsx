@@ -17,6 +17,7 @@ interface Data {
 const PrintRecapPage = () => {
   const router = useRouter();
   const [data, setData] = useState<Data[] | null>(null);
+  const [isPrinting, setIsPrinting] = useState(false);
 
   useEffect(() => {
     const storedData = localStorage.getItem("recapData");
@@ -27,13 +28,12 @@ const PrintRecapPage = () => {
     }
   }, [router]);
 
-  useEffect(() => {
-    if (data) {
-      setTimeout(() => {
-        window.print();
-      }, 10000);
-    }
-  }, [data]);
+  const handlePrint = () => {
+    setIsPrinting(true);
+    setTimeout(() => {
+      window.print();
+    }, 1000); // Tambahkan jeda agar halaman stabil sebelum print
+  };
 
   useEffect(() => {
     const handleAfterPrint = () => {
@@ -50,6 +50,14 @@ const PrintRecapPage = () => {
   return (
     <div className="p-6 bg-white min-h-screen flex flex-col items-center">
       <h1 className="text-lg font-bold mb-4">Print Recap</h1>
+      {!isPrinting && data && (
+        <button
+          onClick={handlePrint}
+          className="mb-4 px-4 py-2 bg-blue-600 text-white rounded"
+        >
+          Cetak
+        </button>
+      )}
       {data ? (
         <table className="border-collapse border border-gray-300 w-full">
           <thead>
@@ -77,15 +85,11 @@ const PrintRecapPage = () => {
                 <td className="border border-gray-300 p-2">{item.driver}</td>
                 <td className="border border-gray-300 p-2">{item.origin}</td>
                 <td className="border border-gray-300 p-2">{item.destinasi}</td>
-                {item.status === "confirmed" && (
-                  <td className="border border-gray-300 p-2">Lunas</td>
-                )}
-                {item.status === "pending" && (
-                  <p className="border border-gray-300 p-2">Pending</p>
-                )}
-                {item.status === "canceled" && (
-                  <p className="border border-gray-300 p-2">Cancel</p>
-                )}
+                <td className="border border-gray-300 p-2">
+                  {item.status === "confirmed" && "Lunas"}
+                  {item.status === "pending" && "Pending"}
+                  {item.status === "canceled" && "Cancel"}
+                </td>
                 <td className="border border-gray-300 p-2">{item.status_sj}</td>
               </tr>
             ))}
