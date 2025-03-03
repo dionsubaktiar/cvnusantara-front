@@ -41,6 +41,10 @@ const PrintRecapPage = () => {
     }
   }, [router]);
 
+  console.log(
+    `Nopol:${formData?.nopol}, Driver:${formData?.driver}, Origin:${formData?.origin}`
+  );
+
   const handlePrint = () => {
     setIsPrinting(true);
     sessionStorage.setItem("printing", "true");
@@ -75,7 +79,12 @@ const PrintRecapPage = () => {
   return (
     <div className="p-6 bg-white min-h-screen flex flex-col items-center text-black">
       <h1 className="text-lg font-bold mb-4">
-        {formData ? formData.nopol : "Print Recap"}
+        <h1 className="text-lg font-bold mb-4 text-black">
+          {formData?.nopol ||
+            formData?.driver ||
+            formData?.origin ||
+            "Print Recap"}
+        </h1>
       </h1>
       {data && !isPrinting && (
         <button
