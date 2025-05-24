@@ -9,6 +9,7 @@ const RecapPage = () => {
     nopol: "",
     driver: "",
     origin: "",
+    tanggal: "", // format: YYYY-MM-DD
   });
 
   const [loading, setLoading] = useState(false);
@@ -83,6 +84,14 @@ const RecapPage = () => {
             value={formData.origin}
             onChange={handleChange}
             placeholder="Origin"
+            className="border p-2 w-full rounded-lg text-black"
+          />
+          <input
+            type="date"
+            name="tanggal"
+            value={formData.tanggal}
+            onChange={handleChange}
+            placeholder="Tanggal"
             className="border p-2 w-full rounded-lg text-black"
           />
           <button
