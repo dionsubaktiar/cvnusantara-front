@@ -9,7 +9,8 @@ const RecapPage = () => {
     nopol: "",
     driver: "",
     origin: "",
-    tanggal: "", // format: YYYY-MM-DD
+    tanggal_start: "",
+    tanggal_end: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -86,14 +87,22 @@ const RecapPage = () => {
             placeholder="Origin"
             className="border p-2 w-full rounded-lg text-black"
           />
-          <input
-            type="date"
-            name="tanggal"
-            value={formData.tanggal}
-            onChange={handleChange}
-            placeholder="Tanggal"
-            className="border p-2 w-full rounded-lg text-black"
-          />
+          <div className="flex gap-2">
+            <input
+              type="date"
+              name="tanggal_start"
+              value={formData.tanggal_start}
+              onChange={handleChange}
+              className="border p-2 w-full rounded-lg text-black"
+            />
+            <input
+              type="date"
+              name="tanggal_end"
+              value={formData.tanggal_end}
+              onChange={handleChange}
+              className="border p-2 w-full rounded-lg text-black"
+            />
+          </div>
           <button
             type="submit"
             className="bg-blue-500 text-white p-2 w-full rounded-lg hover:bg-blue-600 transition"
