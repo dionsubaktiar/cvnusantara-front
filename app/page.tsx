@@ -225,24 +225,27 @@ export default function Home() {
       )}
 
       {/* Month Tabs */}
-      <div className="w-full flex gap-2 mt-4">
-        {Object.keys(dataByMonth).map((month) => (
-          <button
-            key={month}
-            className={`px-4 py-2 text-sm rounded-lg ${
-              month === activeMonth
-                ? "bg-blue-500 text-white"
-                : "bg-gray-300 text-gray-700"
-            }`}
-            onClick={() => handleTabClick(month)}
-          >
-            {new Date(sumByMonth[month]?.monthYear + "-01").toLocaleString(
-              "id-ID",
-              { year: "numeric", month: "long" }
-            )}
-          </button>
-        ))}
+      <div className="w-full overflow-x-auto mt-4">
+        <div className="flex gap-2 whitespace-nowrap">
+          {Object.keys(dataByMonth).map((month) => (
+            <button
+              key={month}
+              className={`px-4 py-2 text-sm rounded-lg ${
+                month === activeMonth
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-300 text-gray-700"
+              }`}
+              onClick={() => handleTabClick(month)}
+            >
+              {new Date(sumByMonth[month]?.monthYear + "-01").toLocaleString(
+                "id-ID",
+                { year: "numeric", month: "long" }
+              )}
+            </button>
+          ))}
+        </div>
       </div>
+
       <div className="flex justify-end mb-4 mr-2 gap-2">
         {role === "Super" && (
           <CreateDataDebug onCreate={fetchDatas}></CreateDataDebug>
