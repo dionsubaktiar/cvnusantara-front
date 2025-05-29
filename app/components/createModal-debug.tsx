@@ -1,6 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import axios from "axios";
+import { Button } from "@nextui-org/react";
 
 interface Data {
   tanggal: string | null;
@@ -38,6 +39,10 @@ const CreateDataModalDebug: React.FC<ModalProps> = ({
   const [margin, setMargin] = useState<number | null>(null);
   const [message, setMessage] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    setMessage("");
+  }, [closeModal, onCreate]);
 
   // Currency formatter
   const currencyFormat = new Intl.NumberFormat("id-ID", {
@@ -114,12 +119,16 @@ const CreateDataModalDebug: React.FC<ModalProps> = ({
     } catch (error) {
       console.error(error);
       if (axios.isAxiosError(error)) {
-        setMessage(
-          "Error creating data: " +
-            (error.response?.data?.message || error.message)
-        );
-      } else {
-        setMessage("An unexpected error occurred");
+        const errors = error.response?.data?.errors;
+        if (errors && typeof errors === "object") {
+          const allMessages = Object.values(errors).flat().join(", ");
+          setMessage("Error creating data: " + allMessages);
+        } else {
+          setMessage(
+            "Error creating data: " +
+              (error.response?.data?.message || error.message)
+          );
+        }
       }
     } finally {
       setLoading(false);
@@ -257,15 +266,14 @@ const CreateDataModalDebug: React.FC<ModalProps> = ({
                   )}
 
                   {/* Submit */}
-                  <button
-                    type="submit"
-                    className={`w-full mt-2 p-2 rounded bg-blue-500 text-white ${
-                      loading ? "opacity-50 cursor-not-allowed" : ""
-                    }`}
-                    disabled={loading}
-                  >
-                    {loading ? "Creating..." : "Create Data"}
-                  </button>
+                  <div className="mt-4 flex justify-end gap-2">
+                    <Button type="submit" color="success">
+                      {loading ? "Submitting..." : "Save"}
+                    </Button>
+                    <Button onClick={closeModal} color="danger">
+                      Cancel
+                    </Button>
+                  </div>
                   {message && <p className="mt-2 text-red-500">{message}</p>}
                 </form>
               </Dialog.Panel>
