@@ -12,6 +12,8 @@ interface Data {
   destinasi: string;
   status: string;
   status_sj: string;
+  harga: number;
+  uj: number;
 }
 
 interface FormData {
@@ -96,19 +98,23 @@ const PrintRecapPage = () => {
         <table className="border-collapse border border-gray-300 w-full">
           <thead>
             <tr className="bg-gray-200 text-black">
-              <th className="border border-gray-300 p-2">Nopol</th>
+              <th className="border border-gray-300 p-2">Nopol - Driver</th>
               <th className="border border-gray-300 p-2">Tanggal</th>
-              <th className="border border-gray-300 p-2">Driver</th>
-              <th className="border border-gray-300 p-2">Origin</th>
-              <th className="border border-gray-300 p-2">Destinasi</th>
+              {/* <th className="border border-gray-300 p-2">Driver</th>
+              <th className="border border-gray-300 p-2"></th> */}
+              <th className="border border-gray-300 p-2">Origin - Destinasi</th>
+              <th className="boder border-gray-300 p-2">Uang Jalan</th>
+              <th className="boder border-gray-300 p-2">Harga</th>
+              <th className="border border-gray-300 p-2">Margin</th>
               <th className="border border-gray-300 p-2">Status</th>
-              <th className="border border-gray-300 p-2">Status SJ</th>
             </tr>
           </thead>
           <tbody>
             {data.map((item) => (
               <tr key={item.id} className="text-center text-black">
-                <td className="border border-gray-300 p-2">{item.nopol}</td>
+                <td className="border border-gray-300 p-2">
+                  {`${item.nopol} - ${item.driver}`}
+                </td>
                 <td className="border border-gray-300 p-2">
                   {new Date(item.tanggal).toLocaleString("id-ID", {
                     day: "numeric",
@@ -116,15 +122,25 @@ const PrintRecapPage = () => {
                     year: "numeric",
                   })}
                 </td>
-                <td className="border border-gray-300 p-2">{item.driver}</td>
-                <td className="border border-gray-300 p-2">{item.origin}</td>
-                <td className="border border-gray-300 p-2">{item.destinasi}</td>
+                {/* <td className="border border-gray-300 p-2">{item.driver}</td> */}
+                {/* <td className="border border-gray-300 p-2">{item.origin}</td> */}
+                <td className="border border-gray-300 p-2">
+                  {`${item.origin} - ${item.destinasi}`}
+                </td>
+                <td className="border border-gray-300 p-2">
+                  Rp. {new Number(item.uj).toLocaleString("id-ID")}
+                </td>
+                <td className="border border-gray-300 p-2">
+                  Rp. {new Number(item.harga).toLocaleString("id-ID")}
+                </td>
+                <td className="border border-gray-300 p-2">
+                  Rp. {(item.harga - item.uj).toLocaleString("id-ID")}
+                </td>
                 <td className="border border-gray-300 p-2">
                   {item.status === "confirmed" && "Lunas"}
                   {item.status === "pending" && "Pending"}
                   {item.status === "canceled" && "Cancel"}
                 </td>
-                <td className="border border-gray-300 p-2">{item.status_sj}</td>
               </tr>
             ))}
           </tbody>
