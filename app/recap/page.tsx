@@ -3,6 +3,7 @@
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState, useCallback } from "react";
+import { exportToPDF, exportToExcel } from "../utils/exportUtils";
 
 const RecapPage = () => {
   const [formData, setFormData] = useState({
@@ -14,41 +15,57 @@ const RecapPage = () => {
   });
 
   const [loading, setLoading] = useState(false);
+  const [clicked, setClicked] = useState(false);
+  const [dataExport, setDataExport] = useState(null);
   const [error, setError] = useState("");
 
   const router = useRouter();
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
+      setFormData({
+        nopol: "",
+        driver: "",
+        origin: "",
+        tanggal_start: "",
+        tanggal_end: "",
+      });
       e.preventDefault();
-      // if (!formData.nopol.trim()) {
-      //   setError("Nopol wajib diisi!");
-      //   return;
-      // }
-
       setLoading(true);
       setError("");
+      setClicked(false);
+      setDataExport(null);
 
       try {
         const response = await axios.post(
           "https://backend-cv.nusantaratranssentosa.co.id/api/recap",
           formData
         );
+
         if (response.data.length > 0) {
-          localStorage.setItem("recapData", JSON.stringify(response.data));
-          localStorage.setItem("form", JSON.stringify(formData));
-          router.push("/print-recap"); // Redirect after getting results
+          setDataExport(response.data);
+          setClicked(true);
         } else {
+          // if (
+          //   (formData.tanggal_start != "" && formData.tanggal_end == "") ||
+          //   (formData.tanggal_start == "" && formData.tanggal_end != "")
+          // ) {
+          //   setError("Tanggal awal dan Tanggal akhir tidak boleh kosong");
+          //   setClicked(false);
+          // } else {
+          setClicked(false);
           setError("Tidak ada data ditemukan.");
+          // }
         }
       } catch (err) {
+        setClicked(false);
         setError("Gagal mengambil data. Coba lagi.");
         console.error(err);
       } finally {
         setLoading(false);
       }
     },
-    [formData, router]
+    [formData]
   );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -115,6 +132,24 @@ const RecapPage = () => {
         {error && <p className="text-red-500 mt-2 text-center">{error}</p>}
 
         {/* Back Button */}
+        {clicked ? (
+          <div className="flex justify-between items-center">
+            <button
+              onClick={() => exportToExcel(dataExport)} // Navigate back to home
+              className="mt-4 mr-2 bg-green-600 text-white p-2 w-full rounded-lg hover:bg-green-400 transition"
+              disabled={!clicked}
+            >
+              Export Excel
+            </button>
+            <button
+              onClick={() => exportToPDF(dataExport)} // Navigate back to home
+              className="mt-4 bg-green-600 text-white p-2 w-full rounded-lg  hover:bg-green-400 transition"
+              disabled={!clicked}
+            >
+              Export PDF
+            </button>
+          </div>
+        ) : null}
         <button
           onClick={() => router.push("/")} // Navigate back to home
           className="mt-4 bg-gray-500 text-white p-2 w-full rounded-lg hover:bg-gray-600 transition"
