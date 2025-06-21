@@ -3,7 +3,7 @@
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState, useCallback } from "react";
-import { exportToPDF, exportToExcel } from "../utils/exportUtils";
+import { exportToPDF, exportToExcel } from "../utils/exportUtils"; // Pastikan path ini benar
 
 const RecapPage = () => {
   const [formData, setFormData] = useState({
@@ -23,18 +23,11 @@ const RecapPage = () => {
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
-      setFormData({
-        nopol: "",
-        driver: "",
-        origin: "",
-        tanggal_start: "",
-        tanggal_end: "",
-      });
       e.preventDefault();
       setLoading(true);
       setError("");
-      setClicked(false);
-      setDataExport(null);
+      setClicked(false); // Reset clicked state
+      setDataExport(null); // Clear previous data on new search
 
       try {
         const response = await axios.post(
@@ -44,21 +37,13 @@ const RecapPage = () => {
 
         if (response.data.length > 0) {
           setDataExport(response.data);
-          setClicked(true);
+          setClicked(true); // Set clicked to true only if data is found
         } else {
-          // if (
-          //   (formData.tanggal_start != "" && formData.tanggal_end == "") ||
-          //   (formData.tanggal_start == "" && formData.tanggal_end != "")
-          // ) {
-          //   setError("Tanggal awal dan Tanggal akhir tidak boleh kosong");
-          //   setClicked(false);
-          // } else {
-          setClicked(false);
+          setClicked(false); // Ensure clicked is false if no data
           setError("Tidak ada data ditemukan.");
-          // }
         }
       } catch (err) {
-        setClicked(false);
+        setClicked(false); // Ensure clicked is false on error
         setError("Gagal mengambil data. Coba lagi.");
         console.error(err);
       } finally {
@@ -72,6 +57,9 @@ const RecapPage = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
+
+  // Helper variable to determine if export buttons should be enabled
+  const isExportEnabled = clicked || dataExport != null;
 
   return (
     <div className="min-h-screen flex justify-center items-center">
@@ -131,27 +119,37 @@ const RecapPage = () => {
 
         {error && <p className="text-red-500 mt-2 text-center">{error}</p>}
 
-        {/* Back Button */}
-        {clicked ? (
-          <div className="flex justify-between items-center">
+        {/* Export Buttons */}
+        {/* Only show export buttons if there's data to export */}
+        {isExportEnabled && (
+          <div className="flex justify-between items-center mt-4">
             <button
-              onClick={() => exportToExcel(dataExport)} // Navigate back to home
-              className="mt-4 mr-2 bg-green-600 text-white p-2 w-full rounded-lg hover:bg-green-400 transition"
-              disabled={!clicked}
+              onClick={() => exportToExcel(dataExport)}
+              className={`mr-2 p-2 w-full rounded-lg transition ${
+                isExportEnabled
+                  ? "bg-green-600 text-white hover:bg-green-400"
+                  : "bg-gray-400 text-gray-700 cursor-not-allowed"
+              }`}
+              disabled={!isExportEnabled} // Dynamically set disabled
             >
               Export Excel
             </button>
             <button
-              onClick={() => exportToPDF(dataExport)} // Navigate back to home
-              className="mt-4 bg-green-600 text-white p-2 w-full rounded-lg  hover:bg-green-400 transition"
-              disabled={!clicked}
+              onClick={() => exportToPDF(dataExport)}
+              className={`p-2 w-full rounded-lg transition ${
+                isExportEnabled
+                  ? "bg-green-600 text-white hover:bg-green-400"
+                  : "bg-gray-400 text-gray-700 cursor-not-allowed"
+              }`}
+              disabled={!isExportEnabled} // Dynamically set disabled
             >
               Export PDF
             </button>
           </div>
-        ) : null}
+        )}
+        {/* Back Button */}
         <button
-          onClick={() => router.push("/")} // Navigate back to home
+          onClick={() => router.push("/")}
           className="mt-4 bg-gray-500 text-white p-2 w-full rounded-lg hover:bg-gray-600 transition"
         >
           Kembali ke Beranda
