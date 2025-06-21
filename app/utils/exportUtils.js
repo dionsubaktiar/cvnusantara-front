@@ -131,9 +131,9 @@ export const exportToPDF = (data) => {
     doc.setTextColor(0, 0, 0);
 
     const pageText = `Halaman ${i} dari ${totalPages}`;
-    const textWidth =
-      (doc.getStringUnitWidth(pageText) * doc.internal.getFontSize()) /
-      doc.internal.scaleFactor;
+    // const textWidth =
+    //   (doc.getStringUnitWidth(pageText) * doc.internal.getFontSize()) /
+    //   doc.internal.scaleFactor;
     doc.text(pageText, pageWidth - margin, pageHeight - 10, {
       align: "right",
     });
