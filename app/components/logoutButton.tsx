@@ -6,20 +6,20 @@ const LogoutButton = () => {
   const handleLogout = async () => {
     try {
       await axios.get(
-        "https://backend-cv.nusantaratranssentosa.co.id/sanctum/csrf-cookie"
+        "https://backend.rinsgloballogistic.com/sanctum/csrf-cookie"
         // {
         //   withCredentials: true,
         // }
       );
       const response = await axios.post(
-        "https://backend-cv.nusantaratranssentosa.co.id/api/lockscreen"
+        "https://backend.rinsgloballogistic.com/api/lockscreen"
         // { withCredentials: true }
       );
 
       window.location.reload();
 
       // await axios.get(
-      //   "https://backend-cv.nusantaratranssentosa.co.id/api/data"
+      //   "https://backend.rinsgloballogistic.com/api/data"
       // );
 
       if (response.data.success == true) {

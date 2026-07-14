@@ -36,7 +36,7 @@ const ViewModalDebug: React.FC<ViewData> = ({ id, closeModal }) => {
     setLoading(true);
     try {
       const response = await axios.get<DataResponse>(
-        `https://backend-cv.nusantaratranssentosa.co.id/api/data/${id}`
+        `https://backend.rinsgloballogistic.com/api/data/${id}`
       );
       setData(response.data);
       setError(null); // Clear any previous errors
@@ -257,7 +257,7 @@ const ViewModalDebug: React.FC<ViewData> = ({ id, closeModal }) => {
                   {data.foto ? (
                     <div className="space-y-1">
                       <Image
-                        src={`https://backend-cv.nusantaratranssentosa.co.id/storage/${data.foto}`}
+                        src={`https://backend.rinsgloballogistic.com/storage/${data.foto}`}
                         alt="Uploaded Preview"
                         width={300}
                         height={200}

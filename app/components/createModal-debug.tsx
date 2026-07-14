@@ -91,10 +91,10 @@ const CreateDataModalDebug: React.FC<ModalProps> = ({
 
     try {
       await axios.get(
-        "https://backend-cv.nusantaratranssentosa.co.id/sanctum/csrf-cookie"
+        "https://backend.rinsgloballogistic.com/sanctum/csrf-cookie"
       );
       await axios.post(
-        "https://backend-cv.nusantaratranssentosa.co.id/api/data",
+        "https://backend.rinsgloballogistic.com/api/data",
         data
       );
 

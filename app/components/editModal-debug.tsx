@@ -57,7 +57,7 @@ const EditDataModalDebug: React.FC<EditDataProps> = ({
     setLoading(true);
     axios
       .get<DataResponse>(
-        `https://backend-cv.nusantaratranssentosa.co.id/api/data/${id}`
+        `https://backend.rinsgloballogistic.com/api/data/${id}`
       )
       .then((response) => {
         setFormData(response.data);
@@ -124,7 +124,7 @@ const EditDataModalDebug: React.FC<EditDataProps> = ({
 
     try {
       await axios.get(
-        "https://backend-cv.nusantaratranssentosa.co.id/sanctum/csrf-cookie"
+        "https://backend.rinsgloballogistic.com/sanctum/csrf-cookie"
       );
 
       const formDataToSend = new FormData();
@@ -146,7 +146,7 @@ const EditDataModalDebug: React.FC<EditDataProps> = ({
 
       // Perform the API request
       await axios.post(
-        `https://backend-cv.nusantaratranssentosa.co.id/api/data/${id}`,
+        `https://backend.rinsgloballogistic.com/api/data/${id}`,
         formDataToSend,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -385,7 +385,7 @@ const EditDataModalDebug: React.FC<EditDataProps> = ({
 
                   {role === "Admin" && formData?.foto && !selectedFile && (
                     <Image
-                      src={`https://backend-cv.nusantaratranssentosa.co.id/storage/${formData.foto}`}
+                      src={`https://backend.rinsgloballogistic.com/storage/${formData.foto}`}
                       alt="Uploaded Preview"
                       width={300}
                       height={200}

@@ -31,10 +31,10 @@ const EditAdmin: React.FC<EditDataProps> = ({ id, closeModal, onUpdate }) => {
       setLoading(true);
       try {
         await axios.get(
-          "https://backend-cv.nusantaratranssentosa.co.id/sanctum/csrf-cookie"
+          "https://backend.rinsgloballogistic.com/sanctum/csrf-cookie"
         );
         const response = await axios.get<DataResponse>(
-          `https://backend-cv.nusantaratranssentosa.co.id/api/data/${id}`
+          `https://backend.rinsgloballogistic.com/api/data/${id}`
         );
         setFormData(response.data);
         setError(null);
@@ -60,7 +60,7 @@ const EditAdmin: React.FC<EditDataProps> = ({ id, closeModal, onUpdate }) => {
     setLoading(true);
     try {
       await axios.put(
-        `https://backend-cv.nusantaratranssentosa.co.id/api/data/${id}`,
+        `https://backend.rinsgloballogistic.com/api/data/${id}`,
         { status_sj: formData?.status_sj }
         // { withCredentials: true }
       );
