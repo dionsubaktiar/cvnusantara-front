@@ -12,10 +12,10 @@ const LockScreenDebug = ({ onUnlock }: LockScreenProps) => {
     e.preventDefault();
     try {
       await axios.get(
-        "https://backend-cv.nusantaratranssentosa.co.id/sanctum/csrf-cookie"
+        "https://backend.rinsgloballogistic.com/sanctum/csrf-cookie"
       );
       const response = await axios.post(
-        "https://backend-cv.nusantaratranssentosa.co.id/api/pin-verify",
+        "https://backend.rinsgloballogistic.com/api/pin-verify",
         { pin }
       );
 

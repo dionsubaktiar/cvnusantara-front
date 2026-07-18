@@ -22,8 +22,8 @@ import {
 } from "@nextui-org/react";
 import Link from "next/link";
 
-const dataUrl = "https://backend-cv.nusantaratranssentosa.co.id/api/data";
-const sumUrl = "https://backend-cv.nusantaratranssentosa.co.id/api/sum";
+const dataUrl = "https://backend.rinsgloballogistic.com/api/data";
+const sumUrl = "https://backend.rinsgloballogistic.com/api/sum";
 
 interface Sum {
   marginSum: number;
@@ -359,11 +359,11 @@ export default function Home() {
                               onClick={() => {
                                 axios
                                   .get(
-                                    "https://backend-cv.nusantaratranssentosa.co.id/sanctum/csrf-cookie"
+                                    "https://backend.rinsgloballogistic.com/sanctum/csrf-cookie"
                                   )
                                   .then(() => {
                                     return axios.put(
-                                      `https://backend-cv.nusantaratranssentosa.co.id/api/setlunas/${data.id}`
+                                      `https://backend.rinsgloballogistic.com/api/setlunas/${data.id}`
                                     );
                                   })
                                   .then(() => fetchDatas())
@@ -398,11 +398,11 @@ export default function Home() {
                               onClick={() => {
                                 axios
                                   .get(
-                                    "https://backend-cv.nusantaratranssentosa.co.id/sanctum/csrf-cookie"
+                                    "https://backend.rinsgloballogistic.com/sanctum/csrf-cookie"
                                   )
                                   .then(() => {
                                     return axios.delete(
-                                      `https://backend-cv.nusantaratranssentosa.co.id/api/data/${data.id}`
+                                      `https://backend.rinsgloballogistic.com/api/data/${data.id}`
                                     );
                                   })
                                   .then(() => fetchDatas())

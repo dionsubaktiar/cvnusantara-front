@@ -3,7 +3,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "backend-cv.nusantaratranssentosa.co.id",
+        hostname: "backend.rinsgloballogistic.com",
         pathname: "/storage/**",
       },
     ],

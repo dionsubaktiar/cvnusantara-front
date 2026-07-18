@@ -32,7 +32,7 @@ const ViewModal: React.FC<ViewData> = ({ id, closeModal }) => {
     setLoading(true);
     try {
       const response = await axios.get<DataResponse>(
-        `https://cvnusantara.nusantaratranssentosa.co.id/api/data/${id}`
+        `https://backend.rinsgloballogistic.com/api/data/${id}`
       );
       setData(response.data);
       setError(null); // Clear any previous errors

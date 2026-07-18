@@ -31,7 +31,7 @@ const RecapPage = () => {
 
       try {
         const response = await axios.post(
-          "https://backend-cv.nusantaratranssentosa.co.id/api/recap",
+          "https://backend.rinsgloballogistic.com/api/recap",
           formData
         );
 
